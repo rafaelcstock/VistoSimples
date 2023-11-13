@@ -8,7 +8,7 @@ import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import passportType from '../../../../datas/passport_type'
 import countriesService from "../../../../services/countriesWorld";
-import statesService from "../../../../services/StatesWorld";
+import statesService from "../../../../services/statesWorldMain";
 import citiesService from "../../../../services/citiesWorld";
 import Countries from "../../../../datas/countries";
 
