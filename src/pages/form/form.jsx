@@ -15,7 +15,7 @@ const steps = ['Informações pessoais', 'Informações adicionais', 'Endereço 
 
 
 function Form() {
-    const [activeStep, setActiveStep] = useState(2);
+    const [activeStep, setActiveStep] = useState(0);
     const [skipped, setSkipped] = useState(new Set()); 
 
   
