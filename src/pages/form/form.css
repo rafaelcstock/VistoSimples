@@ -5,6 +5,7 @@
 .div-width-step{
     width: 22%;
     background-color: #F3F5FC;
+    min-height: 100%;
    
 }
 

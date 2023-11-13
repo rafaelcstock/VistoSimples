@@ -8,7 +8,7 @@ const steps = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11"];
 
 function AddressDelivery(props) {
   const { data, updateData } = useData();
-  const [activeStep, setActiveStep] = useState(1);
+  const [activeStep, setActiveStep] = useState(0);
   const [skipped, setSkipped] = useState(new Set());
   const [isDisabled, setIsDisabled] = useState(null);
 
@@ -26,22 +26,22 @@ function AddressDelivery(props) {
   const validateStep0 = () => {
     let isValid = false;
 
-    const { mailing_address } = data;
+    const { address, permanent_resident_other_country } = data;
 
-    debugger;
+
     isValid =
-      mailing_address.street &&
-      mailing_address.street !== "" &&
-      mailing_address.complement &&
-      mailing_address.complement !== "" &&
-      mailing_address.city &&
-      mailing_address.city !== "" &&
-      mailing_address.state &&
-      mailing_address.state !== "" &&
-      mailing_address.zip_code &&
-      mailing_address.zip_code !== "" &&
-      mailing_address.country &&
-      mailing_address.country !== "";
+      address.street &&
+      address.street !== "" &&
+      address.complement &&
+      address.complement !== "" &&
+      address.city &&
+      address.city !== "" &&
+      address.state &&
+      address.state !== "" &&
+      address.zip_code &&
+      address.zip_code !== "" &&
+      address.country &&
+      address.country !== "";
 
     return isValid;
   };
@@ -51,7 +51,6 @@ function AddressDelivery(props) {
 
     const { mailing_address } = data;
 
-    debugger;
     isValid =
       mailing_address.street &&
       mailing_address.street !== "" &&
@@ -75,9 +74,10 @@ function AddressDelivery(props) {
       newSkipped = new Set(newSkipped.values());
       newSkipped.delete(activeStep);
     }
-
-    if (selectedStatus === "Sim") {
-      setActiveStep((prevActiveStep) => prevActiveStep + 2);
+    debugger;
+    if (activeStep == 0 && data.isMailingAddressSameCurrentAddress) {
+      // setActiveStep((prevActiveStep) => prevActiveStep + 2);
+      props.onAddressChange();
     } else {
       setActiveStep((prevActiveStep) => prevActiveStep + 1);
     }
@@ -104,13 +104,13 @@ function AddressDelivery(props) {
   };
 
   const allComponents = [
+    <InformationResidence
+      key="informationResidence"
+      validateStep={validateStep}
+    />,
     <Adress
       key="adress"
       onStatusChange={handleStatusChange}
-      validateStep={validateStep}  
-    />,
-    <InformationResidence
-      key="informationResidence"
       validateStep={validateStep}
     />,
   ];
@@ -142,6 +142,7 @@ function AddressDelivery(props) {
           <div>
             <button
               type="button"
+              // disabled={isDisabled}
               className={`button-style ${isDisabled ? "disabled-button" : ""}`}
               onClick={handleNext}
             >

@@ -78,7 +78,7 @@ function Adress({ validateStep }) {
                 <span style={{ color: "red" }}>*</span>
               </span>
             </div>
-            <br />
+
             <div className="padding-bottom-1">
               <Select
                 className="style-select-work"
@@ -142,7 +142,6 @@ function Adress({ validateStep }) {
                 CEP<span style={{ color: "red" }}>*</span>
               </span>
             </div>
-            <br />
             <div className="padding-bottom-1">
               <InputMask
                 mask="99999-999"

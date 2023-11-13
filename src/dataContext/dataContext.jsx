@@ -33,61 +33,61 @@ export function DataProvider({ children }) {
     marital_status: "S",
     spouse: {
       name: {
-        surname: "string",
-        given_name: "string",
-        full_name: "string",
+        surname: "",
+        given_name: "",
+        full_name: "",
       },
       birth: {
-        date: "2023-11-08",
-        city: "string",
-        state: "string",
-        country: "AFGH",
+        date: "",
+        city: "",
+        state: "",
+        country: "",
       },
-      nationality: "string",
-      address_type: "H",
+      nationality: "",
+      address_type: "",
       address: {
-        street: "string",
-        complement: "string",
-        city: "string",
-        state: "string",
-        state_acronym: "string",
-        zip_code: "string",
-        country: "AFGH",
+        street: "",
+        complement: "",
+        city: "",
+        state: "",
+        state_acronym: "",
+        zip_code: "",
+        country: "",
       },
     },
     former_spouses: [
       {
         name: {
-          surname: "string",
-          given_name: "string",
-          full_name: "string",
+          surname: "",
+          given_name: "",
+          full_name: "",
         },
         birth: {
-          date: "2023-11-08",
-          city: "string",
-          state: "string",
+          date: "",
+          city: "",
+          state: "",
           country: "AFGH",
         },
         nationality_country: "AFGH",
-        marriage_start_date: "2023-11-08",
-        marriage_end_date: "2023-11-08",
-        end_marriage_reason: "string",
+        marriage_start_date: "",
+        marriage_end_date: "",
+        end_marriage_reason: "",
         end_marriage_country: "AFGH",
       },
     ],
     deceased_spouse: {
       name: {
-        surname: "string",
-        given_name: "string",
-        full_name: "string",
+        surname: "",
+        given_name: "",
+        full_name: "",
       },
       birth: {
-        date: "2023-11-08",
-        city: "string",
-        state: "string",
-        country: "AFGH",
+        date: "",
+        city: "",
+        state: "",
+        country: "",
       },
-      nationality: "AFGH",
+      nationality: "",
     },
     birth: {
       date: "",
@@ -98,7 +98,7 @@ export function DataProvider({ children }) {
     nationality_country: "",
     other_nationality_country: null,
     other_nationality_passport: null,
-    permanent_resident_other_country: "AFGH",
+    permanent_resident_other_country: null,
     national_identification_number: "string",
     us_social_security_number: "string",
     us_taxpayer_number: "string",
@@ -181,13 +181,13 @@ export function DataProvider({ children }) {
     immigrant_petition: true,
     immigrant_petition_reason: "string",
     address: {
-      street: "string",
-      complement: "string",
-      city: "string",
-      state: "string",
-      state_acronym: "string",
-      zip_code: "string",
-      country: "AFGH",
+      street: "",
+      complement: "",
+      city: "",
+      state: "",
+      state_acronym: null,
+      zip_code: "",
+      country: "",
     },
     mailing_address: {
       street: "",
@@ -375,10 +375,12 @@ export function DataProvider({ children }) {
     hasParentInUs: true,
     hasClan: true,
     hasUsDriversLicense: true,
+    isMailingAddressSameCurrentAddress: true,
   });
 
   // console.log(data);
-  // console.log(data.mailing_address);
+  console.log(data.address);
+  console.log(data.isMailingAddressSameCurrentAddress);
 
   const updateData = (newData) => {
     setData({ ...data, ...newData });
