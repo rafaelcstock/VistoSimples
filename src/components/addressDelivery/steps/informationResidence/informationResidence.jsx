@@ -5,7 +5,7 @@ import statesBrazilianService from "../../../../services/statesBrazilianService"
 import { FormControlLabel, Radio, RadioGroup } from "@mui/material";
 import InputMask from "react-input-mask";
 import countriesService from "../../../../services/countriesWorld";
-import statesService from "../../../../services/StatesWorld";
+import statesService from "../../../../services/statesWorldMain";
 import citiesService from "../../../../services/citiesWorld";
 import Countries from "../../../../datas/countries";
 import { useData } from "../../../../dataContext/dataContext";
