@@ -5,7 +5,7 @@ import InputMask from 'react-input-mask';
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import countriesService from "../../../../services/countriesWorld";
-import statesService from "../../../../services/StatesWorld";
+import statesService from "../../../../services/statesWorldMain";
 import citiesService from "../../../../services/citiesWorld";
 
 function TravelInformations() {

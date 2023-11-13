@@ -7,7 +7,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import Countries from "../../../../datas/countries";
 import InputMask from 'react-input-mask';
 import countriesService from "../../../../services/countriesWorld";
-import statesService from "../../../../services/StatesWorld";
+import statesService from "../../../../services/statesWorldMain";
 import citiesService from "../../../../services/citiesWorld";
 
 

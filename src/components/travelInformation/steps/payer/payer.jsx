@@ -6,7 +6,7 @@ import { FormControlLabel, Radio, RadioGroup } from "@mui/material";
 import InputMask from 'react-input-mask';
 import escortRelationship from '../../../../datas/escort_relationship';
 import countriesService from "../../../../services/countriesWorld";
-import statesService from "../../../../services/StatesWorld";
+import statesService from "../../../../services/statesWorldMain";
 import citiesService from "../../../../services/citiesWorld";
 
 const statusArray = [

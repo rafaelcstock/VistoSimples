@@ -6,7 +6,7 @@ import { FormControlLabel, Radio, RadioGroup } from "@mui/material";
 import InsertPhotoOutlinedIcon from "@mui/icons-material/InsertPhotoOutlined";
 import Countries from "../../../../datas/countries";
 import countriesService from "../../../../services/countriesWorld";
-import statesService from "../../../../services/StatesWorld";
+import statesService from "../../../../services/statesWorldMain";
 import citiesService from "../../../../services/citiesWorld";
 import { useData } from "../../../../dataContext/dataContext";
 

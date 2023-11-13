@@ -1,14 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./work.css";
-import { MenuItem, Select, TextField } from "@mui/material";
-import statesBrazilianService from "../../../../services/statesBrazilianService";
 import { FormControlLabel, Radio, RadioGroup } from "@mui/material";
-import InputMask from "react-input-mask";
-import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import countriesService from "../../../../services/countriesWorld";
-import statesService from "../../../../services/StatesWorld";
-import citiesService from "../../../../services/citiesWorld";
 import { useData } from "../../../../dataContext/dataContext";
 import PastJobsComponent from "./PastJobsComponent/pasJobsComponent";
 import dayjs from "dayjs";

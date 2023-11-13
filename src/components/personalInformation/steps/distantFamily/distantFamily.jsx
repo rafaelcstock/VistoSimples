@@ -1,11 +1,8 @@
 import React, { useEffect, useState } from "react";
 import "./distantFamily.css";
 import { MenuItem, Select, TextField } from "@mui/material";
-import statesBrazilianService from "../../../../services/statesBrazilianService";
 import { FormControlLabel, Radio, RadioGroup } from "@mui/material";
 import PrimaryOccupation from "../../../../datas/primary_occupation";
-import statesService from "../../../../services/StatesWorld";
-import citiesService from "../../../../services/citiesWorld";
 import { useData } from "../../../../dataContext/dataContext";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import dayjs from "dayjs";
