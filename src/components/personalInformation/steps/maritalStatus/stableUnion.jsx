@@ -1,15 +1,14 @@
 import React, { useEffect, useState } from "react"
 import './maritalStatus.css'
 import { MenuItem, Select, TextField } from "@mui/material";
-import statesBrazilianService from "../../../../services/statesBrazilianService"
 import { FormControlLabel, Radio, RadioGroup } from "@mui/material";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import Countries from "../../../../datas/countries";
 import InputMask from 'react-input-mask';
 import countriesService from "../../../../services/countriesWorld";
-import statesService from "../../../../services/StatesWorld";
 import citiesService from "../../../../services/citiesWorld";
+import statesService from "../../../../services/statesWorldMain";
 
 function StableUnion() {
     const [nationality, setNationality] = useState("");
