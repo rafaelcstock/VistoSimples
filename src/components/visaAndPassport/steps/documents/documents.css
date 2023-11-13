@@ -1,0 +1,151 @@
+.div-flex{
+    display: flex;
+}
+
+.div-width{
+    width: 20rem;
+    background-color: #F3F5FC;
+}
+
+.div-margin{
+    margin-top: 1rem;
+    margin-left: 2rem;
+    margin-right: 4rem;
+    width: auto;
+}
+
+.title-header{
+    font-size: 32px;
+    font-weight: 700;
+    line-height: 40px;
+    color: #2F5FE3
+}
+
+.title-header-1{
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 40px;
+    color: #2F5FE3
+}
+
+.subTitle-header{
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 19px;
+    color: #6579A8;
+}
+
+.subTitle-div{
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 19px;
+    color: #4D5D84;
+    
+}
+
+.span-state{
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 19px;
+    color: #243A72;
+}
+
+.hr-color{
+    color: #C9D2E8;
+}
+
+.padding-bottom{
+    padding-bottom: 2rem;
+}
+
+.padding-bottom-title-input{
+    padding-left: 3rem;
+    padding-bottom: 2rem;
+}
+
+.div-marital-padding{
+    background-color: #F3F5FC;
+    padding: 2rem 0rem 2rem 0rem;
+    border-radius: 8px;
+    margin-bottom: 3rem;
+    width: 100%;
+}
+
+.title-header-2{
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 21px;
+    color: #091F5F;   
+}
+
+
+.style-select-work{
+    width:98%;
+    background:white;
+}
+
+.style-input-2-work{
+    width:98%;
+    background:white;
+}
+
+.style-observation{
+    background-color: #ffe3e3;
+    padding: 1rem;
+}
+
+.font-style-observation{
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 19px;
+    color: #C92B2B;
+}
+
+.padding-top{
+    padding-top: 1.5rem;
+    display: flex;
+    justify-content: end;
+    padding-bottom: 1rem;
+}
+
+.button-style{
+   width: 124px;
+   height: 48px;
+   border-radius: 8px;
+   background-color: #2F5FE3;
+   border: 0;
+   
+}
+
+.input-style-documents{
+    background-color: #ffff;
+    width: 98%;
+}
+
+.div-1-inputs-marital{
+    display: grid;   
+    grid-template-columns: 33% 33% 33%;
+    padding-left: 3rem;
+}
+
+.div-2-inputs-work{
+    display: grid;   
+    grid-template-columns: 50% 50%;
+    padding-left: 3rem;
+}
+
+.div-3-inputs-marital{
+    display: grid;   
+    grid-template-columns: 25% 25% 25% 25%;
+    padding-left: 3rem;
+}
+
+.padding-documents{
+    padding-left: 3rem;
+}
+
+.style-input-doc{
+    width: 98%;
+    background-color: #ffff;
+}
+

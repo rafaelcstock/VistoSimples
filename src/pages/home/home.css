@@ -1,0 +1,96 @@
+.div-home-head-info{
+    display: flex;     
+    flex-direction: column;
+    justify-content: center;
+}
+
+.div-flex{
+    display: flex;
+}
+
+.div-flex-docs{
+    display: flex;
+    justify-content: space-around;
+}
+
+.text-align{
+    text-align: left;
+}
+
+.margin-div{
+    margin-left: 2rem;
+    margin-right: 4rem;
+}
+
+.margin-left{
+    margin-left: 4rem;
+}
+
+.font-size-title{
+    font-size: 48px;
+    font-weight: 700;
+    line-height: 60px;
+}
+
+.font-size-title-2{
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 19.5px;
+}
+
+.font-color{
+    color: #2F5FE3;
+}
+
+.font-color-2{
+    color: #091F5F;
+}
+
+.font-color-3{
+    color: #243A72;
+}
+
+.font-title-div-2{
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 21.8px;
+}
+
+.font-card{
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 19.4px;
+    margin-left: 1rem;
+}
+
+.dimension-card{
+    width: 18.9rem;
+    height: 10.7rem;
+    background-color: #c1d3ff;
+    border-radius: 8px;
+}
+
+.padding-bottom{
+    padding-bottom: 2rem;
+}
+
+.padding-top{
+    padding-top: 3rem;
+}
+
+.button-style{
+   width: 124px;
+   height: 48px;
+   border-radius: 8px;
+   background-color: #2F5FE3;
+   border: 0;
+   
+}
+
+.font-button{
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 19.4px;
+    color: white;    
+}
+
