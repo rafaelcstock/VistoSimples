@@ -9,21 +9,73 @@ import { useData } from "../../../../dataContext/dataContext";
 function InformationResidence({ validateStep }) {
   const { data, updateData } = useData();
 
-  const [selectedState2, setSelectedState2] = useState("Sim");
-
   const handleChangeSelect = (event) => {
     const { value } = event.target;
     const boolValue = value == "Sim" ? true : false;
-    updateData({ ...data, isMailingAddressSameCurrentAddress: boolValue });
+
+    if (boolValue) {
+      updateData({
+        ...data, mailing_address: {
+          street: data.address.street,
+          complement: data.address.complement,
+          city: data.address.city,
+          state: data.address.state,
+          state_acronym: null,
+          zip_code: data.address.zip_code,
+          country: data.address.country,
+        }
+      });
+
+    } else {
+      updateData({
+        ...data, mailing_address: {
+          street: "",
+          complement: "",
+          city: "",
+          state: "",
+          state_acronym: null,
+          zip_code: "",
+          country: "",
+        }
+      });
+    }
   };
 
-  const handleChangeSelect2 = (event) => {
-    setSelectedState2(event.target.value);
+  const handleAnyOtherCountryChange = (event) => {
+    const { value } = event.target;
+    const boolValue = value == "Sim" ? true : false;
+
+    if (boolValue) {
+      updateData({
+        ...data, permanent_resident_other_country: " "
+      });
+    } else {
+      updateData({
+        ...data, permanent_resident_other_country: null
+      });
+    }
+  };
+
+  const handleSelectOtherCountryChange = (event) => {
+    const { value } = event.target;
+
+    updateData({
+      ...data, permanent_resident_other_country: value
+    });
   };
 
   const handleAddressChange = (event) => {
     const { value, name } = event.target;
-    updateData({ ...data, address: { ...data.address, [name]: value } });
+    debugger
+    if (data.mailing_address !== null) {
+      updateData({
+        ...data, address: { ...data.address, [name]: value },
+        mailing_address: { ...data.address, [name]: value }
+      });
+
+    } else {
+      updateData({ ...data, address: { ...data.address, [name]: value } });
+    }
   };
 
   useEffect(() => {
@@ -183,7 +235,7 @@ function InformationResidence({ validateStep }) {
                 name="radio-buttons-group"
                 className="subTitle-div-2"
                 row
-                value={data.isMailingAddressSameCurrentAddress ? "Sim" : "Não"}
+                value={data.mailing_address.street !== "" ? "Sim" : "Não"}
                 onChange={handleChangeSelect}
               >
                 <FormControlLabel value="Sim" control={<Radio />} label="Sim" />
@@ -209,8 +261,8 @@ function InformationResidence({ validateStep }) {
                 name="radio-buttons-group"
                 className="subTitle-div-2"
                 row
-                value={selectedState2}
-                onChange={handleChangeSelect2}
+                value={data.permanent_resident_other_country ? "Sim" : "Não"}
+                onChange={handleAnyOtherCountryChange}
               >
                 <FormControlLabel value="Sim" control={<Radio />} label="Sim" />
                 <FormControlLabel value="Não" control={<Radio />} label="Não" />
@@ -218,7 +270,7 @@ function InformationResidence({ validateStep }) {
             </div>
           </div>
         </div>
-        {selectedState2 === "Sim" ? (
+        {data.permanent_resident_other_country ? (
           <div className="div-2-inputs-work">
             <div>
               <div style={{ paddingBottom: "0.4rem" }}>
@@ -231,6 +283,8 @@ function InformationResidence({ validateStep }) {
                   className="style-select-residence"
                   labelId="select-state"
                   id="select-state"
+                  value={data.permanent_resident_other_country}
+                  onChange={handleSelectOtherCountryChange}
                 >
                   {Countries.map((state) => (
                     <MenuItem key={state.key} value={state.key}>

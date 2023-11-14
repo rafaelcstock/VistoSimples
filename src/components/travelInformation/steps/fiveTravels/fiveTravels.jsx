@@ -1,33 +1,90 @@
 import React, { useEffect, useState } from "react"
 import './fiveTravels.css'
-import { MenuItem, Select, TextField } from "@mui/material";
-import statesBrazilianService from "../../../../services/statesBrazilianService";
-import { FormControlLabel, Radio, RadioGroup } from "@mui/material";
-import InputMask from 'react-input-mask';
+import { FormControlLabel, Radio, RadioGroup, TextField } from "@mui/material";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { useData } from "../../../../dataContext/dataContext";
+import dayjs from "dayjs";
 
-function FiveTravels() {
-    const getStates = async () => {
-        const response = await statesBrazilianService.getStates();
-        setStates(response);
-    }
-
-    const [states, setStates] = useState([]);
-    const [selectedState, setSelectedState] = useState("Sim");
-    const [radioRequester, setRadioRequester] = useState("");
+function FiveTravels({ validateStep }) {
+    const { data, updateData } = useData();
 
     const handleChangeSelect = (event) => {
-        setSelectedState(event.target.value);
+        const { value } = event.target;
+        const boolValue = value == "Sim" ? true : false;
+
+        if (boolValue) {
+            updateData({
+                ...data, us_visits: [{
+                    date: "",
+                    length_of_stay: 0,
+                },
+                {
+                    date: "",
+                    length_of_stay: 0,
+                },
+                {
+                    date: "",
+                    length_of_stay: 0,
+                },
+                {
+                    date: "",
+                    length_of_stay: 0,
+                },
+                {
+                    date: "",
+                    length_of_stay: 0,
+                },
+                ]
+            })
+        } else {
+            updateData({
+                ...data, us_visits: null
+            })
+        }
     };
 
-    const handleChangeRequester = (event) => {
-        setRadioRequester(event.target.value);
+    const handleLengthOfStayUpdateData = (event) => {
+        const { value, name } = event.target;
+
+        const index = Number(name);
+        const updatedUsVisits = [...data.us_visits];
+
+        if (index < updatedUsVisits.length) {
+            updatedUsVisits[index] = { ...updatedUsVisits[index], length_of_stay: Number(value) };
+        } else {
+            updatedUsVisits.splice(index, 0, { date: "", length_of_stay: Number(value) });
+        }
+
+        updateData({
+            ...data,
+            us_visits: updatedUsVisits,
+        });
     };
+
+    const handleDateUpdateData = (name, newDate) => {
+        const formattedDate = dayjs(newDate).format("YYYY-MM-DD");
+
+
+        const index = Number(name);
+        const updatedUsVisits = [...data.us_visits];
+
+        if (index < updatedUsVisits.length) {
+            updatedUsVisits[index] = { ...updatedUsVisits[index], date: formattedDate };
+        } else {
+            updatedUsVisits.splice(index, 0, { date: formattedDate, length_of_stay: 0 });
+        }
+
+        updateData({
+            ...data,
+            us_visits: updatedUsVisits,
+        });
+    };
+
 
     useEffect(() => {
-        getStates();
-    }, []);
+        validateStep();
+    }, [data]);
 
     return (
         <div className="div-margin">
@@ -53,7 +110,7 @@ function FiveTravels() {
                         name="radio-buttons-group"
                         className="subTitle-div-2"
                         row
-                        value={selectedState}
+                        value={data.us_visits !== null ? "Sim" : "Não"}
                         onChange={handleChangeSelect}
                     >
                         <FormControlLabel value="Sim" control={<Radio />} label="Sim" />
@@ -61,7 +118,7 @@ function FiveTravels() {
                     </RadioGroup>
                 </div>
             </div>
-            {selectedState === "Sim" ? (
+            {data.us_visits !== null ? (
                 <div>
                     <div className="div-marital-padding">
                         <div className="padding-bottom-title-input">
@@ -74,7 +131,11 @@ function FiveTravels() {
                                 </div>
                                 <div className="padding-bottom-1">
                                     <LocalizationProvider dateAdapter={AdapterDayjs}>
-                                        <DatePicker format="DD/MM/YYYY" className="custom-date-picker-initial" />
+                                        <DatePicker format="DD/MM/YYYY" className="custom-date-picker-initial"
+                                            value={data.us_visits[0] ? dayjs(data.us_visits[0].date) : ""}
+                                            onChange={(date) =>
+                                                handleDateUpdateData("0", date)
+                                            } />
                                     </LocalizationProvider>
                                 </div>
                             </div>
@@ -83,9 +144,10 @@ function FiveTravels() {
                                     <span className="span-state">Tempo estimado de estadia - Viagem 1<span style={{ color: 'red' }}>*</span></span>
                                 </div>
                                 <div className="padding-bottom-1">
-                                    <LocalizationProvider dateAdapter={AdapterDayjs}>
-                                        <DatePicker format="DD/MM/YYYY" className="custom-date-picker-initial" />
-                                    </LocalizationProvider>
+                                    <TextField type="number"
+                                        name="0"
+                                        value={data.us_visits[0] ? data.us_visits[0].length_of_stay : ""}
+                                        onChange={handleLengthOfStayUpdateData} />
                                 </div>
                             </div>
                         </div>
@@ -96,7 +158,12 @@ function FiveTravels() {
                                 </div>
                                 <div className="padding-bottom-1">
                                     <LocalizationProvider dateAdapter={AdapterDayjs}>
-                                        <DatePicker format="DD/MM/YYYY" className="custom-date-picker-initial" />
+                                        <DatePicker format="DD/MM/YYYY" className="custom-date-picker-initial"
+                                            name="1"
+                                            value={data.us_visits[1] ? dayjs(data.us_visits[1].date) : ""}
+                                            onChange={(date) =>
+                                                handleDateUpdateData("1", date)
+                                            } />
                                     </LocalizationProvider>
                                 </div>
                             </div>
@@ -105,9 +172,10 @@ function FiveTravels() {
                                     <span className="span-state">Tempo estimado de estadia - Viagem 2<span style={{ color: 'red' }}>*</span></span>
                                 </div>
                                 <div className="padding-bottom-1">
-                                    <LocalizationProvider dateAdapter={AdapterDayjs}>
-                                        <DatePicker format="DD/MM/YYYY" className="custom-date-picker-initial" />
-                                    </LocalizationProvider>
+                                    <TextField type="number"
+                                        name="1"
+                                        value={data.us_visits[1] ? data.us_visits[1].length_of_stay : ""}
+                                        onChange={handleLengthOfStayUpdateData} />
                                 </div>
                             </div>
                         </div>
@@ -118,7 +186,12 @@ function FiveTravels() {
                                 </div>
                                 <div className="padding-bottom-1">
                                     <LocalizationProvider dateAdapter={AdapterDayjs}>
-                                        <DatePicker format="DD/MM/YYYY" className="custom-date-picker-initial" />
+                                        <DatePicker format="DD/MM/YYYY" className="custom-date-picker-initial"
+                                            name="2"
+                                            value={data.us_visits[2] ? dayjs(data.us_visits[2].date) : ""}
+                                            onChange={(date) =>
+                                                handleDateUpdateData("2", date)
+                                            } />
                                     </LocalizationProvider>
                                 </div>
                             </div>
@@ -127,9 +200,10 @@ function FiveTravels() {
                                     <span className="span-state">Tempo estimado de estadia - Viagem 3<span style={{ color: 'red' }}>*</span></span>
                                 </div>
                                 <div className="padding-bottom-1">
-                                    <LocalizationProvider dateAdapter={AdapterDayjs}>
-                                        <DatePicker format="DD/MM/YYYY" className="custom-date-picker-initial" />
-                                    </LocalizationProvider>
+                                    <TextField type="number"
+                                        name="2"
+                                        value={data.us_visits[2] ? data.us_visits[2].length_of_stay : ""}
+                                        onChange={handleLengthOfStayUpdateData} />
                                 </div>
                             </div>
                         </div>
@@ -140,7 +214,12 @@ function FiveTravels() {
                                 </div>
                                 <div className="padding-bottom-1">
                                     <LocalizationProvider dateAdapter={AdapterDayjs}>
-                                        <DatePicker format="DD/MM/YYYY" className="custom-date-picker-initial" />
+                                        <DatePicker format="DD/MM/YYYY" className="custom-date-picker-initial"
+                                            name="3"
+                                            value={data.us_visits[3] ? dayjs(data.us_visits[3].date) : ""}
+                                            onChange={(date) =>
+                                                handleDateUpdateData("3", date)
+                                            } />
                                     </LocalizationProvider>
                                 </div>
                             </div>
@@ -149,9 +228,11 @@ function FiveTravels() {
                                     <span className="span-state">Tempo estimado de estadia - Viagem 4<span style={{ color: 'red' }}>*</span></span>
                                 </div>
                                 <div className="padding-bottom-1">
-                                    <LocalizationProvider dateAdapter={AdapterDayjs}>
-                                        <DatePicker format="DD/MM/YYYY" className="custom-date-picker-initial" />
-                                    </LocalizationProvider>
+                                    <TextField type="number"
+                                        name="3"
+                                        value={data.us_visits[3] ? data.us_visits[3].length_of_stay : ""}
+                                        onChange={handleLengthOfStayUpdateData}
+                                    />
                                 </div>
                             </div>
                         </div>
@@ -162,7 +243,12 @@ function FiveTravels() {
                                 </div>
                                 <div className="padding-bottom-1">
                                     <LocalizationProvider dateAdapter={AdapterDayjs}>
-                                        <DatePicker format="DD/MM/YYYY" className="custom-date-picker-initial" />
+                                        <DatePicker format="DD/MM/YYYY" className="custom-date-picker-initial"
+                                            name="4"
+                                            value={data.us_visits[4] ? dayjs(data.us_visits[4].date) : ""}
+                                            onChange={(date) =>
+                                                handleDateUpdateData("4", date)
+                                            } />
                                     </LocalizationProvider>
                                 </div>
                             </div>
@@ -171,9 +257,10 @@ function FiveTravels() {
                                     <span className="span-state">Tempo estimado de estadia - Viagem 5<span style={{ color: 'red' }}>*</span></span>
                                 </div>
                                 <div className="padding-bottom-1">
-                                    <LocalizationProvider dateAdapter={AdapterDayjs}>
-                                        <DatePicker format="DD/MM/YYYY" className="custom-date-picker-initial" />
-                                    </LocalizationProvider>
+                                    <TextField type="number"
+                                        name="4"
+                                        value={data.us_visits[4] ? data.us_visits[4].length_of_stay : ""}
+                                        onChange={handleLengthOfStayUpdateData} />
                                 </div>
                             </div>
                         </div>

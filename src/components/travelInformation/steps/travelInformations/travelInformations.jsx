@@ -7,38 +7,23 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import countriesService from "../../../../services/countriesWorld";
 import statesService from "../../../../services/statesWorldMain";
 import citiesService from "../../../../services/citiesWorld";
+import Countries from "../../../../datas/countries";
+import USStates from "../../../../datas/us_states";
 
-function TravelInformations() {
+function TravelInformations({ validateStep }) {
+    const { data, updateData } = useData();
+
     const [city, setCity] = useState("");
     const [state, setState] = useState("");
-    const [country, setCountry] = useState("")
+    const [country, setCountry] = useState("");
     const [cities, setCities] = useState([]);
-    const [states, setStates] = useState([]);
-    const [countries, setCountries] = useState([]);
-
-    const getCountries = async () => {
-        let _countries = await countriesService.getCountries();
-        setCountries(_countries);
-    }
-
-    const getStates = async (country) => {
-        let _states = await statesService.getStateByCountry(country);
-        setStates(_states);
-    }
-
-    const getCities = async (country, state) => {
-        let _cities = await citiesService.getCitiesByStateByCountry(country, state);
-        setCities(_cities);
-    }
 
     const handleChangeSelectCountry = (event) => {
         setCountry(event.target.value);
-        getStates(event.target.value)
     };
 
     const handleChangeSelectState = (event) => {
         setState(event.target.value);
-        getCities(country, event.target.value)
     };
 
     const handleChangeSelectCity = (event) => {
@@ -47,7 +32,7 @@ function TravelInformations() {
 
 
     useEffect(() => {
-        getCountries();
+        validateStep();
     }, []);
 
     return (
@@ -103,7 +88,7 @@ function TravelInformations() {
                                 value={country}
                                 onChange={handleChangeSelectCountry}
                             >
-                                {countries.map((countrie, index) => (
+                                {Countries.map((countrie, index) => (
                                     <MenuItem key={index} value={countrie.iso2}>
                                         {countrie.name}
                                     </MenuItem>
@@ -123,7 +108,7 @@ function TravelInformations() {
                                 value={state}
                                 onChange={handleChangeSelectState}
                             >
-                                {states.map((state, index) => (
+                                {USStates.map((state, index) => (
                                     <MenuItem key={index} value={state.iso2}>
                                         {state.name}
                                     </MenuItem>

@@ -7,7 +7,7 @@ import { useData } from "../../dataContext/dataContext";
 const steps = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11"];
 
 function AddressDelivery(props) {
-  const { data, updateData } = useData();
+  const { data } = useData();
   const [activeStep, setActiveStep] = useState(0);
   const [skipped, setSkipped] = useState(new Set());
   const [isDisabled, setIsDisabled] = useState(null);
@@ -28,7 +28,6 @@ function AddressDelivery(props) {
 
     const { address, permanent_resident_other_country } = data;
 
-
     isValid =
       address.street &&
       address.street !== "" &&
@@ -42,6 +41,24 @@ function AddressDelivery(props) {
       address.zip_code !== "" &&
       address.country &&
       address.country !== "";
+
+    if (permanent_resident_other_country) {
+      isValid =
+        permanent_resident_other_country &&
+        permanent_resident_other_country !== " " &&
+        address.street &&
+        address.street !== "" &&
+        address.complement &&
+        address.complement !== "" &&
+        address.city &&
+        address.city !== "" &&
+        address.state &&
+        address.state !== "" &&
+        address.zip_code &&
+        address.zip_code !== "" &&
+        address.country &&
+        address.country !== "";
+    }
 
     return isValid;
   };
@@ -75,7 +92,7 @@ function AddressDelivery(props) {
       newSkipped.delete(activeStep);
     }
     debugger;
-    if (activeStep == 0 && data.isMailingAddressSameCurrentAddress) {
+    if (activeStep == 0 && data.mailing_address.street !== "") {
       // setActiveStep((prevActiveStep) => prevActiveStep + 2);
       props.onAddressChange();
     } else {
@@ -142,7 +159,7 @@ function AddressDelivery(props) {
           <div>
             <button
               type="button"
-              // disabled={isDisabled}
+              disabled={isDisabled}
               className={`button-style ${isDisabled ? "disabled-button" : ""}`}
               onClick={handleNext}
             >

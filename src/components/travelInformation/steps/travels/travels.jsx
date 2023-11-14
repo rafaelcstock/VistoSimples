@@ -1,13 +1,10 @@
-import React, { useEffect, useState } from "react"
+import React, { useEffect } from "react"
 import './travels.css'
-import { MenuItem, OutlinedInput, Select, TextField } from "@mui/material";
-// import statesBrazilianService from "../../../services/statesBrazilianService";
+import { MenuItem, OutlinedInput, Select } from "@mui/material";
 import { FormControlLabel, Radio, RadioGroup } from "@mui/material";
 import { useTheme } from '@mui/material/styles';
-import InputMask from 'react-input-mask';
-import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import Countries from '../../../../datas/countries'
+import { useData } from "../../../../dataContext/dataContext";
 
 
 const ITEM_HEIGHT = 48;
@@ -21,19 +18,6 @@ const MenuProps = {
   },
 };
 
-const names = [
-  'Oliver Hansen',
-  'Van Henry',
-  'April Tucker',
-  'Ralph Hubbard',
-  'Omar Alexander',
-  'Carlos Abbott',
-  'Miriam Wagner',
-  'Bradley Wilkerson',
-  'Virginia Andrews',
-  'Kelly Snyder',
-];
-
 function getStyles(name, personName, theme) {
   return {
     fontWeight:
@@ -43,39 +27,38 @@ function getStyles(name, personName, theme) {
   };
 }
 
-function Travels() {
-  // const getStates = async () =>{        
-  //     const response = await statesBrazilianService.getStates();
-  //     setStates(response);        
-  // }
+function Travels({ validateStep }) {
 
-  const [states, setStates] = useState([]);
-  const [selectedState, setSelectedState] = useState("Sim");
-  const [radioRequester, setRadioRequester] = useState("");
+  const { data, updateData } = useData();
 
   const theme = useTheme();
   const [personName, setPersonName] = React.useState([]);
 
-  const handleChange = (event) => {
-    const {
-      target: { value },
-    } = event;
-    setPersonName(
-      typeof value === 'string' ? value.split(',') : value,
-    );
+  const handleUpdateVisitedCountriesChange = (event) => {
+    const { value } = event.target;
+    debugger
+    setPersonName(typeof value === 'string' ? value.split(',') : value)
+
+    updateData({
+      ...data, visited_countries: typeof value === 'string' ? value.split(',') : value
+    })
   };
 
   const handleChangeSelect = (event) => {
-    setSelectedState(event.target.value);
+    const { value } = event.target;
+    const boolValue = value === "Sim" ? true : false;
+
+    if (boolValue) {
+      updateData({ ...data, visited_countries: [] })
+    } else {
+      updateData({ ...data, visited_countries: null })
+    }
   };
 
-  const handleChangeRequester = (event) => {
-    setRadioRequester(event.target.value);
-  };
 
-  // useEffect(() => {
-  //     getStates();
-  // }, []);
+  useEffect(() => {
+    validateStep();
+  }, [data]);
 
   return (
     <div className="div-margin">
@@ -98,7 +81,7 @@ function Travels() {
             name="radio-buttons-group"
             className="subTitle-div-2"
             row
-            value={selectedState}
+            value={data.visited_countries !== null ? "Sim" : "Não"}
             onChange={handleChangeSelect}
           >
             <FormControlLabel value="Sim" control={<Radio />} label="Sim" />
@@ -107,7 +90,7 @@ function Travels() {
         </div>
       </div>
 
-      {selectedState === "Sim" ? (
+      {data.visited_countries !== null ? (
         <div className="div-marital-padding">
           <div className="padding-bottom-title-input">
             <span className="title-header-2">Quais  países já viajou?<span style={{ color: 'red' }}>*</span></span>
@@ -117,14 +100,14 @@ function Travels() {
               className="style-select-travels"
               multiple
               value={personName}
-              onChange={handleChange}
+              onChange={handleUpdateVisitedCountriesChange}
               input={<OutlinedInput />}
               MenuProps={MenuProps}
             >
               {Countries.map((name) => (
                 <MenuItem
                   key={name.key}
-                  value={name.value}
+                  value={name.key}
                   style={getStyles(name.value, personName, theme)}
                 >
                   {name.value}
@@ -137,7 +120,7 @@ function Travels() {
 
       <div className="div-marital-padding">
         <div className="padding-bottom-title-input">
-          <span className="title-header-2">Já trabalhou em algum outro lugar?<span style={{ color: 'red' }}>*</span></span>
+          <span className="title-header-2">Ja viajou para algum outro país nos últimos 5 anos? <span style={{ color: 'red' }}>*</span></span>
         </div>
         <div className="padding-radio-marital">
           <RadioGroup

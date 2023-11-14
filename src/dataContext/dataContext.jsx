@@ -99,22 +99,22 @@ export function DataProvider({ children }) {
     other_nationality_country: null,
     other_nationality_passport: null,
     permanent_resident_other_country: null,
-    national_identification_number: "string",
-    us_social_security_number: "string",
-    us_taxpayer_number: "string",
+    national_identification_number: "",
+    us_social_security_number: "",
+    us_taxpayer_number: "",
     visa_class: "B",
     visa_class_specify: "B1-B2",
     stay: {
-      date: "2023-11-08",
+      date: "",
       length: 0,
       address: {
-        street: "string",
-        complement: "string",
-        city: "string",
-        state: "AL",
-        state_acronym: "string",
-        zip_code: "string",
-        country: "AFGH",
+        street: "",
+        complement: "",
+        city: "",
+        state: "",
+        state_acronym: "",
+        zip_code: "",
+        country: "",
       },
     },
     entity_paying: {
@@ -149,10 +149,26 @@ export function DataProvider({ children }) {
         relationship: "C",
       },
     ],
-    group: "string",
+    group: "",
     us_visits: [
       {
-        date: "2023-11-08",
+        date: "",
+        length_of_stay: 0,
+      },
+      {
+        date: "",
+        length_of_stay: 0,
+      },
+      {
+        date: "",
+        length_of_stay: 0,
+      },
+      {
+        date: "",
+        length_of_stay: 0,
+      },
+      {
+        date: "",
         length_of_stay: 0,
       },
     ],
@@ -353,7 +369,7 @@ export function DataProvider({ children }) {
     ],
     clan: null,
     languages: [],
-    visited_countries: ["AFGH"],
+    visited_countries: [],
     charitable_organizations: [],
     specialized_skills: "string",
     military_info: [
@@ -375,12 +391,10 @@ export function DataProvider({ children }) {
     hasParentInUs: true,
     hasClan: true,
     hasUsDriversLicense: true,
-    isMailingAddressSameCurrentAddress: true,
   });
 
   // console.log(data);
-  console.log(data.address);
-  console.log(data.isMailingAddressSameCurrentAddress);
+  console.log(data.us_visits);
 
   const updateData = (newData) => {
     setData({ ...data, ...newData });

@@ -29,7 +29,6 @@ function Formation({ validateStep }) {
   const handleDateUpdateData = (name, newDate) => {
     const formattedDate = dayjs(newDate).format("YYYY-MM-DD");
 
-    debugger;
     updateData({
       ...data,
       education: [{ ...data.education[0], [name]: formattedDate }],
