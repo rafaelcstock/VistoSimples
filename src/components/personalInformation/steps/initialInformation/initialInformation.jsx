@@ -31,9 +31,13 @@ function InitialInformation({ onStatusChange, validateStep }) {
     updateData({ ...data, name: { ...data.name, [name]: value } });
   };
 
-  const handleBirthDateChange = (selectedDate) => {    
-    const formattedDate = dayjs(selectedDate).format("YYYY-MM-DD");
-    updateData({ ...data, birth: { ...data.birth, date: formattedDate } });
+  const handleBirthDateChange = (selectedDate) => {
+    if (selectedDate && dayjs(selectedDate).isValid()) {
+      const formattedDate = dayjs(selectedDate).format("YYYY-MM-DD");
+      updateData({ ...data, birth: { ...data.birth, date: formattedDate } });
+    } else {
+      updateData({ ...data, birth: { ...data.birth, date: "" } });
+    }
   };
 
   const handlePhoneNumberChange = (event) => {

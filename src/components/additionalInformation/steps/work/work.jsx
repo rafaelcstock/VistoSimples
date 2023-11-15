@@ -20,16 +20,27 @@ function Work({ validateStep }) {
 
   const handleDateUpdateData = (name, newDate, index) => {
     let newObject;
-    const formattedDate = dayjs(newDate).format("YYYY-MM-DD");
+    if (newDate && dayjs(newDate).isValid()) {
+      const formattedDate = dayjs(newDate).format("YYYY-MM-DD");
 
-    const newPastJobs = data.past_jobs.map((job, i) => {
-      if (i === index) {
-        return { ...job, [name]: formattedDate };
-      }
-      return job;
-    });
+      const newPastJobs = data.past_jobs.map((job, i) => {
+        if (i === index) {
+          return { ...job, [name]: formattedDate };
+        }
+        return job;
+      });
 
-    newObject = { ...data, past_jobs: newPastJobs };
+      newObject = { ...data, past_jobs: newPastJobs };
+    } else {
+      const newPastJobs = data.past_jobs.map((job, i) => {
+        if (i === index) {
+          return { ...job, [name]: "" };
+        }
+        return job;
+      });
+
+      newObject = { ...data, past_jobs: newPastJobs };
+    }
 
     updateData(newObject);
   };
@@ -71,7 +82,7 @@ function Work({ validateStep }) {
     if (boolValue) {
       updateData({
         ...data,
-        past_jobs:  [
+        past_jobs: [
           {
             occupation_type: null,
             specify_occupation: null,

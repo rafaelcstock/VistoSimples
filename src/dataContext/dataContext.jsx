@@ -109,10 +109,10 @@ export function DataProvider({ children }) {
       length: 0,
       address: {
         street: "",
-        complement: "",
+        complement: null,
         city: "",
         state: "",
-        state_acronym: "",
+        state_acronym: null,
         zip_code: "",
         country: "",
       },
@@ -248,24 +248,20 @@ export function DataProvider({ children }) {
       },
     ],
     us_contact: {
-      person_name: {
-        surname: "string",
-        given_name: "string",
-        full_name: "string",
-      },
-      organization_name: "string",
+      person_name: null,
+      organization_name: "",
       relationship: "R",
       address: {
-        street: "string",
-        complement: "string",
-        city: "string",
-        state: "AL",
-        state_acronym: "string",
-        zip_code: "string",
-        country: "AFGH",
+        street: "",
+        complement: null,
+        city: "",
+        state: "",
+        state_acronym: null,
+        zip_code: "",
+        country: null,
       },
-      phone_number: "string",
-      email: "string",
+      phone_number: "",
+      email: "",
     },
     father: {
       name: {
@@ -394,7 +390,7 @@ export function DataProvider({ children }) {
   });
 
   // console.log(data);
-  console.log(data.us_visits);
+  console.log(data.us_contact);
 
   const updateData = (newData) => {
     setData({ ...data, ...newData });

@@ -27,12 +27,19 @@ function Formation({ validateStep }) {
   };
 
   const handleDateUpdateData = (name, newDate) => {
-    const formattedDate = dayjs(newDate).format("YYYY-MM-DD");
+    if (newDate && dayjs(newDate).isValid()) {
+      const formattedDate = dayjs(newDate).format("YYYY-MM-DD");
 
-    updateData({
-      ...data,
-      education: [{ ...data.education[0], [name]: formattedDate }],
-    });
+      updateData({
+        ...data,
+        education: [{ ...data.education[0], [name]: formattedDate }],
+      });
+    } else {
+      updateData({
+        ...data,
+        education: [{ ...data.education[0], [name]: "" }],
+      });
+    }
   };
 
   const handleUpdateData = (event) => {

@@ -39,11 +39,18 @@ function MotherInformation({ validateStep = { validateStep } }) {
   };
 
   const handleBirthDateChange = (selectedDate) => {
-    const formattedDate = dayjs(selectedDate).format("YYYY-MM-DD");
-    updateData({
-      ...data,
-      mother: { ...data.mother, birth_date: formattedDate },
-    });
+    if (selectedDate && dayjs(selectedDate).isValid()) {
+      const formattedDate = dayjs(selectedDate).format("YYYY-MM-DD");
+      updateData({
+        ...data,
+        mother: { ...data.mother, birth_date: formattedDate },
+      });
+    } else {
+      updateData({
+        ...data,
+        mother: { ...data.mother, birth_date: "" },
+      });
+    }
   };
 
   const handleNameChange = (event) => {

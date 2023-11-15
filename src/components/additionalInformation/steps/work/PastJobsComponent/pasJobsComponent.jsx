@@ -19,16 +19,27 @@ const PastJobsComponent = ({
 
   const handleDateUpdateData = (name, newDate, index) => {
     let newObject;
-    const formattedDate = dayjs(newDate).format("YYYY-MM-DD");
+    if (newDate && dayjs(newDate).isValid()) {
+      const formattedDate = dayjs(newDate).format("YYYY-MM-DD");
 
-    const newPastJobs = data.past_jobs.map((job, i) => {
-      if (i === index) {
-        return { ...job, [name]: formattedDate };
-      }
-      return job;
-    });
+      const newPastJobs = data.past_jobs.map((job, i) => {
+        if (i === index) {
+          return { ...job, [name]: formattedDate };
+        }
+        return job;
+      });
 
-    newObject = { ...data, past_jobs: newPastJobs };
+      newObject = { ...data, past_jobs: newPastJobs };
+    } else {
+      const newPastJobs = data.past_jobs.map((job, i) => {
+        if (i === index) {
+          return { ...job, [name]: "" };
+        }
+        return job;
+      });
+
+      newObject = { ...data, past_jobs: newPastJobs };
+    }
 
     updateContext(newObject);
   };

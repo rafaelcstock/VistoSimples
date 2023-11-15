@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react"
-import './travelInformation.css'
+import React, { useEffect, useState } from "react";
+import "./travelInformation.css";
 import Travels from "./steps/travels/travels";
 import FiveTravels from "./steps/fiveTravels/fiveTravels";
 import TravelInformations from "./steps/travelInformations/travelInformations";
@@ -8,14 +8,11 @@ import Companion from "./steps/companion/companion";
 import Payer from "./steps/payer/payer";
 import { useData } from "../../dataContext/dataContext";
 
-
-
 function TravelInformation(props) {
   const { data } = useData();
-  const [activeStep, setActiveStep] = useState(2);
+  const [activeStep, setActiveStep] = useState(3);
   const [skipped, setSkipped] = useState(new Set());
   const [isDisabled, setIsDisabled] = useState(true);
-
 
   const isStepSkipped = (step) => {
     return skipped.has(step);
@@ -34,8 +31,7 @@ function TravelInformation(props) {
     const { visited_countries } = data;
 
     if (visited_countries !== null) {
-      isValid =
-        visited_countries.length > 0;
+      isValid = visited_countries.length > 0;
     } else {
       isValid = true;
     }
@@ -50,11 +46,12 @@ function TravelInformation(props) {
 
     if (!us_visits) {
       isValid = true;
-      return isValid
+      return isValid;
     }
 
-    isValid = us_visits.some(visit => visit.date !== "" && visit.length_of_stay !== 0);
-
+    isValid = us_visits.some(
+      (visit) => visit.date !== "" && visit.length_of_stay !== 0
+    );
 
     return isValid;
   };
@@ -62,21 +59,60 @@ function TravelInformation(props) {
   const validateStep2 = () => {
     let isValid = false;
 
-    const { us_visits } = data;
-
-    if (!us_visits) {
-      isValid = true;
-      return isValid
-    }
-
-    isValid = us_visits.some(visit => visit.date !== "" && visit.length_of_stay !== 0);
-
+    const { stay } = data;
+    debugger;
+    isValid =
+      stay.date &&
+      stay.date !== "" &&
+      stay.length &&
+      stay.length > 0 &&
+      stay.address.street &&
+      stay.address.street !== "" &&
+      stay.address.city &&
+      stay.address.city !== "" &&
+      stay.address.state &&
+      stay.address.state !== "" &&
+      stay.address.zip_code &&
+      stay.address.zip_code !== "" &&
+      stay.address.country &&
+      stay.address.country !== "";
 
     return isValid;
   };
 
+  const validateStep3 = () => {
+    let isValid = false;
 
+    const { us_contact } = data;
 
+    if (!us_contact.person_name) {
+      // Se não houver um nome pessoal, verificar a organização
+      isValid = us_contact.organization_name && us_contact.organization_name !== "";
+    } else {
+      // Se houver um nome pessoal, verificar os campos relacionados
+      isValid =
+        us_contact.person_name.given_name &&
+        us_contact.person_name.given_name !== "" &&
+        us_contact.person_name.surname &&
+        us_contact.person_name.surname !== "";
+    }
+
+    isValid =
+      us_contact.phone_number &&
+      us_contact.phone_number !== "" &&
+      us_contact.email &&
+      us_contact.email !== "" &&
+      us_contact.address.street &&
+      us_contact.address.street !== "" &&
+      us_contact.address.city &&
+      us_contact.address.city !== "" &&
+      us_contact.address.zip_code &&
+      us_contact.address.zip_code !== "" &&
+      us_contact.address.state &&
+      us_contact.address.state !== "";
+
+    return isValid;
+  };
 
   const handleNext = () => {
     let newSkipped = skipped;
@@ -87,13 +123,12 @@ function TravelInformation(props) {
 
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
 
-
     setSkipped(newSkipped);
     if (activeStep === 5) {
       props.onTravelInformationChange();
     }
 
-    setIsDisabled(true)
+    setIsDisabled(true);
   };
 
   const handleBack = () => {
@@ -104,50 +139,56 @@ function TravelInformation(props) {
     0: validateStep0,
     1: validateStep1,
     2: validateStep2,
+    3: validateStep3,
   };
 
   const allComponents = [
     <Travels key="travels" validateStep={validateStep} />,
     <FiveTravels key="fiveTravels" validateStep={validateStep} />,
     <TravelInformations key="travelInformations" validateStep={validateStep} />,
-    <ContactPoint key="contactPoint" />,
+    <ContactPoint key="contactPoint" validateStep={validateStep} />,
     <Companion key="companion" />,
-    <Payer key="payer" />
+    <Payer key="payer" />,
   ];
 
   return (
-    <div className='div-flex'>
-      <div className="div-margin" style={{ width: '100%' }}>
-        <div >
-          {allComponents[activeStep]}
-        </div>
+    <div className="div-flex">
+      <div className="div-margin" style={{ width: "100%" }}>
+        <div>{allComponents[activeStep]}</div>
 
-        <div style={{ display: 'flex', justifyContent: 'end', marginRight: '-2rem', paddingBottom: '2rem' }}>
-          <div style={{ paddingRight: '1rem' }}>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "end",
+            marginRight: "-2rem",
+            paddingBottom: "2rem",
+          }}
+        >
+          <div style={{ paddingRight: "1rem" }}>
             <button
-              type='button'
-              className='button-style'
+              type="button"
+              className="button-style"
               disabled={activeStep === 0}
               onClick={handleBack}
-              style={{ display: activeStep === 0 ? 'none' : '' }}
+              style={{ display: activeStep === 0 ? "none" : "" }}
             >
-              <span className='font-button'>Voltar</span>
+              <span className="font-button">Voltar</span>
             </button>
           </div>
           <div>
             <button
-              type='button'
+              type="button"
               disabled={isDisabled}
               className={`button-style ${isDisabled ? "disabled-button" : ""}`}
               onClick={handleNext}
             >
-              <span className='font-button'>{'Próxima'}</span>
+              <span className="font-button">{"Próxima"}</span>
             </button>
           </div>
         </div>
       </div>
     </div>
-  )
+  );
 }
 
-export default TravelInformation
+export default TravelInformation;
