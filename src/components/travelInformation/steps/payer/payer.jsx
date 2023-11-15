@@ -314,6 +314,7 @@ function Payer({ validateStep }) {
             </div>
           </div>
           <div className="div-1-inputs-marital">
+            {/* ToDo: Tratar divs de endereço caso same_address == true> */}
             <div>
               <div style={{ paddingBottom: "0.4rem" }}>
                 <span className="span-state">
