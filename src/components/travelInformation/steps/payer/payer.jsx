@@ -10,18 +10,7 @@ import statesService from "../../../../services/statesWorldMain";
 import citiesService from "../../../../services/citiesWorld";
 import { useData } from "../../../../dataContext/dataContext";
 import personPaying from "../../../../datas/person_paying";
-
-const statusArray = [
-  { key: "Eu", valor: "Eu" },
-  { key: "Empresa/Organização", valor: "Empresa/Organização" },
-  { key: "Mãe", valor: "Mãe" },
-  { key: "Pai", valor: "Pai" },
-  { key: "Tio", valor: "Tio" },
-  { key: "Irmã(o)", valor: "Irmã(o)" },
-  { key: "Amigo", valor: "Amigo" },
-  { key: "Chefe", valor: "Chefe" },
-  { key: "Colega de trabalho", valor: "Colega de trabalho" },
-];
+import Countries from "../../../../datas/countries";
 
 function Payer({ validateStep }) {
   const { data, updateData } = useData();
@@ -34,8 +23,114 @@ function Payer({ validateStep }) {
   const [states, setStates] = useState([]);
   const [countries, setCountries] = useState([]);
 
+  const handlePaymentChangeSelect = (event) => {
+    const { value } = event.target;
+
+    if (value == "S") {
+      updateData({
+        entity_paying: {
+          ...data.entity_paying,
+          organ_name: null,
+          person_name: null,
+          entity_type: value,
+          address: {
+            street: "",
+            complement: null,
+            city: "",
+            state: "",
+            state_acronym: null,
+            zip_code: "",
+            country: "",
+          },
+        },
+      });
+    }
+
+    if (value == "O") {
+      updateData({
+        entity_paying: {
+          ...data.entity_paying,
+          organ_name: null,
+          entity_type: value,
+          address: {
+            street: "",
+            complement: null,
+            city: "",
+            state: "",
+            state_acronym: null,
+            zip_code: "",
+            country: "",
+          },
+          person_name: {
+            surname: "",
+            given_name: "",
+            full_name: "",
+          },
+        },
+      });
+    }
+
+    if (value !== "O" && "S") {
+      updateData({
+        entity_paying: {
+          ...data.entity_paying,
+          entity_type: value,
+          organ_name: "",
+          person_name: null,
+          address: {
+            street: "",
+            complement: null,
+            city: "",
+            state: "",
+            state_acronym: null,
+            zip_code: "",
+            country: "",
+          },
+        },
+      });
+    }
+  };
+
   const handleChangeSelect = (event) => {
-    setSelectedPayer(event.target.value);
+    const { value } = event.target;
+    const boolValue = value === "Sim" ? true : false;
+
+    updateData({
+      entity_paying: { ...data.entity_paying, same_address: boolValue },
+    });
+  };
+
+  const handlePersonNameChange = (event) => {
+    const { value, name } = event.target;
+
+    updateData({
+      entity_paying: {
+        ...data.entity_paying,
+        person_name: { ...data.entity_paying.person_name, [name]: value },
+      },
+    });
+  };
+
+  const handleAddressChange = (event) => {
+    const { value, name } = event.target;
+
+    updateData({
+      entity_paying: {
+        ...data.entity_paying,
+        address: { ...data.entity_paying.address, [name]: value },
+      },
+    });
+  };
+
+  const handleRelationshipChange = (event) => {
+    const { value } = event.target;
+
+    updateData({
+      entity_paying: {
+        ...data.entity_paying,
+        relationship: value,
+      },
+    });
   };
 
   const getCountries = async () => {
@@ -64,7 +159,10 @@ function Payer({ validateStep }) {
   };
 
   const handleChangeSelectCity = (event) => {
-    setCity(event.target.value);
+    const { value } = event.target;
+    updateData({
+      entity_paying: { ...data.entity_paying, entity_type: value },
+    });
   };
 
   useEffect(() => {
@@ -97,8 +195,8 @@ function Payer({ validateStep }) {
         <div className="padding-radio-marital">
           <Select
             className="input-style-payer"
-            value={selectedPayer}
-            onChange={handleChangeSelect}
+            value={data.entity_paying.entity_type}
+            onChange={handlePaymentChangeSelect}
           >
             {personPaying.map((status) => (
               <MenuItem key={status.key} value={status.key}>
@@ -108,7 +206,8 @@ function Payer({ validateStep }) {
           </Select>
         </div>
       </div>
-      {selectedPayer != "Eu" && selectedPayer != "Empresa/Organização" ? (
+
+      {data.entity_paying.entity_type == "O" && (
         <div>
           <div className="div-marital-padding">
             <div className="padding-payer">
@@ -125,6 +224,10 @@ function Payer({ validateStep }) {
                     name="radio-buttons-group"
                     className="subTitle-div-2"
                     row
+                    value={
+                      data.entity_paying.same_address == true ? "Sim" : "Não"
+                    }
+                    onChange={handleChangeSelect}
                   >
                     <FormControlLabel
                       value="Sim"
@@ -141,210 +244,227 @@ function Payer({ validateStep }) {
               </div>
             </div>
           </div>
-          <div className="div-marital-padding">
-            <div className="padding-bottom-title-input">
-              <span className="title-header-2">Informação sobre a pessoa</span>
-            </div>
-            <div className="div-1-inputs-marital">
-              <div>
-                <div style={{ paddingBottom: "0.4rem" }}>
-                  <span className="span-state">
-                    Nome da pessoa<span style={{ color: "red" }}>*</span>
-                  </span>
-                </div>
-                <div className="padding-bottom-1">
-                  <TextField
-                    id="outlined-basic"
-                    className="input-style-work"
-                    placeholder="Escreva o primeiro nome"
-                    variant="outlined"
-                  />
-                </div>
+        </div>
+      )}
+
+      {data.entity_paying.entity_type == "O" && (
+        <div className="div-marital-padding">
+          <div className="padding-bottom-title-input">
+            <span className="title-header-2">Informação sobre a pessoa</span>
+          </div>
+          <div className="div-1-inputs-marital">
+            <div>
+              <div style={{ paddingBottom: "0.4rem" }}>
+                <span className="span-state">
+                  Nome da pessoa<span style={{ color: "red" }}>*</span>
+                </span>
               </div>
-              <div>
-                <div style={{ paddingBottom: "0.4rem" }}>
-                  <span className="span-state">
-                    Sobrenome da pessoa<span style={{ color: "red" }}>*</span>
-                  </span>
-                </div>
-                <div className="padding-bottom-1">
-                  <TextField
-                    id="outlined-basic"
-                    className="input-style-work"
-                    placeholder="Escreva o sobrenome"
-                    variant="outlined"
-                  />
-                </div>
-              </div>
-              <div>
-                <div style={{ paddingBottom: "0.4rem" }}>
-                  <span className="span-state">
-                    Qual a sua relação com esta pessoa?
-                    <span style={{ color: "red" }}>*</span>
-                  </span>
-                </div>
-                <div className="padding-bottom-1">
-                  <Select
-                    className="style-select-work"
-                    labelId="select-state"
-                    id="select-state"
-                    // value={selectedState}
-                    // onChange={handleChangeSelectedState}
-                  >
-                    {escortRelationship.map((state) => (
-                      <MenuItem key={state.key} value={state.key}>
-                        {state.value}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </div>
+              <div className="padding-bottom-1">
+                <TextField
+                  id="outlined-basic"
+                  className="input-style-work"
+                  placeholder="Escreva o primeiro nome"
+                  variant="outlined"
+                  name="given_name"
+                  value={data.entity_paying.person_name.given_name}
+                  onChange={handlePersonNameChange}
+                />
               </div>
             </div>
-            <div className="div-1-inputs-marital">
-              <div>
-                <div style={{ paddingBottom: "0.4rem" }}>
-                  <span className="span-state">
-                    País da pessoa<span style={{ color: "red" }}>*</span>
-                  </span>
-                </div>
-                <div className="padding-bottom-1">
-                  <Select
-                    className="input-style-work"
-                    labelId="select-state"
-                    id="select-state"
-                    value={country}
-                    onChange={handleChangeSelectCountry}
-                  >
-                    {countries.map((countrie, index) => (
-                      <MenuItem key={index} value={countrie.iso2}>
-                        {countrie.name}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </div>
+            <div>
+              <div style={{ paddingBottom: "0.4rem" }}>
+                <span className="span-state">
+                  Sobrenome da pessoa <span style={{ color: "red" }}>*</span>
+                </span>
               </div>
-              <div>
-                <div style={{ paddingBottom: "0.4rem" }}>
-                  <span className="span-state">
-                    Estado da pessoa<span style={{ color: "red" }}>*</span>
-                  </span>
-                </div>
-                <div className="padding-bottom-1">
-                  <Select
-                    className="input-style-work"
-                    labelId="select-state"
-                    id="select-state"
-                    value={state}
-                    onChange={handleChangeSelectState}
-                  >
-                    {states.map((state, index) => (
-                      <MenuItem key={index} value={state.iso2}>
-                        {state.name}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </div>
-              </div>
-              <div>
-                <div style={{ paddingBottom: "0.4rem" }}>
-                  <span className="span-state">
-                    Cidade da pessoa<span style={{ color: "red" }}>*</span>
-                  </span>
-                </div>
-                <div className="padding-bottom-1">
-                  <Select
-                    className="input-style-work"
-                    labelId="select-state"
-                    id="select-state"
-                    value={city}
-                    onChange={handleChangeSelectCity}
-                  >
-                    {cities.map((city, index) => (
-                      <MenuItem key={index} value={city.name}>
-                        {city.name}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </div>
+              <div className="padding-bottom-1">
+                <TextField
+                  id="outlined-basic"
+                  className="input-style-work"
+                  placeholder="Escreva o sobrenome"
+                  variant="outlined"
+                  name="surname"
+                  value={data.entity_paying.person_name.surname}
+                  onChange={handlePersonNameChange}
+                />
               </div>
             </div>
-            <div className="div-2-inputs-work">
-              <div>
-                <div style={{ paddingBottom: "0.4rem" }}>
-                  <span className="span-state">
-                    Endereço da pessoa<span style={{ color: "red" }}>*</span>
-                  </span>
-                </div>
-                <div className="padding-bottom-1">
-                  <TextField
-                    id="outlined-basic"
-                    className="style-select-work"
-                    placeholder="Rua, bairro, número"
-                    variant="outlined"
-                  />
-                </div>
+            <div>
+              <div style={{ paddingBottom: "0.4rem" }}>
+                <span className="span-state">
+                  Qual a sua relação com esta pessoa?
+                  <span style={{ color: "red" }}>*</span>
+                </span>
               </div>
-              <div>
-                <div style={{ paddingBottom: "0.4rem" }}>
-                  <span className="span-state">
-                    CEP<span style={{ color: "red" }}>*</span>
-                  </span>
-                </div>
-                <div className="padding-bottom-1">
-                  <InputMask mask="99999-999" maskChar="">
-                    {() => (
-                      <TextField
-                        id="outlined-basic"
-                        className="style-select-work"
-                        placeholder="00000-000"
-                        variant="outlined"
-                      />
-                    )}
-                  </InputMask>
-                </div>
+              <div className="padding-bottom-1">
+                <Select
+                  className="style-select-work"
+                  labelId="select-state"
+                  id="select-state"
+                  value={data.entity_paying.relationship}
+                  onChange={handleRelationshipChange}
+                >
+                  {escortRelationship.map((state) => (
+                    <MenuItem key={state.key} value={state.key}>
+                      {state.value}
+                    </MenuItem>
+                  ))}
+                </Select>
               </div>
             </div>
-            <div className="div-2-inputs-work">
-              <div>
-                <div style={{ paddingBottom: "0.4rem" }}>
-                  <span className="span-state">
-                    Telefone da pessoa<span style={{ color: "red" }}>*</span>
-                  </span>
-                </div>
-                <div className="padding-bottom-1">
-                  <InputMask mask="55+ (99) 99999-9999" maskChar="">
-                    {() => (
-                      <TextField
-                        id="outlined-basic"
-                        className="style-select-work"
-                        placeholder="55+ (00) 00000-0000"
-                        variant="outlined"
-                      />
-                    )}
-                  </InputMask>
-                </div>
+          </div>
+          <div className="div-1-inputs-marital">
+            <div>
+              <div style={{ paddingBottom: "0.4rem" }}>
+                <span className="span-state">
+                  País da pessoa<span style={{ color: "red" }}>*</span>
+                </span>
               </div>
-              <div>
-                <div style={{ paddingBottom: "0.4rem" }}>
-                  <span className="span-state">
-                    Email da pessoa<span style={{ color: "red" }}>*</span>
-                  </span>
-                </div>
-                <div className="padding-bottom-1">
-                  <TextField
-                    id="outlined-basic"
-                    className="style-select-work"
-                    placeholder="email@exemplo.com"
-                    variant="outlined"
-                  />
-                </div>
+              <div className="padding-bottom-1">
+                <Select
+                  className="input-style-work"
+                  labelId="select-state"
+                  id="select-state"
+                  name="country"
+                  value={
+                    data.entity_paying.same_address
+                      ? data.address.country
+                      : data.entity_paying.address.country
+                  }
+                  onChange={
+                    data.entity_paying.same_address ? handleAddressChange : null
+                  }
+                >
+                  {Countries.map((countrie, index) => (
+                    <MenuItem key={index} value={countrie.key}>
+                      {countrie.value}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </div>
+            </div>
+            <div>
+              <div style={{ paddingBottom: "0.4rem" }}>
+                <span className="span-state">
+                  Estado da pessoa<span style={{ color: "red" }}>*</span>
+                </span>
+              </div>
+              <div className="padding-bottom-1">
+                <TextField
+                  id="outlined-basic"
+                  className="input-style-work"
+                  placeholder="Escreva o sobrenome"
+                  variant="outlined"
+                  name="state"
+                  value={
+                    data.entity_paying.same_address
+                      ? data.address.surname
+                      : data.entity_paying.person_name.surname
+                  }
+                  onChange={handleAddressChange}
+                />
+              </div>
+            </div>
+            <div>
+              <div style={{ paddingBottom: "0.4rem" }}>
+                <span className="span-state">
+                  Cidade da pessoa<span style={{ color: "red" }}>*</span>
+                </span>
+              </div>
+              <div className="padding-bottom-1">
+                <Select
+                  className="input-style-work"
+                  labelId="select-state"
+                  id="select-state"
+                  value={city}
+                  onChange={handleChangeSelectCity}
+                >
+                  {cities.map((city, index) => (
+                    <MenuItem key={index} value={city.name}>
+                      {city.name}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </div>
+            </div>
+          </div>
+          <div className="div-2-inputs-work">
+            <div>
+              <div style={{ paddingBottom: "0.4rem" }}>
+                <span className="span-state">
+                  Endereço da pessoa<span style={{ color: "red" }}>*</span>
+                </span>
+              </div>
+              <div className="padding-bottom-1">
+                <TextField
+                  id="outlined-basic"
+                  className="style-select-work"
+                  placeholder="Rua, bairro, número"
+                  variant="outlined"
+                />
+              </div>
+            </div>
+            <div>
+              <div style={{ paddingBottom: "0.4rem" }}>
+                <span className="span-state">
+                  CEP<span style={{ color: "red" }}>*</span>
+                </span>
+              </div>
+              <div className="padding-bottom-1">
+                <InputMask mask="99999-999" maskChar="">
+                  {() => (
+                    <TextField
+                      id="outlined-basic"
+                      className="style-select-work"
+                      placeholder="00000-000"
+                      variant="outlined"
+                    />
+                  )}
+                </InputMask>
+              </div>
+            </div>
+          </div>
+          <div className="div-2-inputs-work">
+            <div>
+              <div style={{ paddingBottom: "0.4rem" }}>
+                <span className="span-state">
+                  Telefone da pessoa<span style={{ color: "red" }}>*</span>
+                </span>
+              </div>
+              <div className="padding-bottom-1">
+                <InputMask mask="55+ (99) 99999-9999" maskChar="">
+                  {() => (
+                    <TextField
+                      id="outlined-basic"
+                      className="style-select-work"
+                      placeholder="55+ (00) 00000-0000"
+                      variant="outlined"
+                    />
+                  )}
+                </InputMask>
+              </div>
+            </div>
+            <div>
+              <div style={{ paddingBottom: "0.4rem" }}>
+                <span className="span-state">
+                  Email da pessoa<span style={{ color: "red" }}>*</span>
+                </span>
+              </div>
+              <div className="padding-bottom-1">
+                <TextField
+                  id="outlined-basic"
+                  className="style-select-work"
+                  placeholder="email@exemplo.com"
+                  variant="outlined"
+                />
               </div>
             </div>
           </div>
         </div>
-      ) : null}
+      )}
 
-      {selectedPayer === "Empresa/Organização" ? (
+      {data.entity_paying.entity_type !== "O" &&
+      data.entity_paying.entity_type !== "S" ? (
         <div>
           <div className="div-marital-padding">
             <div className="padding-bottom-title-input">

@@ -120,23 +120,23 @@ export function DataProvider({ children }) {
     entity_paying: {
       entity_type: "S",
       address: {
-        street: "string",
-        complement: "string",
-        city: "string",
-        state: "string",
-        state_acronym: "string",
-        zip_code: "string",
-        country: "AFGH",
+        street: "",
+        complement: null,
+        city: "",
+        state: "",
+        state_acronym: null,
+        zip_code: "",
+        country: "",
       },
       phone_number: "string",
       relationship: "C",
-      same_address: true,
-      email: "string",
-      org_name: "string",
+      same_address: false,
+      email: "",
+      org_name: "",
       person_name: {
-        surname: "string",
-        given_name: "string",
-        full_name: "string",
+        surname: "",
+        given_name: "",
+        full_name: "",
       },
     },
     escorts: null,
@@ -383,7 +383,7 @@ export function DataProvider({ children }) {
 
   // console.log(data);
   // console.log(data.group);
-  console.log(data.escorts);
+  console.log(data.entity_paying);
 
   const updateData = (newData) => {
     setData({ ...data, ...newData });
