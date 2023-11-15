@@ -20,7 +20,7 @@ const steps = [
 ];
 
 function Form() {
-  const [activeStep, setActiveStep] = useState(0);
+  const [activeStep, setActiveStep] = useState(3);
   const [skipped, setSkipped] = useState(new Set());
 
   const isStepSkipped = (step) => {

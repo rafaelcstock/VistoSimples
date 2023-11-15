@@ -139,17 +139,8 @@ export function DataProvider({ children }) {
         full_name: "string",
       },
     },
-    escorts: [
-      {
-        name: {
-          surname: "string",
-          given_name: "string",
-          full_name: "string",
-        },
-        relationship: "C",
-      },
-    ],
-    group: "",
+    escorts: null,
+    group: null,
     us_visits: [
       {
         date: "",
@@ -387,10 +378,12 @@ export function DataProvider({ children }) {
     hasParentInUs: true,
     hasClan: true,
     hasUsDriversLicense: true,
+    companionSelected: 1,
   });
 
   // console.log(data);
-  console.log(data.us_contact);
+  // console.log(data.group);
+  console.log(data.escorts);
 
   const updateData = (newData) => {
     setData({ ...data, ...newData });

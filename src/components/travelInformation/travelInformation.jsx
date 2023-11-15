@@ -10,7 +10,7 @@ import { useData } from "../../dataContext/dataContext";
 
 function TravelInformation(props) {
   const { data } = useData();
-  const [activeStep, setActiveStep] = useState(0);
+  const [activeStep, setActiveStep] = useState(5);
   const [skipped, setSkipped] = useState(new Set());
   const [isDisabled, setIsDisabled] = useState(true);
 
@@ -86,10 +86,9 @@ function TravelInformation(props) {
     const { us_contact } = data;
 
     if (!us_contact.person_name) {
-      // Se não houver um nome pessoal, verificar a organização
-      isValid = us_contact.organization_name && us_contact.organization_name !== "";
+      isValid =
+        us_contact.organization_name && us_contact.organization_name !== "";
     } else {
-      // Se houver um nome pessoal, verificar os campos relacionados
       isValid =
         us_contact.person_name.given_name &&
         us_contact.person_name.given_name !== "" &&
@@ -110,6 +109,58 @@ function TravelInformation(props) {
       us_contact.address.zip_code !== "" &&
       us_contact.address.state &&
       us_contact.address.state !== "";
+
+    return isValid;
+  };
+
+  const validateStep4 = () => {
+    let isValid = false;
+
+    const { companionSelected, escorts, group } = data;
+
+    if (companionSelected === 1) {
+      isValid = true;
+    }
+
+    if (companionSelected === 2 && escorts) {
+      isValid = escorts.some(
+        (scort) =>
+          scort.name.given_name &&
+          scort.name.given_name !== "" &&
+          scort.name.surname &&
+          scort.name.surname
+      );
+    }
+
+    if (companionSelected === 3) {
+      isValid = group && group !== "";
+    }
+
+    return isValid;
+  };
+
+  const validateStep5 = () => {
+    let isValid = false;
+
+    const { companionSelected, escorts, group } = data;
+
+    if (companionSelected === 1) {
+      isValid = true;
+    }
+
+    if (companionSelected === 2 && escorts) {
+      isValid = escorts.some(
+        (scort) =>
+          scort.name.given_name &&
+          scort.name.given_name !== "" &&
+          scort.name.surname &&
+          scort.name.surname
+      );
+    }
+
+    if (companionSelected === 3) {
+      isValid = group && group !== "";
+    }
 
     return isValid;
   };
@@ -140,6 +191,8 @@ function TravelInformation(props) {
     1: validateStep1,
     2: validateStep2,
     3: validateStep3,
+    4: validateStep4,
+    5: validateStep5,
   };
 
   const allComponents = [
@@ -147,8 +200,8 @@ function TravelInformation(props) {
     <FiveTravels key="fiveTravels" validateStep={validateStep} />,
     <TravelInformations key="travelInformations" validateStep={validateStep} />,
     <ContactPoint key="contactPoint" validateStep={validateStep} />,
-    <Companion key="companion" />,
-    <Payer key="payer" />,
+    <Companion key="companion" validateStep={validateStep} />,
+    <Payer key="payer" validateStep={validateStep} />,
   ];
 
   return (
