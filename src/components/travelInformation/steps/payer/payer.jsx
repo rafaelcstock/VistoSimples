@@ -15,33 +15,19 @@ import Countries from "../../../../datas/countries";
 function Payer({ validateStep }) {
   const { data, updateData } = useData();
 
-  const [selectedPayer, setSelectedPayer] = useState("");
-  const [city, setCity] = useState("");
-  const [state, setState] = useState("");
-  const [country, setCountry] = useState("");
-  const [cities, setCities] = useState([]);
-  const [states, setStates] = useState([]);
-  const [countries, setCountries] = useState([]);
-
   const handlePaymentChangeSelect = (event) => {
     const { value } = event.target;
-
+    debugger
     if (value == "S") {
       updateData({
         entity_paying: {
           ...data.entity_paying,
-          organ_name: null,
+          org_name: null,
           person_name: null,
           entity_type: value,
-          address: {
-            street: "",
-            complement: null,
-            city: "",
-            state: "",
-            state_acronym: null,
-            zip_code: "",
-            country: "",
-          },
+          phone_number: "",
+          email: "",
+          address: null,
         },
       });
     }
@@ -50,8 +36,10 @@ function Payer({ validateStep }) {
       updateData({
         entity_paying: {
           ...data.entity_paying,
-          organ_name: null,
+          org_name: null,
           entity_type: value,
+          phone_number: "",
+          email: "",
           address: {
             street: "",
             complement: null,
@@ -70,13 +58,15 @@ function Payer({ validateStep }) {
       });
     }
 
-    if (value !== "O" && "S") {
+    if (value !== "O" && value !== "S") {
       updateData({
         entity_paying: {
           ...data.entity_paying,
           entity_type: value,
-          organ_name: "",
+          org_name: "",
           person_name: null,
+          phone_number: "",
+          email: "",
           address: {
             street: "",
             complement: null,
@@ -95,9 +85,26 @@ function Payer({ validateStep }) {
     const { value } = event.target;
     const boolValue = value === "Sim" ? true : false;
 
-    updateData({
-      entity_paying: { ...data.entity_paying, same_address: boolValue },
-    });
+    if (boolValue) {
+      updateData({
+        entity_paying: { ...data.entity_paying, same_address: boolValue, address: null },
+
+      });
+    } else {
+      updateData({
+        entity_paying: { ...data.entity_paying, same_address: boolValue },
+        address: {
+          street: "",
+          complement: null,
+          city: "",
+          state: "",
+          state_acronym: null,
+          zip_code: "",
+          country: "",
+        }
+      });
+    }
+
   };
 
   const handlePersonNameChange = (event) => {
@@ -122,7 +129,29 @@ function Payer({ validateStep }) {
     });
   };
 
-  const handleRelationshipChange = (event) => {
+  const handlePhoneNumberChange = (event) => {
+    const { value } = event.target;
+
+    updateData({
+      entity_paying: {
+        ...data.entity_paying,
+        phone_number: value,
+      },
+    });
+  };
+
+  const handleEmailChange = (event) => {
+    const { value } = event.target;
+
+    updateData({
+      entity_paying: {
+        ...data.entity_paying,
+        email: value,
+      },
+    });
+  };
+
+  const handlePersonRelationshipChange = (event) => {
     const { value } = event.target;
 
     updateData({
@@ -133,41 +162,17 @@ function Payer({ validateStep }) {
     });
   };
 
-  const getCountries = async () => {
-    let _countries = await countriesService.getCountries();
-    setCountries(_countries);
-  };
-
-  const getStates = async (country) => {
-    let _states = await statesService.getStateByCountry(country);
-    setStates(_states);
-  };
-
-  const getCities = async (country, state) => {
-    let _cities = await citiesService.getCitiesByStateByCountry(country, state);
-    setCities(_cities);
-  };
-
-  const handleChangeSelectCountry = (event) => {
-    setCountry(event.target.value);
-    getStates(event.target.value);
-  };
-
-  const handleChangeSelectState = (event) => {
-    setState(event.target.value);
-    getCities(country, event.target.value);
-  };
-
-  const handleChangeSelectCity = (event) => {
+  const handleOrgNameChange = (event) => {
     const { value } = event.target;
+
     updateData({
-      entity_paying: { ...data.entity_paying, entity_type: value },
+      entity_paying: {
+        ...data.entity_paying,
+        org_name: value,
+      },
     });
   };
 
-  useEffect(() => {
-    getCountries();
-  }, []);
 
   useEffect(() => {
     validateStep();
@@ -302,7 +307,7 @@ function Payer({ validateStep }) {
                   labelId="select-state"
                   id="select-state"
                   value={data.entity_paying.relationship}
-                  onChange={handleRelationshipChange}
+                  onChange={handlePersonRelationshipChange}
                 >
                   {escortRelationship.map((state) => (
                     <MenuItem key={state.key} value={state.key}>
@@ -313,118 +318,120 @@ function Payer({ validateStep }) {
               </div>
             </div>
           </div>
-          <div className="div-1-inputs-marital">
-            {/* ToDo: Tratar divs de endereço caso same_address == true> */}
-            <div>
-              <div style={{ paddingBottom: "0.4rem" }}>
-                <span className="span-state">
-                  País da pessoa<span style={{ color: "red" }}>*</span>
-                </span>
+
+          {!data.entity_paying.same_address && (
+            <>
+              <div className="div-1-inputs-marital">
+
+                <div>
+                  <div style={{ paddingBottom: "0.4rem" }}>
+                    <span className="span-state">
+                      País da pessoa<span style={{ color: "red" }}>*</span>
+                    </span>
+                  </div>
+                  <div className="padding-bottom-1">
+                    <Select
+                      className="input-style-work"
+                      labelId="select-state"
+                      id="select-state"
+                      name="country"
+                      value={data.entity_paying.address ? data.entity_paying.address.country : ""}
+                      onChange={handleAddressChange}
+                    >
+                      {Countries.map((countrie, index) => (
+                        <MenuItem key={index} value={countrie.key}>
+                          {countrie.value}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </div>
+                </div>
+
+                <div>
+                  <div style={{ paddingBottom: "0.4rem" }}>
+                    <span className="span-state">
+                      Estado da pessoa<span style={{ color: "red" }}>*</span>
+                    </span>
+                  </div>
+                  <div className="padding-bottom-1">
+                    <TextField
+                      id="outlined-basic"
+                      className="input-style-work"
+                      placeholder="Escreva o sobrenome"
+                      variant="outlined"
+                      name="state"
+                      value={data.entity_paying.address ? data.entity_paying.address.state : ""}
+                      onChange={handleAddressChange}
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <div style={{ paddingBottom: "0.4rem" }}>
+                    <span className="span-state">
+                      Cidade da pessoa<span style={{ color: "red" }}>*</span>
+                    </span>
+                  </div>
+                  <div className="padding-bottom-1">
+                    <TextField
+                      id="outlined-basic"
+                      className="input-style-work"
+                      placeholder="Escreva o sobrenome"
+                      variant="outlined"
+                      name="city"
+                      value={data.entity_paying.address ? data.entity_paying.address.city : ""}
+                      onChange={handleAddressChange}
+                    />
+                  </div>
+                </div>
               </div>
-              <div className="padding-bottom-1">
-                <Select
-                  className="input-style-work"
-                  labelId="select-state"
-                  id="select-state"
-                  name="country"
-                  value={
-                    data.entity_paying.same_address
-                      ? data.address.country
-                      : data.entity_paying.address.country
-                  }
-                  onChange={
-                    data.entity_paying.same_address ? handleAddressChange : null
-                  }
-                >
-                  {Countries.map((countrie, index) => (
-                    <MenuItem key={index} value={countrie.key}>
-                      {countrie.value}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </div>
-            </div>
-            <div>
-              <div style={{ paddingBottom: "0.4rem" }}>
-                <span className="span-state">
-                  Estado da pessoa<span style={{ color: "red" }}>*</span>
-                </span>
-              </div>
-              <div className="padding-bottom-1">
-                <TextField
-                  id="outlined-basic"
-                  className="input-style-work"
-                  placeholder="Escreva o sobrenome"
-                  variant="outlined"
-                  name="state"
-                  value={
-                    data.entity_paying.same_address
-                      ? data.address.surname
-                      : data.entity_paying.person_name.surname
-                  }
-                  onChange={handleAddressChange}
-                />
-              </div>
-            </div>
-            <div>
-              <div style={{ paddingBottom: "0.4rem" }}>
-                <span className="span-state">
-                  Cidade da pessoa<span style={{ color: "red" }}>*</span>
-                </span>
-              </div>
-              <div className="padding-bottom-1">
-                <Select
-                  className="input-style-work"
-                  labelId="select-state"
-                  id="select-state"
-                  value={city}
-                  onChange={handleChangeSelectCity}
-                >
-                  {cities.map((city, index) => (
-                    <MenuItem key={index} value={city.name}>
-                      {city.name}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </div>
-            </div>
-          </div>
-          <div className="div-2-inputs-work">
-            <div>
-              <div style={{ paddingBottom: "0.4rem" }}>
-                <span className="span-state">
-                  Endereço da pessoa<span style={{ color: "red" }}>*</span>
-                </span>
-              </div>
-              <div className="padding-bottom-1">
-                <TextField
-                  id="outlined-basic"
-                  className="style-select-work"
-                  placeholder="Rua, bairro, número"
-                  variant="outlined"
-                />
-              </div>
-            </div>
-            <div>
-              <div style={{ paddingBottom: "0.4rem" }}>
-                <span className="span-state">
-                  CEP<span style={{ color: "red" }}>*</span>
-                </span>
-              </div>
-              <div className="padding-bottom-1">
-                <InputMask mask="99999-999" maskChar="">
-                  {() => (
+
+              <div className="div-2-inputs-work">
+                <div>
+                  <div style={{ paddingBottom: "0.4rem" }}>
+                    <span className="span-state">
+                      Endereço da pessoa<span style={{ color: "red" }}>*</span>
+                    </span>
+                  </div>
+                  <div className="padding-bottom-1">
                     <TextField
                       id="outlined-basic"
                       className="style-select-work"
-                      placeholder="00000-000"
+                      placeholder="Rua, bairro, número"
                       variant="outlined"
+                      name="street"
+                      value={data.entity_paying.address ? data.entity_paying.address.street : ""}
+                      onChange={handleAddressChange}
                     />
-                  )}
-                </InputMask>
+                  </div>
+                </div>
+                <div>
+                  <div style={{ paddingBottom: "0.4rem" }}>
+                    <span className="span-state">
+                      CEP<span style={{ color: "red" }}>*</span>
+                    </span>
+                  </div>
+                  <div className="padding-bottom-1">
+                    <InputMask mask="99999-999" maskChar=""
+                      value={data.entity_paying.address ? data.entity_paying.address.zip_code : ""}
+                      onChange={handleAddressChange}>
+                      {() => (
+                        <TextField
+                          id="outlined-basic"
+                          className="style-select-work"
+                          placeholder="00000-000"
+                          variant="outlined"
+                          name="zip_code"
+                        />
+                      )}
+                    </InputMask>
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
+
+            </>
+          )}
+
           <div className="div-2-inputs-work">
             <div>
               <div style={{ paddingBottom: "0.4rem" }}>
@@ -433,12 +440,15 @@ function Payer({ validateStep }) {
                 </span>
               </div>
               <div className="padding-bottom-1">
-                <InputMask mask="55+ (99) 99999-9999" maskChar="">
+                <InputMask mask="99+ (99) 99999-9999" maskChar=""
+                  value={data.entity_paying.phone_number}
+                  onChange={handlePhoneNumberChange}
+                >
                   {() => (
                     <TextField
                       id="outlined-basic"
                       className="style-select-work"
-                      placeholder="55+ (00) 00000-0000"
+                      placeholder="99+ (00) 00000-0000"
                       variant="outlined"
                     />
                   )}
@@ -457,6 +467,8 @@ function Payer({ validateStep }) {
                   className="style-select-work"
                   placeholder="email@exemplo.com"
                   variant="outlined"
+                  value={data.entity_paying.email}
+                  onChange={handleEmailChange}
                 />
               </div>
             </div>
@@ -465,7 +477,7 @@ function Payer({ validateStep }) {
       )}
 
       {data.entity_paying.entity_type !== "O" &&
-      data.entity_paying.entity_type !== "S" ? (
+        data.entity_paying.entity_type !== "S" ? (
         <div>
           <div className="div-marital-padding">
             <div className="padding-bottom-title-input">
@@ -485,6 +497,8 @@ function Payer({ validateStep }) {
                     className="input-style-work"
                     placeholder="Escreva o primeiro nome"
                     variant="outlined"
+                    value={data.entity_paying.org_name}
+                    onChange={handleOrgNameChange}
                   />
                 </div>
               </div>
@@ -505,7 +519,9 @@ function Payer({ validateStep }) {
                 </div>
               </div>
             </div>
+
             <div className="div-1-inputs-marital">
+
               <div>
                 <div style={{ paddingBottom: "0.4rem" }}>
                   <span className="span-state">
@@ -518,17 +534,19 @@ function Payer({ validateStep }) {
                     className="input-style-work"
                     labelId="select-state"
                     id="select-state"
-                    value={country}
-                    onChange={handleChangeSelectCountry}
+                    name="country"
+                    value={data.entity_paying.address ? data.entity_paying.address.country : ""}
+                    onChange={handleAddressChange}
                   >
-                    {countries.map((countrie, index) => (
-                      <MenuItem key={index} value={countrie.iso2}>
-                        {countrie.name}
+                    {Countries.map((countrie, index) => (
+                      <MenuItem key={index} value={countrie.key}>
+                        {countrie.value}
                       </MenuItem>
                     ))}
                   </Select>
                 </div>
               </div>
+
               <div>
                 <div style={{ paddingBottom: "0.4rem" }}>
                   <span className="span-state">
@@ -537,21 +555,18 @@ function Payer({ validateStep }) {
                   </span>
                 </div>
                 <div className="padding-bottom-1">
-                  <Select
+                  <TextField
+                    id="outlined-basic"
                     className="input-style-work"
-                    labelId="select-state"
-                    id="select-state"
-                    value={state}
-                    onChange={handleChangeSelectState}
-                  >
-                    {states.map((state, index) => (
-                      <MenuItem key={index} value={state.iso2}>
-                        {state.name}
-                      </MenuItem>
-                    ))}
-                  </Select>
+                    placeholder="Insira o estado aqui"
+                    variant="outlined"
+                    name="state"
+                    value={data.entity_paying.address ? data.entity_paying.address.state : ""}
+                    onChange={handleAddressChange}
+                  />
                 </div>
               </div>
+
               <div>
                 <div style={{ paddingBottom: "0.4rem" }}>
                   <span className="span-state">
@@ -560,22 +575,20 @@ function Payer({ validateStep }) {
                   </span>
                 </div>
                 <div className="padding-bottom-1">
-                  <Select
+                  <TextField
+                    id="outlined-basic"
                     className="input-style-work"
-                    labelId="select-state"
-                    id="select-state"
-                    value={city}
-                    onChange={handleChangeSelectCity}
-                  >
-                    {cities.map((city, index) => (
-                      <MenuItem key={index} value={city.name}>
-                        {city.name}
-                      </MenuItem>
-                    ))}
-                  </Select>
+                    placeholder="Insira a cidade aqui"
+                    variant="outlined"
+                    name="city"
+                    value={data.entity_paying.address ? data.entity_paying.address.city : ""}
+                    onChange={handleAddressChange}
+                  />
                 </div>
               </div>
+
             </div>
+
             <div className="div-2-inputs-work">
               <div>
                 <div style={{ paddingBottom: "0.4rem" }}>
@@ -590,6 +603,9 @@ function Payer({ validateStep }) {
                     className="style-select-work"
                     placeholder="Rua, bairro, número"
                     variant="outlined"
+                    name="street"
+                    value={data.entity_paying.address ? data.entity_paying.address.street : ""}
+                    onChange={handleAddressChange}
                   />
                 </div>
               </div>
@@ -600,19 +616,24 @@ function Payer({ validateStep }) {
                   </span>
                 </div>
                 <div className="padding-bottom-1">
-                  <InputMask mask="99999-999" maskChar="">
+                  <InputMask mask="99999-999" maskChar=""
+                    value={data.entity_paying.address ? data.entity_paying.address.zip_code : ""}
+                    onChange={handleAddressChange}
+                  >
                     {() => (
                       <TextField
                         id="outlined-basic"
                         className="style-select-work"
                         placeholder="00000-000"
                         variant="outlined"
+                        name="zip_code"
                       />
                     )}
                   </InputMask>
                 </div>
               </div>
             </div>
+
             <div className="div-2-inputs-work">
               <div>
                 <div style={{ paddingBottom: "0.4rem" }}>
@@ -622,7 +643,10 @@ function Payer({ validateStep }) {
                   </span>
                 </div>
                 <div className="padding-bottom-1">
-                  <InputMask mask="55+ (99) 99999-9999" maskChar="">
+                  <InputMask mask="55+ (99) 99999-9999" maskChar=""
+                    value={data.entity_paying.phone_number}
+                    onChange={handlePhoneNumberChange}
+                  >
                     {() => (
                       <TextField
                         id="outlined-basic"
@@ -647,6 +671,9 @@ function Payer({ validateStep }) {
                     className="style-select-work"
                     placeholder="email@exemplo.com"
                     variant="outlined"
+
+                    value={data.entity_paying.email}
+                    onChange={handleEmailChange}
                   />
                 </div>
               </div>

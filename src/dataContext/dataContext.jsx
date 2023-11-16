@@ -128,7 +128,7 @@ export function DataProvider({ children }) {
         zip_code: "",
         country: "",
       },
-      phone_number: "string",
+      phone_number: "",
       relationship: "C",
       same_address: false,
       email: "",
