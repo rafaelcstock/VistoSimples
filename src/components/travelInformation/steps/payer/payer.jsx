@@ -17,7 +17,7 @@ function Payer({ validateStep }) {
 
   const handlePaymentChangeSelect = (event) => {
     const { value } = event.target;
-    debugger
+    debugger;
     if (value == "S") {
       updateData({
         entity_paying: {
@@ -81,30 +81,35 @@ function Payer({ validateStep }) {
     }
   };
 
-  const handleChangeSelect = (event) => {
+  const handleIsSameAddressChange = (event) => {
     const { value } = event.target;
     const boolValue = value === "Sim" ? true : false;
 
     if (boolValue) {
       updateData({
-        entity_paying: { ...data.entity_paying, same_address: boolValue, address: null },
-
+        entity_paying: {
+          ...data.entity_paying,
+          same_address: boolValue,
+          address: null,
+        },
       });
     } else {
       updateData({
-        entity_paying: { ...data.entity_paying, same_address: boolValue },
-        address: {
-          street: "",
-          complement: null,
-          city: "",
-          state: "",
-          state_acronym: null,
-          zip_code: "",
-          country: "",
-        }
+        entity_paying: {
+          ...data.entity_paying,
+          same_address: boolValue,
+          address: {
+            street: "",
+            complement: null,
+            city: "",
+            state: "",
+            state_acronym: null,
+            zip_code: "",
+            country: "",
+          },
+        },
       });
     }
-
   };
 
   const handlePersonNameChange = (event) => {
@@ -173,7 +178,6 @@ function Payer({ validateStep }) {
     });
   };
 
-
   useEffect(() => {
     validateStep();
   }, [data]);
@@ -232,7 +236,7 @@ function Payer({ validateStep }) {
                     value={
                       data.entity_paying.same_address == true ? "Sim" : "Não"
                     }
-                    onChange={handleChangeSelect}
+                    onChange={handleIsSameAddressChange}
                   >
                     <FormControlLabel
                       value="Sim"
@@ -322,7 +326,6 @@ function Payer({ validateStep }) {
           {!data.entity_paying.same_address && (
             <>
               <div className="div-1-inputs-marital">
-
                 <div>
                   <div style={{ paddingBottom: "0.4rem" }}>
                     <span className="span-state">
@@ -335,7 +338,11 @@ function Payer({ validateStep }) {
                       labelId="select-state"
                       id="select-state"
                       name="country"
-                      value={data.entity_paying.address ? data.entity_paying.address.country : ""}
+                      value={
+                        data.entity_paying.address
+                          ? data.entity_paying.address.country
+                          : ""
+                      }
                       onChange={handleAddressChange}
                     >
                       {Countries.map((countrie, index) => (
@@ -360,7 +367,11 @@ function Payer({ validateStep }) {
                       placeholder="Escreva o sobrenome"
                       variant="outlined"
                       name="state"
-                      value={data.entity_paying.address ? data.entity_paying.address.state : ""}
+                      value={
+                        data.entity_paying.address
+                          ? data.entity_paying.address.state
+                          : ""
+                      }
                       onChange={handleAddressChange}
                     />
                   </div>
@@ -379,7 +390,11 @@ function Payer({ validateStep }) {
                       placeholder="Escreva o sobrenome"
                       variant="outlined"
                       name="city"
-                      value={data.entity_paying.address ? data.entity_paying.address.city : ""}
+                      value={
+                        data.entity_paying.address
+                          ? data.entity_paying.address.city
+                          : ""
+                      }
                       onChange={handleAddressChange}
                     />
                   </div>
@@ -400,7 +415,11 @@ function Payer({ validateStep }) {
                       placeholder="Rua, bairro, número"
                       variant="outlined"
                       name="street"
-                      value={data.entity_paying.address ? data.entity_paying.address.street : ""}
+                      value={
+                        data.entity_paying.address
+                          ? data.entity_paying.address.street
+                          : ""
+                      }
                       onChange={handleAddressChange}
                     />
                   </div>
@@ -412,9 +431,16 @@ function Payer({ validateStep }) {
                     </span>
                   </div>
                   <div className="padding-bottom-1">
-                    <InputMask mask="99999-999" maskChar=""
-                      value={data.entity_paying.address ? data.entity_paying.address.zip_code : ""}
-                      onChange={handleAddressChange}>
+                    <InputMask
+                      mask="99999-999"
+                      maskChar=""
+                      value={
+                        data.entity_paying.address
+                          ? data.entity_paying.address.zip_code
+                          : ""
+                      }
+                      onChange={handleAddressChange}
+                    >
                       {() => (
                         <TextField
                           id="outlined-basic"
@@ -428,7 +454,6 @@ function Payer({ validateStep }) {
                   </div>
                 </div>
               </div>
-
             </>
           )}
 
@@ -440,7 +465,9 @@ function Payer({ validateStep }) {
                 </span>
               </div>
               <div className="padding-bottom-1">
-                <InputMask mask="99+ (99) 99999-9999" maskChar=""
+                <InputMask
+                  mask="99+ (99) 99999-9999"
+                  maskChar=""
                   value={data.entity_paying.phone_number}
                   onChange={handlePhoneNumberChange}
                 >
@@ -477,7 +504,7 @@ function Payer({ validateStep }) {
       )}
 
       {data.entity_paying.entity_type !== "O" &&
-        data.entity_paying.entity_type !== "S" ? (
+      data.entity_paying.entity_type !== "S" ? (
         <div>
           <div className="div-marital-padding">
             <div className="padding-bottom-title-input">
@@ -521,7 +548,6 @@ function Payer({ validateStep }) {
             </div>
 
             <div className="div-1-inputs-marital">
-
               <div>
                 <div style={{ paddingBottom: "0.4rem" }}>
                   <span className="span-state">
@@ -535,7 +561,11 @@ function Payer({ validateStep }) {
                     labelId="select-state"
                     id="select-state"
                     name="country"
-                    value={data.entity_paying.address ? data.entity_paying.address.country : ""}
+                    value={
+                      data.entity_paying.address
+                        ? data.entity_paying.address.country
+                        : ""
+                    }
                     onChange={handleAddressChange}
                   >
                     {Countries.map((countrie, index) => (
@@ -561,7 +591,11 @@ function Payer({ validateStep }) {
                     placeholder="Insira o estado aqui"
                     variant="outlined"
                     name="state"
-                    value={data.entity_paying.address ? data.entity_paying.address.state : ""}
+                    value={
+                      data.entity_paying.address
+                        ? data.entity_paying.address.state
+                        : ""
+                    }
                     onChange={handleAddressChange}
                   />
                 </div>
@@ -581,12 +615,15 @@ function Payer({ validateStep }) {
                     placeholder="Insira a cidade aqui"
                     variant="outlined"
                     name="city"
-                    value={data.entity_paying.address ? data.entity_paying.address.city : ""}
+                    value={
+                      data.entity_paying.address
+                        ? data.entity_paying.address.city
+                        : ""
+                    }
                     onChange={handleAddressChange}
                   />
                 </div>
               </div>
-
             </div>
 
             <div className="div-2-inputs-work">
@@ -604,7 +641,11 @@ function Payer({ validateStep }) {
                     placeholder="Rua, bairro, número"
                     variant="outlined"
                     name="street"
-                    value={data.entity_paying.address ? data.entity_paying.address.street : ""}
+                    value={
+                      data.entity_paying.address
+                        ? data.entity_paying.address.street
+                        : ""
+                    }
                     onChange={handleAddressChange}
                   />
                 </div>
@@ -616,8 +657,14 @@ function Payer({ validateStep }) {
                   </span>
                 </div>
                 <div className="padding-bottom-1">
-                  <InputMask mask="99999-999" maskChar=""
-                    value={data.entity_paying.address ? data.entity_paying.address.zip_code : ""}
+                  <InputMask
+                    mask="99999-999"
+                    maskChar=""
+                    value={
+                      data.entity_paying.address
+                        ? data.entity_paying.address.zip_code
+                        : ""
+                    }
                     onChange={handleAddressChange}
                   >
                     {() => (
@@ -643,7 +690,9 @@ function Payer({ validateStep }) {
                   </span>
                 </div>
                 <div className="padding-bottom-1">
-                  <InputMask mask="55+ (99) 99999-9999" maskChar=""
+                  <InputMask
+                    mask="99+ (99) 99999-9999"
+                    maskChar=""
                     value={data.entity_paying.phone_number}
                     onChange={handlePhoneNumberChange}
                   >
@@ -651,7 +700,7 @@ function Payer({ validateStep }) {
                       <TextField
                         id="outlined-basic"
                         className="style-select-work"
-                        placeholder="55+ (00) 00000-0000"
+                        placeholder="99+ (00) 00000-0000"
                         variant="outlined"
                       />
                     )}
@@ -671,7 +720,6 @@ function Payer({ validateStep }) {
                     className="style-select-work"
                     placeholder="email@exemplo.com"
                     variant="outlined"
-
                     value={data.entity_paying.email}
                     onChange={handleEmailChange}
                   />

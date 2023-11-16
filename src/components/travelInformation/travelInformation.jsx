@@ -142,24 +142,68 @@ function TravelInformation(props) {
   const validateStep5 = () => {
     let isValid = false;
 
-    const { companionSelected, escorts, group } = data;
+    const { entity_paying } = data;
 
-    if (companionSelected === 1) {
+    if (entity_paying.entity_type === "S") {
       isValid = true;
     }
 
-    if (companionSelected === 2 && escorts) {
-      isValid = escorts.some(
-        (scort) =>
-          scort.name.given_name &&
-          scort.name.given_name !== "" &&
-          scort.name.surname &&
-          scort.name.surname
-      );
+    debugger;
+    if (entity_paying.entity_type === "O") {
+      isValid = true;
+
+      if (
+        entity_paying.person_name.given_name &&
+        entity_paying.person_name.given_name !== "" &&
+        entity_paying.person_name.surname &&
+        entity_paying.person_name.surname !== "" &&
+        entity_paying.given_name !== "" &&
+        entity_paying.relationship &&
+        entity_paying.relationship !== "" &&
+        entity_paying.email &&
+        entity_paying.email !== "" &&
+        entity_paying.phone_number &&
+        entity_paying.phone_number !== ""
+      ) {
+        if (!entity_paying.same_address) {
+          isValid =
+            entity_paying.address.country &&
+            entity_paying.address.country !== "" &&
+            entity_paying.address.state &&
+            entity_paying.address.state !== "" &&
+            entity_paying.address.street &&
+            entity_paying.address.street !== "" &&
+            entity_paying.address.city &&
+            entity_paying.address.city !== "" &&
+            entity_paying.address.zip_code &&
+            entity_paying.address.zip_code !== "";
+        }
+      } else {
+        isValid = false;
+      }
     }
 
-    if (companionSelected === 3) {
-      isValid = group && group !== "";
+    if (
+      entity_paying.entity_type !== "O" &&
+      entity_paying.entity_type !== "S"
+    ) {
+      isValid =
+        entity_paying.org_name &&
+        entity_paying.org_name !== "" &&
+        entity_paying.phone_number &&
+        entity_paying.phone_number !== "" &&
+        entity_paying.email &&
+        entity_paying.email !== "" &&
+        entity_paying.address.country &&
+        entity_paying.address.country !== "" &&
+        entity_paying.address.city &&
+        entity_paying.address.city !== "" &&
+        entity_paying.address.state &&
+        entity_paying.address.state !== "" &&
+        entity_paying.address.street &&
+        entity_paying.address.street !== "" &&
+        entity_paying.address.zip_code &&
+        entity_paying.address.zip_code !== "";
     }
 
     return isValid;
