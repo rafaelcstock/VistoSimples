@@ -1,13 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import "./payer.css";
 import { MenuItem, Select, TextField } from "@mui/material";
-import statesBrazilianService from "../../../../services/statesBrazilianService";
 import { FormControlLabel, Radio, RadioGroup } from "@mui/material";
 import InputMask from "react-input-mask";
 import escortRelationship from "../../../../datas/escort_relationship";
-import countriesService from "../../../../services/countriesWorld";
-import statesService from "../../../../services/statesWorldMain";
-import citiesService from "../../../../services/citiesWorld";
 import { useData } from "../../../../dataContext/dataContext";
 import personPaying from "../../../../datas/person_paying";
 import Countries from "../../../../datas/countries";

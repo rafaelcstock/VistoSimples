@@ -184,9 +184,9 @@ export function DataProvider({ children }) {
       },
     ],
     refused_us_visa: true,
-    refused_us_visa_reason: "string",
+    refused_us_visa_reason: "",
     immigrant_petition: true,
-    immigrant_petition_reason: "string",
+    immigrant_petition_reason: "",
     address: {
       street: "",
       complement: "",
@@ -207,37 +207,24 @@ export function DataProvider({ children }) {
     },
     primary_phone_number: "",
     secondary_phone_number: "",
-    work_phone_number: "string",
-    other_phone_numbers: ["string"],
+    work_phone_number: "",
+    other_phone_numbers: [""],
     email_address: "",
     other_email_adresses: [""],
     social_medias: null,
     passport: {
       document_type: "R",
-      number: "string",
-      custom_document_reason: "string",
-      book_number: "string",
+      number: "",
+      custom_document_reason: "",
+      book_number: "",
       country: "AFGH",
-      city: "string",
-      state: "string",
-      issuance_date: "2023-11-08",
-      expiration_date: "2023-11-08",
-      lost_reason: "string",
+      city: "",
+      state: "",
+      issuance_date: "",
+      expiration_date: "",
+      lost_reason: null,
     },
-    lost_or_stolen_passports: [
-      {
-        document_type: "R",
-        number: "string",
-        custom_document_reason: "string",
-        book_number: "string",
-        country: "AFGH",
-        city: "string",
-        state: "string",
-        issuance_date: "2023-11-08",
-        expiration_date: "2023-11-08",
-        lost_reason: "string",
-      },
-    ],
+    lost_or_stolen_passports: null,
     us_contact: {
       person_name: null,
       organization_name: "",
@@ -382,8 +369,9 @@ export function DataProvider({ children }) {
   });
 
   // console.log(data);
-  // console.log(data.group);
-  console.log(data.entity_paying);
+  console.log(data.passport);
+  console.log("------------------------- abaixo é lost");
+  console.log(data.lost_or_stolen_passports);
 
   const updateData = (newData) => {
     setData({ ...data, ...newData });
