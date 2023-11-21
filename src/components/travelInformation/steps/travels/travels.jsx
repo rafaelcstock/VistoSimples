@@ -36,7 +36,7 @@ function Travels({ validateStep }) {
 
   const handleUpdateVisitedCountriesChange = (event) => {
     const { value } = event.target;
-    debugger
+
     setPersonName(typeof value === 'string' ? value.split(',') : value)
 
     updateData({

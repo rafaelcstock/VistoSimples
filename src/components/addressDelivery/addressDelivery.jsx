@@ -91,7 +91,7 @@ function AddressDelivery(props) {
       newSkipped = new Set(newSkipped.values());
       newSkipped.delete(activeStep);
     }
-    debugger;
+  
     if (activeStep == 0 && data.mailing_address.street !== "") {
       // setActiveStep((prevActiveStep) => prevActiveStep + 2);
       props.onAddressChange();

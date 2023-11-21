@@ -15,7 +15,8 @@ function InformationResidence({ validateStep }) {
 
     if (boolValue) {
       updateData({
-        ...data, mailing_address: {
+        ...data,
+        mailing_address: {
           street: data.address.street,
           complement: data.address.complement,
           city: data.address.city,
@@ -23,12 +24,12 @@ function InformationResidence({ validateStep }) {
           state_acronym: null,
           zip_code: data.address.zip_code,
           country: data.address.country,
-        }
+        },
       });
-
     } else {
       updateData({
-        ...data, mailing_address: {
+        ...data,
+        mailing_address: {
           street: "",
           complement: "",
           city: "",
@@ -36,7 +37,7 @@ function InformationResidence({ validateStep }) {
           state_acronym: null,
           zip_code: "",
           country: "",
-        }
+        },
       });
     }
   };
@@ -47,11 +48,13 @@ function InformationResidence({ validateStep }) {
 
     if (boolValue) {
       updateData({
-        ...data, permanent_resident_other_country: " "
+        ...data,
+        permanent_resident_other_country: " ",
       });
     } else {
       updateData({
-        ...data, permanent_resident_other_country: null
+        ...data,
+        permanent_resident_other_country: null,
       });
     }
   };
@@ -60,19 +63,20 @@ function InformationResidence({ validateStep }) {
     const { value } = event.target;
 
     updateData({
-      ...data, permanent_resident_other_country: value
+      ...data,
+      permanent_resident_other_country: value,
     });
   };
 
   const handleAddressChange = (event) => {
     const { value, name } = event.target;
-    debugger
+
     if (data.mailing_address !== null) {
       updateData({
-        ...data, address: { ...data.address, [name]: value },
-        mailing_address: { ...data.address, [name]: value }
+        ...data,
+        address: { ...data.address, [name]: value },
+        mailing_address: { ...data.address, [name]: value },
       });
-
     } else {
       updateData({ ...data, address: { ...data.address, [name]: value } });
     }

@@ -163,20 +163,7 @@ export function DataProvider({ children }) {
         length_of_stay: 0,
       },
     ],
-    old_visa: {
-      consulate_id: 54,
-      issue_date: "2023-11-08",
-      expiration_date: "2023-11-08",
-      number: "string",
-      applying_for_same_type: true,
-      applying_for_same_country: true,
-      ten_printed: true,
-      lost_or_stolen: true,
-      lost_or_stolen_year: 0,
-      lost_or_stolen_reason: "string",
-      revoked: true,
-      revoked_reason: "string",
-    },
+    old_visa: null,
     us_drivers_license: [
       {
         number: "",
@@ -369,9 +356,9 @@ export function DataProvider({ children }) {
   });
 
   // console.log(data);
-  console.log(data.passport);
-  console.log("------------------------- abaixo é lost");
-  console.log(data.lost_or_stolen_passports);
+  console.log(data.old_visa);
+  // console.log("------------------------- abaixo é lost");
+  // console.log(data.lost_or_stolen_passports);
 
   const updateData = (newData) => {
     setData({ ...data, ...newData });

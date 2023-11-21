@@ -145,7 +145,7 @@ function DistantFamily({ validateStep }) {
 
   const handleAddressEntityChange = (event) => {
     const { value, name } = event.target;
-    debugger;
+
     updateData({
       ...data,
       primary_occupation: {
@@ -157,7 +157,7 @@ function DistantFamily({ validateStep }) {
 
   const handleCelphoneEntityChange = (event) => {
     const { value } = event.target;
-    debugger;
+
     updateData({
       ...data,
       primary_occupation: {

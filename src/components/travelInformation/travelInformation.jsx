@@ -60,7 +60,7 @@ function TravelInformation(props) {
     let isValid = false;
 
     const { stay } = data;
-    debugger;
+
     isValid =
       stay.date &&
       stay.date !== "" &&
@@ -148,7 +148,6 @@ function TravelInformation(props) {
       isValid = true;
     }
 
-    debugger;
     if (entity_paying.entity_type === "O") {
       isValid = true;
 

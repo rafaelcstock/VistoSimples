@@ -14,7 +14,6 @@ function InitialInformation() {
   const [radioRequester, setRadioRequester] = useState("Apenas para mim");
 
   const handleChangeSelect = (event) => {
-    setDs160City(event.target.value);
     updateData({ ds160_city: event.target.value });
   };
 
@@ -28,7 +27,7 @@ function InitialInformation() {
   }, []);
 
   return (
-    <div className="div-flex">
+    <div className="div-flex" >
       <div className="div-width"></div>
       <div className="div-margin">
         <div className="padding-bottom">
@@ -57,7 +56,7 @@ function InitialInformation() {
                 className="style-select"
                 labelId="select-state"
                 id="select-state"
-                value={ds160City}
+                value={data.ds160_city}
                 onChange={handleChangeSelect}
               >
                 {ds160Cities.map((state) => (

@@ -13,7 +13,7 @@ function Payer({ validateStep }) {
 
   const handlePaymentChangeSelect = (event) => {
     const { value } = event.target;
-    debugger;
+
     if (value == "S") {
       updateData({
         entity_paying: {

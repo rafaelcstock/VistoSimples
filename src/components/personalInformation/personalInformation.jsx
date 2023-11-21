@@ -130,7 +130,7 @@ function PersonalInformation(props) {
     let isValid = false;
 
     const { mother, hasInformationAboutMother } = data;
-    debugger;
+
     if (!hasInformationAboutMother) {
       isValid = true;
       return isValid;

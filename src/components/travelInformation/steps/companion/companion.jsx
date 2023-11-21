@@ -39,7 +39,7 @@ function Companion({ validateStep }) {
     const selectedValue = event.target.value;
 
     const intValue = Number(selectedValue);
-    debugger;
+
     if (intValue == 1) {
       updateData({
         ...data,

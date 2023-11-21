@@ -73,8 +73,6 @@ function AdditionalInformation(props) {
       return isValid;
     }
 
-    debugger;
-
     isValid =
       education[0].entity_name &&
       education[0].entity_name !== "" &&

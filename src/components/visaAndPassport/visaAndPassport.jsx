@@ -8,7 +8,7 @@ import { useData } from "../../dataContext/dataContext";
 
 function VisaAndPassport(props) {
   const { data } = useData();
-  const [activeStep, setActiveStep] = useState(1);
+  const [activeStep, setActiveStep] = useState();
   const [skipped, setSkipped] = useState(new Set());
   const [isDisabled, setIsDisabled] = useState(true);
 
@@ -58,31 +58,35 @@ function VisaAndPassport(props) {
   const validateStep1 = () => {
     let isValid = false;
 
-    const { passport, lost_or_stolen_passports } = data;
+    const { old_visa } = data;
+
+    if (!old_visa) {
+      isValid = true;
+      return isValid;
+    }
 
     isValid =
-      passport.document_type &&
-      passport.document_type !== "" &&
-      passport.number &&
-      passport.number !== "" &&
-      passport.country &&
-      passport.country !== "" &&
-      passport.city &&
-      passport.city !== "" &&
-      passport.state &&
-      passport.state !== "" &&
-      passport.issuance_date &&
-      passport.issuance_date !== "" &&
-      passport.expiration_date &&
-      passport.expiration_date !== "" &&
-      (passport.lost_reason
-        ? lost_or_stolen_passports[0].document_type &&
-          lost_or_stolen_passports[0].document_type !== "" &&
-          lost_or_stolen_passports[0].country &&
-          lost_or_stolen_passports[0].country !== "" &&
-          lost_or_stolen_passports[0].number &&
-          lost_or_stolen_passports[0].number !== ""
-        : true);
+      old_visa.consulate_id &&
+      old_visa.issue_date &&
+      old_visa.issue_date !== "" &&
+      old_visa.expiration_date &&
+      old_visa.expiration_date !== "" &&
+      old_visa.number &&
+      old_visa.number !== "";
+
+    return isValid;
+  };
+
+  const validateStep2 = () => {
+    let isValid = false;
+
+    const { old_visa } = data;
+
+    if (!old_visa?.revoked) {
+      return true;
+    }
+
+    isValid = old_visa.revoked_reason && old_visa.revoked_reason;
 
     return isValid;
   };
@@ -110,17 +114,15 @@ function VisaAndPassport(props) {
   const allComponents = [
     <Documents key="documents" validateStep={validateStep} />,
     <EmissionVisa key="fiveTravels" validateStep={validateStep} />,
-    <RevokedVisa key="revokedVisa" />,
+    <RevokedVisa key="revokedVisa" validateStep={validateStep} />,
     <LostVisa key="lostVisa" />,
   ];
 
   const stepValidations = {
     0: validateStep0,
     1: validateStep1,
-    // 2: validateStep2,
+    2: validateStep2,
     // 3: validateStep3,
-    // 4: validateStep4,
-    // 5: validateStep5,
   };
 
   return (
@@ -150,7 +152,7 @@ function VisaAndPassport(props) {
           <div>
             <button
               type="button"
-              // disabled={isDisabled}
+              disabled={isDisabled}
               className={`button-style ${isDisabled ? "disabled-button" : ""}`}
               onClick={handleNext}
             >
