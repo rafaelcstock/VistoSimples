@@ -214,9 +214,9 @@ function StableUnion() {
                                     value={country}
                                     onChange={handleChangeSelectCountry}
                                 >
-                                    {countries.map((countrie, index) => (
-                                        <MenuItem key={index} value={countrie.iso2}>
-                                            {countrie.name}
+                                    {Countries.map((countrie, index) => (
+                                        <MenuItem key={index} value={countrie.key}>
+                                            {countrie.value}
                                         </MenuItem>
                                     ))}
                                 </Select>

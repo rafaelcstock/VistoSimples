@@ -111,21 +111,22 @@ function USAFamily({ validateStep }) {
 
   const handleNameChange = (event, index) => {
     const { value, name } = event.target;
-
-    const updatedRelatives = data.immediate_relatives.map((relative, i) => {
-      if (i === index) {
-        return { ...relative, name: { ...relative.name, [name]: value } };
-      }
-
-      return relative;
-    });
-
-    updateData({
-      ...data,
-      immediate_relatives: updatedRelatives,
-    });
+  
+    // Verifica se o valor contém apenas letras usando uma expressão regular
+    if (/^[a-zA-Z\s]+$/.test(value) || value === "") {
+      const updatedRelatives = data.immediate_relatives.map((relative, i) => {
+        if (i === index) {
+          return { ...relative, name: { ...relative.name, [name]: value } };
+        }
+        return relative;
+      });
+  
+      updateData({
+        ...data,
+        immediate_relatives: updatedRelatives,
+      });
+    }
   };
-
   useEffect(() => {
     validateStep();
   }, [data]);

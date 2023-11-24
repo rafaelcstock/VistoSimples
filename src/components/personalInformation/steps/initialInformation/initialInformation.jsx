@@ -12,6 +12,9 @@ import dayjs from "dayjs";
 import { useData } from "../../../../dataContext/dataContext";
 
 function InitialInformation({ onStatusChange, validateStep }) {
+
+  const [isBirthDateValid, setIsBirthDateValid] = useState(true);
+
   const { data, updateData } = useData();
 
   const handleChangeSelect = (event) => {
@@ -27,19 +30,24 @@ function InitialInformation({ onStatusChange, validateStep }) {
   };
 
   const handleNameChange = (event) => {
-    const { value, name } = event.target;
+  const { value, name } = event.target;
+  
+  if (/^[A-Za-z\s]+$/.test(value) || value === "") {
     updateData({ ...data, name: { ...data.name, [name]: value } });
-  };
+  }
+};
 
   const handleBirthDateChange = (selectedDate) => {
     if (selectedDate && dayjs(selectedDate).isValid()) {
       const formattedDate = dayjs(selectedDate).format("YYYY-MM-DD");
       updateData({ ...data, birth: { ...data.birth, date: formattedDate } });
+      setIsBirthDateValid(true);
     } else {
       updateData({ ...data, birth: { ...data.birth, date: "" } });
+      setIsBirthDateValid(false);
     }
   };
-
+  
   const handlePhoneNumberChange = (event) => {
     const { value, name } = event.target;
     updateData({ ...data, [name]: value });
@@ -172,17 +180,18 @@ function InitialInformation({ onStatusChange, validateStep }) {
           <div>
             <div style={{ paddingBottom: "0.4rem" }}>
               <span className="span-state">
-                Data de nascimento <span style={{ color: "red" }}>*</span>
+                Data de nascimento <span style={{ color: "" }}>*</span>
               </span>
             </div>
             <div className="padding-bottom-1">
               <LocalizationProvider dateAdapter={AdapterDayjs}>
+
                 <DatePicker
-                  value={dayjs(data.birth.date)}
+                  value={null}
                   onChange={handleBirthDateChange}
                   format="DD/MM/YYYY"
                   className="custom-date-picker-initial"
-                />
+              />
               </LocalizationProvider>
             </div>
           </div>
@@ -216,7 +225,7 @@ function InitialInformation({ onStatusChange, validateStep }) {
             </div>
             <div className="padding-bottom-1">
               <InputMask
-                mask="99+ (99) 99999-9999"
+                mask="+99 (99) 99999-9999"
                 maskChar=""
                 value={data.primary_phone_number}
                 onChange={handlePhoneNumberChange}
@@ -226,7 +235,7 @@ function InitialInformation({ onStatusChange, validateStep }) {
                     id="outlined-basic"
                     className="input-style-initial"
                     type="text"
-                    placeholder="55+ (00) 00000-0000"
+                    placeholder="+55 (00) 00000-0000"
                     variant="outlined"
                     name="primary_phone_number"
                   />
@@ -240,7 +249,7 @@ function InitialInformation({ onStatusChange, validateStep }) {
             </div>
             <div className="padding-bottom-1">
               <InputMask
-                mask="99+ (99) 99999-9999"
+                mask="+99 (99) 99999-9999"
                 maskChar=""
                 value={data.secondary_phone_number}
                 onChange={handlePhoneNumberChange}
@@ -250,7 +259,7 @@ function InitialInformation({ onStatusChange, validateStep }) {
                     id="outlined-basic"
                     className="input-style-initial"
                     type="text"
-                    placeholder="55+ (00) 00000-0000"
+                    placeholder="+55 (00) 00000-0000"
                     variant="outlined"
                     name="secondary_phone_number"
                   />

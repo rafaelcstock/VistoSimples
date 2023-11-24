@@ -10,6 +10,7 @@ import statesService from "../../../../services/statesWorldMain";
 import citiesService from "../../../../services/citiesWorld";
 import { useData } from "../../../../dataContext/dataContext";
 
+
 function Nationality({ validateStep }) {
   const { data, updateData } = useData();
 
@@ -44,6 +45,7 @@ function Nationality({ validateStep }) {
 
   const getStates = async (country) => {
     let _states = await statesService.getStateByCountry(country);
+    _states.sort((a, b) => a.name.localeCompare(b.name));
     setStates(_states);
   };
 

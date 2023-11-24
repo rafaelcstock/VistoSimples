@@ -174,8 +174,8 @@ function Married() {
                         value={gender}
                         onChange={handleChangeSelectGender}
                     >
-                        <FormControlLabel value="F" control={<Radio />} label="Feminino" />
-                        <FormControlLabel value="M" control={<Radio />} label="Masculino" />
+                        <FormControlLabel value="F" control={<Radio />} label="Sim" />
+                        <FormControlLabel value="M" control={<Radio />} label="Não" />
                     </RadioGroup>
                 </div>
             </div>
