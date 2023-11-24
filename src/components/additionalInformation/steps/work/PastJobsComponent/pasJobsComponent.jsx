@@ -88,21 +88,21 @@ const PastJobsComponent = ({
             </span>
           </div>
           <div className="padding-bottom-1">
-            <Select
-              className="input-style-work"
-              labelId="select-state"
-              id="select-state"
-              value={job.occupation_type}
-              onChange={(e) =>
-                handleUpdateData("occupation_type", e.target.value, index)
-              }
-            >
-              {PrimaryOccupation.map((countrie, index) => (
-                <MenuItem key={index} value={countrie.key}>
-                  {countrie.value}
-                </MenuItem>
-              ))}
-            </Select>
+          <Select
+            className="input-style-work"
+            labelId="select-state"
+            id="select-state"
+            value={job.occupation_type}
+            onChange={(e) =>
+              handleUpdateData("occupation_type", e.target.value, index)
+            }
+          >
+            {PrimaryOccupation.sort((a, b) => a.value.localeCompare(b.value)).map((countrie, index) => (
+              <MenuItem key={index} value={countrie.key}>
+                {countrie.value}
+              </MenuItem>
+            ))}
+          </Select>
           </div>
         </div>
         <div>
@@ -306,7 +306,7 @@ const PastJobsComponent = ({
           </div>
           <div className="padding-bottom-1">
             <InputMask
-              mask="99+ (99) 99999-9999"
+              mask="+99 (99) 99999-9999"
               maskChar=""
               value={job.phone_number}
               onChange={(e) =>
@@ -317,7 +317,7 @@ const PastJobsComponent = ({
                 <TextField
                   id="outlined-basic"
                   className="style-select-work"
-                  placeholder="99+ (00) 00000-0000"
+                  placeholder="+99 (00) 00000-0000"
                   variant="outlined"
                 />
               )}

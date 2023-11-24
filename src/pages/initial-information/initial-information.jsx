@@ -22,6 +22,8 @@ function InitialInformation() {
     localStorage.setItem("tipoForm", event.target.value);
   };
 
+  const sortedDs160Cities = ds160Cities.slice().sort((a, b) => a.value.localeCompare(b.value));
+
   useEffect(() => {
     localStorage.setItem("tipoForm", "Apenas para mim");
   }, []);
@@ -52,19 +54,19 @@ function InitialInformation() {
               <span className="span-state">Selecione o estado</span>
             </div>
             <div className="padding-bottom-1">
-              <Select
-                className="style-select"
-                labelId="select-state"
-                id="select-state"
-                value={data.ds160_city}
-                onChange={handleChangeSelect}
-              >
-                {ds160Cities.map((state) => (
-                  <MenuItem key={state.key} value={state.key}>
-                    {state.value}
-                  </MenuItem>
-                ))}
-              </Select>
+            <Select
+              className="style-select"
+              labelId="select-state"
+              id="select-state"
+              value={data.ds160_city}
+              onChange={handleChangeSelect}
+            >
+              {sortedDs160Cities.map((state) => (
+                <MenuItem key={state.key} value={state.key}>
+                  {state.value}
+                </MenuItem>
+              ))}
+            </Select>
             </div>
             <div>
               <div className="padding-bottom-1">

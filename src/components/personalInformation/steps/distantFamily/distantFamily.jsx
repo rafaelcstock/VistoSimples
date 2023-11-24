@@ -167,6 +167,8 @@ function DistantFamily({ validateStep }) {
     });
   };
 
+  const sortedPrimaryOccupation = PrimaryOccupation.slice().sort((a, b) => a.value.localeCompare(b.value));
+
   useEffect(() => {
     validateStep();
   }, [data]);
@@ -252,19 +254,19 @@ function DistantFamily({ validateStep }) {
                   </span>
                 </div>
                 <div className="padding-bottom-distant">
-                  <Select
-                    className="input-style-distant"
-                    labelId="select-state"
-                    id="select-state"
-                    value={data.primary_occupation.occupation_type}
-                    onChange={handleOccupationAreaChangeSelect}
-                  >
-                    {PrimaryOccupation.map((state) => (
-                      <MenuItem key={state.key} value={state.key}>
-                        {state.value}
-                      </MenuItem>
-                    ))}
-                  </Select>
+                <Select
+                  className="input-style-distant"
+                  labelId="select-state"
+                  id="select-state"
+                  value={data.primary_occupation.occupation_type}
+                  onChange={handleOccupationAreaChangeSelect}
+                >
+                  {sortedPrimaryOccupation.map((state) => (
+                    <MenuItem key={state.key} value={state.key}>
+                      {state.value}
+                    </MenuItem>
+                  ))}
+                </Select>
                 </div>
               </div>
               <div className="div-2-inputs-work">
@@ -455,7 +457,7 @@ function DistantFamily({ validateStep }) {
                   </div>
                   <div className="padding-bottom-1">
                     <InputMask
-                      mask="99+ (99) 99999-9999"
+                      mask="+99 (99) 99999-9999"
                       maskChar=""
                       value={data.primary_occupation.phone_number}
                       onChange={handleCelphoneEntityChange}
@@ -464,7 +466,7 @@ function DistantFamily({ validateStep }) {
                         <TextField
                           id="outlined-basic"
                           className="style-select-work"
-                          placeholder="99+ (00) 00000-0000"
+                          placeholder="+99 (00) 00000-0000"
                           variant="outlined"
                         />
                       )}

@@ -55,10 +55,13 @@ function MotherInformation({ validateStep = { validateStep } }) {
 
   const handleNameChange = (event) => {
     const { value, name } = event.target;
-    updateData({
-      ...data,
-      mother: { ...data.mother, name: { ...data.mother.name, [name]: value } },
-    });
+  
+    if (/^[a-zA-Z\s]+$/.test(value) || value === "") {
+      updateData({
+        ...data,
+        mother: { ...data.mother, name: { ...data.mother.name, [name]: value } },
+      });
+    }
   };
 
   const handleUsStatusChange = (event) => {

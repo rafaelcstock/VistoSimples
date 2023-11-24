@@ -83,18 +83,21 @@ function Companion({ validateStep }) {
 
   const handleNameScortChange = (event, index) => {
     const { value, name } = event.target;
-
-    const updatedScorts = data.escorts.map((scort, i) => {
-      if (i === index) {
-        return { ...scort, name: { ...scort.name, [name]: value } };
-      }
-      return scort;
-    });
-
-    updateData({
-      ...data,
-      escorts: updatedScorts,
-    });
+  
+    // Verifica se o valor contém apenas letras
+    if (/^[A-Za-z\s]+$/.test(value) || value === "") {
+      const updatedScorts = data.escorts.map((scort, i) => {
+        if (i === index) {
+          return { ...scort, name: { ...scort.name, [name]: value } };
+        }
+        return scort;
+      });
+  
+      updateData({
+        ...data,
+        escorts: updatedScorts,
+      });
+    }
   };
 
   const handleRelationshipScortChange = (event, index) => {

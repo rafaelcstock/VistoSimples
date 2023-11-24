@@ -24,7 +24,13 @@ function AnotherName({ validateStep }) {
 
   const handleNameChange = (event) => {
     const { value, name } = event.target;
-    updateData({ ...data, other_name: { ...data.other_name, [name]: value } });
+
+    if (/^[a-zA-Z]+$/.test(value) || value === "") {
+      updateData({
+        ...data,
+        other_name: { ...data.other_name, [name]: value },
+      });
+    }
   };
 
   useEffect(() => {
@@ -55,18 +61,18 @@ function AnotherName({ validateStep }) {
             </span>
           </div>
           <div className="div-another-padding">
-            <RadioGroup
-              aria-labelledby="demo-radio-buttons-group-label"
-              defaultValue="Sim"
-              name="radio-buttons-group"
-              className="subTitle-div-2"
-              row
-              value={data.hasAnotherName ? "Sim" : "Não"}
-              onChange={handleChangeSelect}
-            >
-              <FormControlLabel value="Sim" control={<Radio />} label="Sim" />
-              <FormControlLabel value="Não" control={<Radio />} label="Não" />
-            </RadioGroup>
+          <RadioGroup
+            aria-labelledby="demo-radio-buttons-group-label"
+            defaultValue="Não"
+            name="radio-buttons-group"
+            className="subTitle-div-2"
+            row
+            value={data.hasAnotherName ? "Sim" : "Não"}
+            onChange={handleChangeSelect}
+          >
+            <FormControlLabel value="Sim" control={<Radio />} label="Sim" />
+            <FormControlLabel value="Não" control={<Radio />} label="Não" />
+          </RadioGroup>
           </div>
         </div>
       </div>

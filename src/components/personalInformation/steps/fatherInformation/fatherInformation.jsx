@@ -95,7 +95,7 @@ function FatherInformation({ validateStep }) {
         <div className="padding-bottom-family">
           <RadioGroup
             aria-labelledby="demo-radio-buttons-group-label"
-            defaultValue="Sim"
+            defaultValue="Não"
             name="radio-buttons-group"
             className="subTitle-div-2"
             row
@@ -182,7 +182,7 @@ function FatherInformation({ validateStep }) {
               <div className="padding-bottom-family">
                 <RadioGroup
                   aria-labelledby="demo-radio-buttons-group-label"
-                  defaultValue="Sim"
+                  defaultValue="Não"
                   name="radio-buttons-group"
                   className="subTitle-div-2"
                   row
