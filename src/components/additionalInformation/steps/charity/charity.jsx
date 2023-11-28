@@ -141,37 +141,6 @@ function Charity({ validateStep }) {
           </div>
         )}
       </div>
-      <div className="div-country-padding">
-        <div className="padding-charity">
-          <div>
-            <div style={{ paddingBottom: "0.4rem" }}>
-              <span className="span-state">
-                Idiomas que você fala<span style={{ color: "red" }}>*</span>
-              </span>
-            </div>
-            <div className="padding-bottom-1">
-              <Select
-                className="style-select-travels"
-                multiple
-                value={data.languages}
-                onChange={handleChange}
-                input={<OutlinedInput />}
-                MenuProps={MenuProps}
-              >
-                {languageList.map((item, index) => (
-                  <MenuItem
-                    key={item.name}
-                    value={item.name}
-                    style={getStyles(item.name, personName, theme)}
-                  >
-                    {item.name}
-                  </MenuItem>
-                ))}
-              </Select>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
   );
 }

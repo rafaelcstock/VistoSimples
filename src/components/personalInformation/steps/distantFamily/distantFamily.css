@@ -138,3 +138,10 @@
     padding-left: 3rem;
 }
 
+.div-occupationAndOffice {
+    display: flex;
+}
+
+.custom-date-picker-initial {
+    width: 100%;
+}

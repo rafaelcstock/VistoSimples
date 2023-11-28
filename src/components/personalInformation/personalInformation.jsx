@@ -119,9 +119,7 @@ function PersonalInformation(props) {
       father.name.given_name &&
       father.name.given_name !== "" &&
       father.birth_date &&
-      father.birth_date !== "" &&
-      father.us_status &&
-      father.us_status !== "";
+      father.birth_date !== "";
 
     return isValid;
   };
@@ -144,9 +142,9 @@ function PersonalInformation(props) {
       mother.name.given_name &&
       mother.name.given_name !== "" &&
       mother.birth_date &&
-      mother.birth_date !== "" &&
-      mother.us_status &&
-      mother.us_status !== "";
+      mother.birth_date !== "";
+      // mother.us_status &&
+      // mother.us_status !== "";
 
     return isValid;
   };
@@ -192,22 +190,14 @@ function PersonalInformation(props) {
       primary_occupation.occupation_type !== "" &&
       primary_occupation.entity_name &&
       primary_occupation.entity_name !== "" &&
-      primary_occupation.phone_number &&
-      primary_occupation.phone_number !== "" &&
       primary_occupation.start_date &&
       primary_occupation.start_date !== "" &&
-      primary_occupation.occupation_title &&
-      primary_occupation.occupation_title !== "" &&
-      primary_occupation.address.country &&
-      primary_occupation.address.country !== "" &&
       primary_occupation.address.street &&
       primary_occupation.address.street !== "" &&
       primary_occupation.address.city &&
       primary_occupation.address.city !== "" &&
       primary_occupation.address.state &&
-      primary_occupation.address.state !== "" &&
-      primary_occupation.address.zip_code &&
-      primary_occupation.address.zip_code !== "";
+      primary_occupation.address.state !== "";
 
     return isValid;
   };

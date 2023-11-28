@@ -346,50 +346,6 @@ function Formation({ validateStep }) {
               </div>
             </div>
           </div>
-          <div className="div-2-inputs-work">
-            <div>
-              <div style={{ paddingBottom: "0.4rem" }}>
-                <span className="span-state">
-                  Telefone da companhia/organização
-                  <span style={{ color: "red" }}>*</span>
-                </span>
-              </div>
-              <div className="padding-bottom-1">
-                <InputMask
-                  mask="+99 (99) 99999-9999"
-                  maskChar=""
-                  value={data.education[0].phone_number}
-                  onChange={handleUpdateData}
-                >
-                  {() => (
-                    <TextField
-                      id="outlined-basic"
-                      className="style-select-work"
-                      placeholder="+99 (00) 00000-0000"
-                      variant="outlined"
-                      name="phone_number"
-                    />
-                  )}
-                </InputMask>
-              </div>
-            </div>
-            <div>
-              <div style={{ paddingBottom: "0.4rem" }}>
-                <span className="span-state">
-                  Email da companhia/organização
-                  <span style={{ color: "red" }}>*</span>
-                </span>
-              </div>
-              <div className="padding-bottom-1">
-                <TextField
-                  id="outlined-basic"
-                  className="style-select-work"
-                  placeholder="email@exemplo.com"
-                  variant="outlined"
-                />
-              </div>
-            </div>
-          </div>
         </div>
       ) : null}
     </div>

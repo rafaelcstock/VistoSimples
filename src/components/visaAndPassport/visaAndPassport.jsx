@@ -47,9 +47,7 @@ function VisaAndPassport(props) {
         ? lost_or_stolen_passports[0].document_type &&
           lost_or_stolen_passports[0].document_type !== "" &&
           lost_or_stolen_passports[0].country &&
-          lost_or_stolen_passports[0].country !== "" &&
-          lost_or_stolen_passports[0].number &&
-          lost_or_stolen_passports[0].number !== ""
+          lost_or_stolen_passports[0].country !== ""
         : true);
 
     return isValid;
