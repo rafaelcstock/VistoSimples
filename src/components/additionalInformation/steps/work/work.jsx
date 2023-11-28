@@ -1,14 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import "./work.css";
 import { FormControlLabel, Radio, RadioGroup } from "@mui/material";
 import { useData } from "../../../../dataContext/dataContext";
 import PastJobsComponent from "./PastJobsComponent/pasJobsComponent";
-import dayjs from "dayjs";
 
 function Work({ validateStep }) {
   const { data, updateData } = useData();
-
-  const [selectedState, setSelectedState] = useState("Sim");
 
   const handleValidate = (name, newDate, index) => {
     validateStep();
@@ -16,63 +13,6 @@ function Work({ validateStep }) {
 
   const handleUpdateDataContext = (newData) => {
     updateData(newData);
-  };
-
-  const handleDateUpdateData = (name, newDate, index) => {
-    let newObject;
-    if (newDate && dayjs(newDate).isValid()) {
-      const formattedDate = dayjs(newDate).format("YYYY-MM-DD");
-  
-      const newPastJobs = data.past_jobs.map((job, i) => {
-        if (i === index) {
-          return { ...job, [name]: formattedDate };
-        }
-        return job;
-      });
-  
-      newObject = { ...data, past_jobs: newPastJobs };
-    } else {
-      const newPastJobs = data.past_jobs.map((job, i) => {
-        if (i === index) {
-          return { ...job, [name]: "" }; // This line sets the end_date to an empty string
-        }
-        return job;
-      });
-  
-      newObject = { ...data, past_jobs: newPastJobs };
-    }
-  
-    updateContext(newObject);
-  };
-
-  const handleUpdateData = (name, value, index) => {
-    let newObject;
-
-    const newPastJobs = data.past_jobs.map((job, i) => {
-      if (i === index) {
-        return { ...job, [name]: value };
-      }
-      return job;
-    });
-
-    newObject = { ...data, past_jobs: newPastJobs };
-
-    updateData(newObject);
-  };
-
-  const handleAddressUpdate = (name, value, index) => {
-    let newObject;
-
-    const newPastJobs = data.past_jobs.map((job, i) => {
-      if (i === index) {
-        return { ...job, address: { ...job.address, [name]: value } };
-      }
-      return job;
-    });
-
-    newObject = { ...data, past_jobs: newPastJobs };
-
-    updateData(newObject);
   };
 
   const handleChangeSelect = (event) => {

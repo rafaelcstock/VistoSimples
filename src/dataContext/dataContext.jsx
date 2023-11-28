@@ -356,7 +356,7 @@ export function DataProvider({ children }) {
   });
 
   // console.log(data);
-  console.log(data.old_visa);
+  // console.log(data.national_identification_number);
   // console.log("------------------------- abaixo é lost");
   // console.log(data.lost_or_stolen_passports);
 
