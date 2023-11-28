@@ -97,7 +97,7 @@ function CountryService({ validateStep }) {
       <div className="div-country-padding">
         <div className="padding-bottom-title-input-country">
           <span className="title-header-2">
-            Já serviu?<span style={{ color: "red" }}>*</span>
+            Já serviu no exército?<span style={{ color: "red" }}>*</span>
           </span>
         </div>
         <div className="padding-radio-marital">

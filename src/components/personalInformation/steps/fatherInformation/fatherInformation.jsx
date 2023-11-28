@@ -223,7 +223,8 @@ const handleLocatingChange = (event) => {
               </div>
             </div>
           </div>
-          <div className="div-family-padding">
+          {data.father.locating_in_us ? (
+            <div className="div-family-padding">
             <div className="div-family-inputs">
               <div>
                 <div style={{ paddingBottom: "0.4rem" }}>
@@ -249,6 +250,8 @@ const handleLocatingChange = (event) => {
               </div>
             </div>
           </div>
+          ) : null
+          }
         </div>
       ) : null}
     </div>

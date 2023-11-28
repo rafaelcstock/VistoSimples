@@ -200,26 +200,6 @@ function Documents({ validateStep }) {
           <div>
             <div style={{ paddingBottom: "0.4rem" }}>
               <span className="span-state">
-                Data de expiração do passaporte
-                <span style={{ color: "red" }}>*</span>
-              </span>
-            </div>
-            <div className="padding-bottom-1">
-              <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <DatePicker
-                  format="DD/MM/YYYY"
-                  className="custom-date-picker-initial"
-                  value={dayjs(data.passport.expiration_date)}
-                  onChange={(date) =>
-                    handleDateUpdateData("expiration_date", date)
-                  }
-                />
-              </LocalizationProvider>
-            </div>
-          </div>
-          <div>
-            <div style={{ paddingBottom: "0.4rem" }}>
-              <span className="span-state">
                 Data de emissão do passaporte
                 <span style={{ color: "red" }}>*</span>
               </span>
@@ -229,9 +209,29 @@ function Documents({ validateStep }) {
                 <DatePicker
                   format="DD/MM/YYYY"
                   className="custom-date-picker-initial"
-                  value={dayjs(data.passport.issuance_date)}
+                  value={data.passport.issuance_date !== "" ? dayjs(data.passport.issuance_date) : null}
                   onChange={(date) =>
                     handleDateUpdateData("issuance_date", date)
+                  }
+                />
+              </LocalizationProvider>
+            </div>
+          </div>
+          <div>
+            <div style={{ paddingBottom: "0.4rem" }}>
+              <span className="span-state">
+                Data de expiração do passaporte
+                <span style={{ color: "red" }}>*</span>
+              </span>
+            </div>
+            <div className="padding-bottom-1">
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <DatePicker
+                  format="DD/MM/YYYY"
+                  className="custom-date-picker-initial"
+                  value={data.passport.expiration_date !== "" ? dayjs(data.passport.expiration_date) : null}
+                  onChange={(date) =>
+                    handleDateUpdateData("expiration_date", date)
                   }
                 />
               </LocalizationProvider>
@@ -313,7 +313,7 @@ function Documents({ validateStep }) {
             <div>
               <div style={{ paddingBottom: "0.4rem" }}>
                 <span className="span-state">
-                  Número do passaporte<span style={{ color: "red" }}>*</span>
+                  Número do Passaporte
                 </span>
               </div>
               <div className="padding-bottom-1">

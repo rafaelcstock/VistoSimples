@@ -65,7 +65,7 @@ function TravelInformations({ validateStep }) {
           <div>
             <div style={{ paddingBottom: "0.4rem" }}>
               <span className="span-state">
-                Data estimada da viagem<span style={{ color: "red" }}>*</span>
+                Data estimada da viagem aos Estados Unidos<span style={{ color: "red" }}>*</span>
               </span>
             </div>
             <div className="padding-bottom-1">

@@ -181,7 +181,7 @@ function MotherInformation({ validateStep = { validateStep } }) {
                   />
                   {!isBirthDateValid && (
                     <div style={{ color: "red" }}>
-                      A data de nascimento da mãe não pode ser superior à data atual.
+                      A data de nascimento não pode ser superior à data atual.
                     </div>
                   )}
                   </LocalizationProvider>
@@ -221,7 +221,8 @@ function MotherInformation({ validateStep = { validateStep } }) {
               </div>
             </div>
           </div>
-          <div className="div-family-padding">
+          {data.mother.locating_in_us ? (
+            <div className="div-family-padding">
             <div className="div-family-inputs">
               <div>
                 <div style={{ paddingBottom: "0.4rem" }}>
@@ -247,6 +248,7 @@ function MotherInformation({ validateStep = { validateStep } }) {
               </div>
             </div>
           </div>
+          ) : null}
         </div>
       ) : null}
     </div>
