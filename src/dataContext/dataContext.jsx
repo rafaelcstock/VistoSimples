@@ -235,7 +235,7 @@ export function DataProvider({ children }) {
         full_name: null,
       },
       birth_date: "",
-      locating_in_us: true,
+      locating_in_us: false,
       us_status: "S",
     },
     mother: {
@@ -345,7 +345,7 @@ export function DataProvider({ children }) {
     ],
     special_organization: "string",
     security_responses: ["string", null],
-    hasAnotherName: true,
+    hasAnotherName: false,
     hasAnotherNationality: true,
     hasInformationAboutFather: true,
     hasInformationAboutMother: true,

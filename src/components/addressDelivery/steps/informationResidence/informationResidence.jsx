@@ -70,7 +70,7 @@ function InformationResidence({ validateStep }) {
 
   const handleAddressChange = (event) => {
     const { value, name } = event.target;
-
+  
     if (data.mailing_address !== null) {
       updateData({
         ...data,
@@ -121,7 +121,7 @@ function InformationResidence({ validateStep }) {
           <div>
             <div style={{ paddingBottom: "0.4rem" }}>
               <span className="span-state">
-                Complemento<span style={{ color: "red" }}>*</span>
+                Complemento
               </span>
             </div>
             <div className="padding-bottom-1">
@@ -171,7 +171,7 @@ function InformationResidence({ validateStep }) {
               <TextField
                 id="outlined-basic"
                 className="style-select-work"
-                placeholder="Preencha um complemento"
+                placeholder="Preencha o Estado"
                 variant="outlined"
                 name="state"
                 value={data.address.state}
@@ -189,7 +189,7 @@ function InformationResidence({ validateStep }) {
               <TextField
                 id="outlined-basic"
                 className="style-select-work"
-                placeholder="Preencha um complemento"
+                placeholder="Preencha a cidade"
                 variant="outlined"
                 name="city"
                 value={data.address.city}

@@ -111,7 +111,7 @@ const FamilyFormComponent = ({
           <div>
             <div className="padding-usa">
               <span className="title-header-2">
-                Possui algum outro nos Estados
+                Possui algum outro familiar nos Estados
                 Unidos?(Esposo(a);noivo(a);filho(a);irmão(a);)
                 <span style={{ color: "red" }}>*</span>
               </span>

@@ -48,19 +48,10 @@ function Form() {
 
   const allComponents = [
     <PersonalInformation key="personalInfo" onPersonalChange={handleNext} />,
-    <AdditionalInformation
-      key="additionalInfo"
-      onAdditionalChange={handleNext}
-    />,
+    <AdditionalInformation key="additionalInfo" onAdditionalChange={handleNext} />,
     <AddressDelivery key="addressDelivery" onAddressChange={handleNext} />,
-    <TravelInformation
-      key="travelInformation"
-      onTravelInformationChange={handleNext}
-    />,
-    <VisaAndPassport
-      key="visaAndPassport"
-      onVisaAndPassaportChange={handleNext}
-    />,
+    <TravelInformation key="travelInformation" onTravelInformationChange={handleNext} />,
+    <VisaAndPassport key="visaAndPassport" onVisaAndPassaportChange={handleNext} />,
     <End onEndChange={addParents} key="end" />,
   ];
 

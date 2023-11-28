@@ -104,16 +104,21 @@ function ContactPoint({ validateStep }) {
   const handleContactNameChange = (event) => {
     const { value, name } = event.target;
 
-    updateData({
-      ...data,
-      us_contact: {
-        ...data.us_contact,
-        person_name: {
-          ...data.us_contact.person_name,
-          [name]: value,
+    if (/^[A-Za-z\s]+$/.test(value) || value === "") {
+      updateData({
+        ...data,
+        us_contact: {
+          ...data.us_contact,
+          person_name: {
+            ...data.us_contact.person_name,
+            [name]: value,
+          },
         },
-      },
-    });
+      });
+    }
+    else {
+      console.error("O nome deve conter apenas letras e espaços.");
+    }
   };
 
   const handleAddressChange = (event) => {

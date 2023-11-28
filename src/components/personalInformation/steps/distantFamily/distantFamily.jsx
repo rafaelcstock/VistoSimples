@@ -12,6 +12,8 @@ import InputMask from "react-input-mask";
 
 function DistantFamily({ validateStep }) {
   const { data, updateData } = useData();
+  const [isStartDateValid, setIsStartDateValid] = useState(true);
+  const [isEndDateValid, setIsEndDateValid] = useState(true);
 
   const [radioOcupation, setRadioOcupation] = useState("Empregado");
   const [city, setCity] = useState("");
@@ -91,14 +93,23 @@ function DistantFamily({ validateStep }) {
 
   const handleStartDateChange = (selectedDate) => {
     if (selectedDate && dayjs(selectedDate).isValid()) {
-      const formattedDate = dayjs(selectedDate).format("YYYY-MM-DD");
-      updateData({
-        ...data,
-        primary_occupation: {
-          ...data.primary_occupation,
-          start_date: formattedDate,
-        },
-      });
+      const currentDate = dayjs();
+      const selectedDateTime = dayjs(selectedDate);
+
+      if (selectedDateTime.isAfter(currentDate)) {
+        setIsStartDateValid(false);
+        console.error("A data de início não pode ser superior à data atual.");
+      } else {
+        const formattedDate = selectedDateTime.format("YYYY-MM-DD");
+        updateData({
+          ...data,
+          primary_occupation: {
+            ...data.primary_occupation,
+            start_date: formattedDate,
+          },
+        });
+        setIsStartDateValid(true);
+      }
     } else {
       updateData({
         ...data,
@@ -107,19 +118,30 @@ function DistantFamily({ validateStep }) {
           start_date: null,
         },
       });
+      setIsStartDateValid(false);
     }
   };
 
   const handleEndDateChange = (selectedDate) => {
+    deb
     if (selectedDate && dayjs(selectedDate).isValid()) {
-      const formattedDate = dayjs(selectedDate).format("YYYY-MM-DD");
-      updateData({
-        ...data,
-        primary_occupation: {
-          ...data.primary_occupation,
-          end_date: formattedDate,
-        },
-      });
+      const currentDate = dayjs();
+      const selectedDateTime = dayjs(selectedDate);
+
+      if (selectedDateTime.isAfter(currentDate)) {
+        setIsEndDateValid(false);
+        console.error("A data de término não pode ser superior à data atual.");
+      } else {
+        const formattedDate = selectedDateTime.format("YYYY-MM-DD");
+        updateData({
+          ...data,
+          primary_occupation: {
+            ...data.primary_occupation,
+            end_date: formattedDate,
+          },
+        });
+        setIsEndDateValid(true);
+      }
     } else {
       updateData({
         ...data,
@@ -128,6 +150,7 @@ function DistantFamily({ validateStep }) {
           end_date: null,
         },
       });
+      setIsEndDateValid(false);
     }
   };
 
@@ -315,13 +338,24 @@ function DistantFamily({ validateStep }) {
                   </div>
                   <div className="padding-bottom-1">
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
-                      <DatePicker
+                    <DatePicker
                         format="DD/MM/YYYY"
-                        className="custom-date-picker-initial"
-                        value={dayjs(data.primary_occupation.start_date)}
+                        className={`custom-date-picker-initial ${
+                          isStartDateValid ? "" : "invalid-date"
+                        }`}
+                        value={
+                          data.primary_occupation.start_date
+                            ? dayjs(data.primary_occupation.start_date)
+                            : null
+                        }
                         onChange={handleStartDateChange}
                       />
                     </LocalizationProvider>
+                    {!isStartDateValid && (
+                      <span className="error-message" style={{ color: "red" }}>
+                        A data de início não pode ser superior à data atual.
+                      </span>
+                    )}
                   </div>
                 </div>
                 <div>
@@ -330,13 +364,20 @@ function DistantFamily({ validateStep }) {
                   </div>
                   <div className="padding-bottom-1">
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
-                      <DatePicker
+                    <DatePicker
                         format="DD/MM/YYYY"
-                        className="custom-date-picker-initial"
-                        value={dayjs(data.primary_occupation.end_date)}
+                        className={`custom-date-picker-initial ${
+                          isEndDateValid ? "" : "invalid-date"
+                        }`}
+                        value={
+                          data.primary_occupation.end_date
+                            ? dayjs(data.primary_occupation.end_date)
+                            : null
+                        }
                         onChange={handleEndDateChange}
                       />
                     </LocalizationProvider>
+                    
                   </div>
                 </div>
               </div>
