@@ -22,27 +22,27 @@ function Work({ validateStep }) {
     let newObject;
     if (newDate && dayjs(newDate).isValid()) {
       const formattedDate = dayjs(newDate).format("YYYY-MM-DD");
-
+  
       const newPastJobs = data.past_jobs.map((job, i) => {
         if (i === index) {
           return { ...job, [name]: formattedDate };
         }
         return job;
       });
-
+  
       newObject = { ...data, past_jobs: newPastJobs };
     } else {
       const newPastJobs = data.past_jobs.map((job, i) => {
         if (i === index) {
-          return { ...job, [name]: "" };
+          return { ...job, [name]: "" }; // This line sets the end_date to an empty string
         }
         return job;
       });
-
+  
       newObject = { ...data, past_jobs: newPastJobs };
     }
-
-    updateData(newObject);
+  
+    updateContext(newObject);
   };
 
   const handleUpdateData = (name, value, index) => {

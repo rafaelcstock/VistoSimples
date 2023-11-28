@@ -25,7 +25,7 @@ function AnotherName({ validateStep }) {
   const handleNameChange = (event) => {
     const { value, name } = event.target;
 
-    if (/^[a-zA-Z]+$/.test(value) || value === "") {
+    if (/^[a-zA-Z\s]+$/.test(value) || value === "") {
       updateData({
         ...data,
         other_name: { ...data.other_name, [name]: value },

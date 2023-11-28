@@ -8,12 +8,15 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import InputMask from "react-input-mask";
 import MaritalStatus from "../../../../datas/marital_status";
 import dayjs from "dayjs";
+import isEmail from 'validator/lib/isEmail';
 
 import { useData } from "../../../../dataContext/dataContext";
 
 function InitialInformation({ onStatusChange, validateStep }) {
 
   const [isBirthDateValid, setIsBirthDateValid] = useState(true);
+
+  const [isEmailValid, setIsEmailValid] = useState(true);
 
   const { data, updateData } = useData();
 
@@ -37,16 +40,24 @@ function InitialInformation({ onStatusChange, validateStep }) {
   }
 };
 
-  const handleBirthDateChange = (selectedDate) => {
-    if (selectedDate && dayjs(selectedDate).isValid()) {
-      const formattedDate = dayjs(selectedDate).format("YYYY-MM-DD");
+const handleBirthDateChange = (selectedDate) => {
+  if (selectedDate && dayjs(selectedDate).isValid()) {
+    const currentDate = dayjs();
+    const selectedDateTime = dayjs(selectedDate);
+
+    if (selectedDateTime.isAfter(currentDate)) {
+      setIsBirthDateValid(false);
+
+    } else {
+      const formattedDate = selectedDateTime.format("YYYY-MM-DD");
       updateData({ ...data, birth: { ...data.birth, date: formattedDate } });
       setIsBirthDateValid(true);
-    } else {
-      updateData({ ...data, birth: { ...data.birth, date: "" } });
-      setIsBirthDateValid(false);
     }
-  };
+  } else {
+    updateData({ ...data, birth: { ...data.birth, date: "" } });
+    setIsBirthDateValid(false);
+  }
+};
   
   const handlePhoneNumberChange = (event) => {
     const { value, name } = event.target;
@@ -55,6 +66,11 @@ function InitialInformation({ onStatusChange, validateStep }) {
 
   const handleEmailChange = (event) => {
     const { value } = event.target;
+
+    const isValid = isEmail(value);
+
+    setIsEmailValid(isValid);
+
     updateData({ ...data, email_address: value });
   };
 
@@ -66,9 +82,17 @@ function InitialInformation({ onStatusChange, validateStep }) {
     });
   };
 
+  const handleCPFChange = (event) => {
+    const { value } = event.target;
+    updateData({
+      ...data,
+      national_identification_number: [value],
+    });
+  };
+
   useEffect(() => {
     validateStep();
-  }, [data]);
+  }, [data, isEmailValid]);
 
   return (
     <div className="div-margin">
@@ -180,18 +204,22 @@ function InitialInformation({ onStatusChange, validateStep }) {
           <div>
             <div style={{ paddingBottom: "0.4rem" }}>
               <span className="span-state">
-                Data de nascimento <span style={{ color: "" }}>*</span>
+                Data de nascimento <span style={{ color: "red" }}>*</span>
               </span>
             </div>
             <div className="padding-bottom-1">
               <LocalizationProvider dateAdapter={AdapterDayjs}>
-
-                <DatePicker
-                  value={null}
-                  onChange={handleBirthDateChange}
-                  format="DD/MM/YYYY"
-                  className="custom-date-picker-initial"
+              <DatePicker
+                onChange={handleBirthDateChange}
+                format="DD/MM/YYYY"
+                className="custom-date-picker-initial"
+                value={data.birth.date !== "" ? dayjs(data.birth.date) : null}
               />
+              {!isBirthDateValid && (
+                <div style={{ color: "red" }}>
+                  A data não pode ser superior à data atual.
+                </div>
+              )}
               </LocalizationProvider>
             </div>
           </div>

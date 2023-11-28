@@ -110,13 +110,17 @@ function Payer({ validateStep }) {
 
   const handlePersonNameChange = (event) => {
     const { value, name } = event.target;
-
-    updateData({
-      entity_paying: {
-        ...data.entity_paying,
-        person_name: { ...data.entity_paying.person_name, [name]: value },
-      },
-    });
+  
+    if (/^[A-Za-z\s]*$/.test(value) || value === "") {
+      updateData({
+        entity_paying: {
+          ...data.entity_paying,
+          person_name: { ...data.entity_paying.person_name, [name]: value },
+        },
+      });
+    } else {
+      console.error("O nome deve conter apenas letras e espaços.");
+    }
   };
 
   const handleAddressChange = (event) => {

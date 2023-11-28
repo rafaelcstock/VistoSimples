@@ -73,9 +73,9 @@ function TravelInformation(props) {
       stay.address.state &&
       stay.address.state !== "" &&
       stay.address.zip_code &&
-      stay.address.zip_code !== "" &&
-      stay.address.country &&
-      stay.address.country !== "";
+      stay.address.zip_code !== "";
+      // stay.address.country &&
+      // stay.address.country !== "";
 
     return isValid;
   };
@@ -215,12 +215,14 @@ function TravelInformation(props) {
       newSkipped.delete(activeStep);
     }
 
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    
 
     setSkipped(newSkipped);
     if (activeStep === 5) {
       props.onTravelInformationChange();
     }
+
+    setActiveStep((prevActiveStep) => prevActiveStep + 1);
 
     setIsDisabled(true);
   };

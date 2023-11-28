@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect, useState } from "react";
 import "./countryService.css";
 import { MenuItem, Select, TextField } from "@mui/material";
 import { FormControlLabel, Radio, RadioGroup } from "@mui/material";
@@ -10,6 +10,9 @@ import dayjs from "dayjs";
 
 function CountryService({ validateStep }) {
   const { data, updateData } = useData();
+
+  const [isStartDateValid, setIsStartDateValid] = useState(true);
+  const [isEndDateValid, setIsEndDateValid] = useState(true);  
 
   const handleUpdateData = (event) => {
     const { value, name } = event.target;
@@ -44,20 +47,35 @@ function CountryService({ validateStep }) {
   };
 
   const handleDateUpdateData = (name, newDate) => {
-    if (newDate && dayjs(newDate).isValid()) {
+    let isValid = true;
+  
+    const isDateValid = (selectedDate) => {
+      const currentDate = dayjs();
+      return selectedDate.isSameOrBefore(currentDate);
+    };
+  
+    if (newDate && dayjs(newDate).isValid() && isDateValid(dayjs(newDate))) {
       const formattedDate = dayjs(newDate).format("YYYY-MM-DD");
-
+  
       updateData({
         ...data,
         military_info: [{ ...data.military_info[0], [name]: formattedDate }],
       });
     } else {
+      isValid = false;
+  
       updateData({
         ...data,
-        military_info: [{ ...data.military_info[0], [name]: "" }],
+        military_info: [{ ...data.military_info[0], [name]: null }],
       });
     }
-  };
+  
+    if (name === "start_date") {
+      setIsStartDateValid(isValid);
+    } else if (name === "end_date") {
+      setIsEndDateValid(isValid);
+    }
+  };    
 
   useEffect(() => {
     validateStep();
@@ -198,15 +216,18 @@ function CountryService({ validateStep }) {
                 </div>
                 <div className="padding-bottom-1">
                   <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <DatePicker
-                      format="DD/MM/YYYY"
-                      className="custom-date-picker-initial"
-                      value={dayjs(data.military_info[0].start_date)}
-                      onChange={(date) =>
-                        handleDateUpdateData("start_date", date)
-                      }
-                    />
+                  <DatePicker
+                    format="DD/MM/YYYY"
+                    className={`custom-date-picker-initial ${!isStartDateValid ? "invalid-date" : ""}`}
+                    value={data.military_info[0].start_date !== "" ? dayjs(data.military_info[0].start_date) : null}
+                    onChange={(date) => handleDateUpdateData("start_date", date)}
+                  />
                   </LocalizationProvider>
+                  {!isStartDateValid && (
+                    <div style={{ color: "red" }}>
+                      A data não pode ser superior à data atual.
+                    </div>
+                  )}
                 </div>
               </div>
               <div>
@@ -218,15 +239,18 @@ function CountryService({ validateStep }) {
                 </div>
                 <div className="padding-bottom-1">
                   <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <DatePicker
-                      format="DD/MM/YYYY"
-                      className="custom-date-picker-initial"
-                      value={dayjs(data.military_info[0].end_date)}
-                      onChange={(date) =>
-                        handleDateUpdateData("end_date", date)
-                      }
-                    />
+                  <DatePicker
+                    format="DD/MM/YYYY"
+                    className={`custom-date-picker-initial ${!isEndDateValid ? "invalid-date" : ""}`}
+                    value={data.military_info[0].end_date !== "" ? dayjs(data.military_info[0].end_date) : null}
+                    onChange={(date) => handleDateUpdateData("end_date", date)}
+                  />
                   </LocalizationProvider>
+                  {!isEndDateValid && (
+                    <div style={{ color: "red" }}>
+                      A data não pode ser superior à data atual.
+                    </div>
+                  )}
                 </div>
               </div>
             </div>

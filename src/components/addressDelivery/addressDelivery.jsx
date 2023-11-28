@@ -31,8 +31,8 @@ function AddressDelivery(props) {
     isValid =
       address.street &&
       address.street !== "" &&
-      address.complement &&
-      address.complement !== "" &&
+      // address.complement &&
+      // address.complement !== "" &&
       address.city &&
       address.city !== "" &&
       address.state &&
@@ -48,8 +48,8 @@ function AddressDelivery(props) {
         permanent_resident_other_country !== " " &&
         address.street &&
         address.street !== "" &&
-        address.complement &&
-        address.complement !== "" &&
+        // address.complement &&
+        // address.complement !== "" &&
         address.city &&
         address.city !== "" &&
         address.state &&
@@ -71,8 +71,8 @@ function AddressDelivery(props) {
     isValid =
       mailing_address.street &&
       mailing_address.street !== "" &&
-      mailing_address.complement &&
-      mailing_address.complement !== "" &&
+      // mailing_address.complement &&
+      // mailing_address.complement !== "" &&
       mailing_address.city &&
       mailing_address.city !== "" &&
       mailing_address.state &&

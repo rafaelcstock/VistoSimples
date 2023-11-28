@@ -20,7 +20,7 @@ import { useData } from "../../dataContext/dataContext";
 function PersonalInformation(props) {
   const { data, updateData } = useData();
 
-  const [activeStep, setActiveStep] = useState(0);
+  const [activeStep, setActiveStep] = useState(10);
 
   const [skipped, setSkipped] = useState(new Set());
 
@@ -287,18 +287,18 @@ function PersonalInformation(props) {
     10: validateStep10,
   };
 
-  // const validateStep1 = () => {
-  //   const { name, marital_status } = data;
+  const validateStep1 = () => {
+    const { name, marital_status } = data;
 
-  //   return (
-  //     name.surname &&
-  //     name.surname !== "" &&
-  //     name.given_name &&
-  //     name.given_name !== "" &&
-  //     marital_status &&
-  //     marital_status !== ""
-  //   );
-  // };
+    return (
+      name.surname &&
+      name.surname !== "" &&
+      name.given_name &&
+      name.given_name !== "" &&
+      marital_status &&
+      marital_status !== ""
+    );
+  };
 
   const isStepSkipped = (step) => {
     return skipped.has(step);
