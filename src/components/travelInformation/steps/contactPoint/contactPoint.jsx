@@ -104,16 +104,21 @@ function ContactPoint({ validateStep }) {
   const handleContactNameChange = (event) => {
     const { value, name } = event.target;
 
-    updateData({
-      ...data,
-      us_contact: {
-        ...data.us_contact,
-        person_name: {
-          ...data.us_contact.person_name,
-          [name]: value,
+    if (/^[A-Za-z\s]+$/.test(value) || value === "") {
+      updateData({
+        ...data,
+        us_contact: {
+          ...data.us_contact,
+          person_name: {
+            ...data.us_contact.person_name,
+            [name]: value,
+          },
         },
-      },
-    });
+      });
+    }
+    else {
+      console.error("O nome deve conter apenas letras e espaços.");
+    }
   };
 
   const handleAddressChange = (event) => {
@@ -332,7 +337,7 @@ function ContactPoint({ validateStep }) {
               </div>
               <div className="padding-bottom-1">
                 <InputMask
-                  mask="99+ (99) 99999-9999"
+                  mask="+99 (99) 99999-9999"
                   maskChar=""
                   value={data.us_contact.phone_number}
                   onChange={handlePhoneNumberChange}
@@ -341,7 +346,7 @@ function ContactPoint({ validateStep }) {
                     <TextField
                       id="outlined-basic"
                       className="style-select-work"
-                      placeholder="99+ (00) 00000-0000"
+                      placeholder="+99 (00) 00000-0000"
                       variant="outlined"
                     />
                   )}
@@ -529,7 +534,7 @@ function ContactPoint({ validateStep }) {
               </div>
               <div className="padding-bottom-1">
                 <InputMask
-                  mask="99+ (99) 99999-9999"
+                  mask="+99 (99) 99999-9999"
                   maskChar=""
                   value={data.us_contact.phone_number}
                   onChange={handlePhoneNumberChange}
@@ -538,7 +543,7 @@ function ContactPoint({ validateStep }) {
                     <TextField
                       id="outlined-basic"
                       className="style-select-work"
-                      placeholder="99+ (00) 00000-0000"
+                      placeholder="+99 (00) 00000-0000"
                       variant="outlined"
                     />
                   )}

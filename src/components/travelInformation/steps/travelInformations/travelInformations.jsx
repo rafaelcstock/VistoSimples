@@ -65,7 +65,7 @@ function TravelInformations({ validateStep }) {
           <div>
             <div style={{ paddingBottom: "0.4rem" }}>
               <span className="span-state">
-                Data estimada da viagem<span style={{ color: "red" }}>*</span>
+                Data estimada da viagem aos Estados Unidos<span style={{ color: "red" }}>*</span>
               </span>
             </div>
             <div className="padding-bottom-1">
@@ -73,7 +73,7 @@ function TravelInformations({ validateStep }) {
                 <DatePicker
                   format="DD/MM/YYYY"
                   className="custom-date-picker-initial"
-                  value={dayjs(data.stay.date)}
+                  value={data.stay.date !== "" ? dayjs(data.stay.date) : null}
                   onChange={handleDateUpdateData}
                 />
               </LocalizationProvider>
@@ -119,30 +119,7 @@ function TravelInformations({ validateStep }) {
               />
             </div>
           </div>
-          <div>
-            <div style={{ paddingBottom: "0.4rem" }}>
-              <span className="span-state">
-                País da possível hospedagem{" "}
-                <span style={{ color: "red" }}>*</span>
-              </span>
-            </div>
-            <div className="padding-bottom-1">
-              <Select
-                className="input-style-work"
-                labelId="select-state"
-                id="select-state"
-                name="country"
-                value={data.stay.address.country}
-                onChange={handleAddressChange}
-              >
-                {Countries.map((countrie, index) => (
-                  <MenuItem key={index} value={countrie.key}>
-                    {countrie.value}
-                  </MenuItem>
-                ))}
-              </Select>
-            </div>
-          </div>
+
           <div>
             <div style={{ paddingBottom: "0.4rem" }}>
               <span className="span-state">
@@ -180,7 +157,7 @@ function TravelInformations({ validateStep }) {
               <TextField
                 id="outlined-basic"
                 className="input-style-work"
-                placeholder="Bairro, rua e número"
+                placeholder="Digite a cidade"
                 variant="outlined"
                 name="city"
                 value={data.stay.address.city}
@@ -196,7 +173,7 @@ function TravelInformations({ validateStep }) {
             </div>
             <div className="padding-bottom-1">
               <InputMask
-                mask="99999-999"
+                mask="99999"
                 maskChar=""
                 value={data.stay.address.zip_code}
                 onChange={handleAddressChange}
@@ -205,7 +182,7 @@ function TravelInformations({ validateStep }) {
                   <TextField
                     id="outlined-basic"
                     className="style-select-work"
-                    placeholder="00000-000"
+                    placeholder="00000"
                     variant="outlined"
                     name="zip_code"
                   />

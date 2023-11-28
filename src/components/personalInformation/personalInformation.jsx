@@ -16,6 +16,7 @@ import Divorced from "./steps/maritalStatus/divorced";
 import Widow from "./steps/maritalStatus/widow";
 
 import { useData } from "../../dataContext/dataContext";
+import { emailRegex } from "../utils/regex";
 
 function PersonalInformation(props) {
   const { data, updateData } = useData();
@@ -27,6 +28,12 @@ function PersonalInformation(props) {
   const [maritalStatus, setMaritalStatus] = useState(null);
   const [selectedStatus, setSelectedStatus] = useState("");
 
+  const [isValidInitialInformation, setIsValidInitialInformation] = useState({
+    email: true,
+    secondary_email: true,
+    cpf: true,
+  });
+
   const [isDisabled, setIsDisabled] = useState(true);
 
   const validateStep = () => {
@@ -37,8 +44,37 @@ function PersonalInformation(props) {
   };
 
   const validateStep0 = () => {
-    const { name, marital_status, birth, primary_phone_number, email_address } =
-      data;
+    const {
+      name,
+      marital_status,
+      birth,
+      primary_phone_number,
+      email_address,
+      other_email_adresses,
+      national_identification_number,
+    } = data;
+
+    let validateEmail = true;
+    let validateSecondaryEmail = true;
+    let validateCpf = true;
+
+    validateEmail =
+      email_address !== "" ? emailRegex.test(email_address) : true;
+    validateSecondaryEmail =
+      other_email_adresses[0] !== ""
+        ? emailRegex.test(other_email_adresses[0])
+        : true;
+
+    validateCpf =
+      national_identification_number !== ""
+        ? checkCpf(national_identification_number)
+        : true;
+
+    setIsValidInitialInformation({
+      cpf: validateCpf,
+      secondary_email: validateSecondaryEmail,
+      email: validateEmail,
+    });
 
     return (
       name.surname &&
@@ -52,7 +88,12 @@ function PersonalInformation(props) {
       primary_phone_number &&
       primary_phone_number !== "" &&
       email_address &&
-      email_address !== ""
+      email_address !== "" &&
+      validateEmail &&
+      validateSecondaryEmail &&
+      national_identification_number &&
+      national_identification_number !== "" &&
+      validateCpf
     );
   };
 
@@ -119,9 +160,7 @@ function PersonalInformation(props) {
       father.name.given_name &&
       father.name.given_name !== "" &&
       father.birth_date &&
-      father.birth_date !== "" &&
-      father.us_status &&
-      father.us_status !== "";
+      father.birth_date !== "";
 
     return isValid;
   };
@@ -130,7 +169,7 @@ function PersonalInformation(props) {
     let isValid = false;
 
     const { mother, hasInformationAboutMother } = data;
-    debugger;
+
     if (!hasInformationAboutMother) {
       isValid = true;
       return isValid;
@@ -144,9 +183,9 @@ function PersonalInformation(props) {
       mother.name.given_name &&
       mother.name.given_name !== "" &&
       mother.birth_date &&
-      mother.birth_date !== "" &&
-      mother.us_status &&
-      mother.us_status !== "";
+      mother.birth_date !== "";
+      // mother.us_status &&
+      // mother.us_status !== "";
 
     return isValid;
   };
@@ -192,22 +231,14 @@ function PersonalInformation(props) {
       primary_occupation.occupation_type !== "" &&
       primary_occupation.entity_name &&
       primary_occupation.entity_name !== "" &&
-      primary_occupation.phone_number &&
-      primary_occupation.phone_number !== "" &&
       primary_occupation.start_date &&
       primary_occupation.start_date !== "" &&
-      primary_occupation.occupation_title &&
-      primary_occupation.occupation_title !== "" &&
-      primary_occupation.address.country &&
-      primary_occupation.address.country !== "" &&
       primary_occupation.address.street &&
       primary_occupation.address.street !== "" &&
       primary_occupation.address.city &&
       primary_occupation.address.city !== "" &&
       primary_occupation.address.state &&
-      primary_occupation.address.state !== "" &&
-      primary_occupation.address.zip_code &&
-      primary_occupation.address.zip_code !== "";
+      primary_occupation.address.state !== "";
 
     return isValid;
   };
@@ -287,18 +318,54 @@ function PersonalInformation(props) {
     10: validateStep10,
   };
 
-  // const validateStep1 = () => {
-  //   const { name, marital_status } = data;
+  const checkCpf = (cpf) => {
+    const cleanedCpf = cpf.replace(/\D/g, "");
 
-  //   return (
-  //     name.surname &&
-  //     name.surname !== "" &&
-  //     name.given_name &&
-  //     name.given_name !== "" &&
-  //     marital_status &&
-  //     marital_status !== ""
-  //   );
-  // };
+    if (cleanedCpf.length !== 11) {
+      return false;
+    }
+
+    if (/^(\d)\1+$/.test(cleanedCpf)) {
+      return false;
+    }
+
+    let sum = 0;
+    for (let i = 1; i <= 9; i++) {
+      sum += parseInt(cleanedCpf.charAt(i - 1)) * (11 - i);
+    }
+    let remainder = (sum * 10) % 11;
+    if (remainder === 10 || remainder === 11) {
+      remainder = 0;
+    }
+
+    if (remainder !== parseInt(cleanedCpf.charAt(9))) {
+      return false;
+    }
+
+    sum = 0;
+    for (let i = 1; i <= 10; i++) {
+      sum += parseInt(cleanedCpf.charAt(i - 1)) * (12 - i);
+    }
+    remainder = (sum * 10) % 11;
+    if (remainder === 10 || remainder === 11) {
+      remainder = 0;
+    }
+
+    return remainder === parseInt(cleanedCpf.charAt(10));
+  };
+
+  const validateStep1 = () => {
+    const { name, marital_status } = data;
+
+    return (
+      name.surname &&
+      name.surname !== "" &&
+      name.given_name &&
+      name.given_name !== "" &&
+      marital_status &&
+      marital_status !== ""
+    );
+  };
 
   const isStepSkipped = (step) => {
     return skipped.has(step);
@@ -355,6 +422,7 @@ function PersonalInformation(props) {
       key="initialInformation"
       onStatusChange={handleStatusChange}
       validateStep={validateStep}
+      isValidInitialInformation={isValidInitialInformation}
     />,
     maritalStatus,
     <AnotherName key="anotherName" validateStep={validateStep} />,

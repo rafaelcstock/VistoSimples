@@ -109,9 +109,9 @@ const FamilyFormComponent = ({
         </div>
         {index < 1 && (
           <div>
-            <div className="padding-usa">
+            {/* <div className="padding-usa">
               <span className="title-header-2">
-                Possui algum outro nos Estados
+                Possui algum outro familiar nos Estados
                 Unidos?(Esposo(a);noivo(a);filho(a);irmão(a);)
                 <span style={{ color: "red" }}>*</span>
               </span>
@@ -128,7 +128,7 @@ const FamilyFormComponent = ({
                 <FormControlLabel value="Sim" control={<Radio />} label="Sim" />
                 <FormControlLabel value="Não" control={<Radio />} label="Não" />
               </RadioGroup>
-            </div>
+            </div> */}
           </div>
         )}
       </div>

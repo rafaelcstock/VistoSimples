@@ -16,9 +16,13 @@ const PastJobsComponent = ({
   updateContext,
 }) => {
   const { data } = useData();
+  const [isStartDateValid, setIsStartDateValid] = useState(true);
+  const [isEndDateValid, setIsEndDateValid] = useState(true);
 
   const handleDateUpdateData = (name, newDate, index) => {
     let newObject;
+    let isValid = true;
+
     if (newDate && dayjs(newDate).isValid()) {
       const formattedDate = dayjs(newDate).format("YYYY-MM-DD");
 
@@ -31,6 +35,7 @@ const PastJobsComponent = ({
 
       newObject = { ...data, past_jobs: newPastJobs };
     } else {
+      isValid = false;
       const newPastJobs = data.past_jobs.map((job, i) => {
         if (i === index) {
           return { ...job, [name]: "" };
@@ -41,8 +46,15 @@ const PastJobsComponent = ({
       newObject = { ...data, past_jobs: newPastJobs };
     }
 
+    if (name === "start_date") {
+      setIsStartDateValid(isValid);
+    } else if (name === "end_date") {
+      setIsEndDateValid(isValid);
+    }
+
     updateContext(newObject);
   };
+    
 
   const handleUpdateData = (name, value, index) => {
     let newObject;
@@ -88,21 +100,21 @@ const PastJobsComponent = ({
             </span>
           </div>
           <div className="padding-bottom-1">
-            <Select
-              className="input-style-work"
-              labelId="select-state"
-              id="select-state"
-              value={job.occupation_type}
-              onChange={(e) =>
-                handleUpdateData("occupation_type", e.target.value, index)
-              }
-            >
-              {PrimaryOccupation.map((countrie, index) => (
-                <MenuItem key={index} value={countrie.key}>
-                  {countrie.value}
-                </MenuItem>
-              ))}
-            </Select>
+          <Select
+            className="input-style-work"
+            labelId="select-state"
+            id="select-state"
+            value={job.occupation_type}
+            onChange={(e) =>
+              handleUpdateData("occupation_type", e.target.value, index)
+            }
+          >
+            {PrimaryOccupation.sort((a, b) => a.value.localeCompare(b.value)).map((countrie, index) => (
+              <MenuItem key={index} value={countrie.key}>
+                {countrie.value}
+              </MenuItem>
+            ))}
+          </Select>
           </div>
         </div>
         <div>
@@ -148,22 +160,29 @@ const PastJobsComponent = ({
 
       <div className="div-2-inputs-work">
         <div>
-          <div style={{ paddingBottom: "0.4rem" }}>
+        <div style={{ paddingBottom: "0.4rem" }}>
             <span className="span-state">
               Data de inicio<span style={{ color: "red" }}>*</span>
             </span>
           </div>
           <div className="padding-bottom-1">
             <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <DatePicker
-                format="DD/MM/YYYY"
-                className="custom-date-picker-initial"
-                value={dayjs(job.start_date)}
-                onChange={(value) =>
-                  handleDateUpdateData("start_date", value, index)
-                }
-              />
+            <DatePicker
+              format="DD/MM/YYYY"
+              className={`custom-date-picker-initial ${
+                isStartDateValid ? "" : "invalid-date"
+              }`}
+              value={job.start_date ? dayjs(job.start_date) : null}
+              onChange={(value) =>
+                handleDateUpdateData("start_date", value, index)
+              }
+            />
             </LocalizationProvider>
+            {!isStartDateValid && (
+              <span className="error-message" style={{ color: "red" }}>
+                A data de início não pode ser superior à data atual.
+              </span>
+            )}
           </div>
         </div>
         <div>
@@ -174,15 +193,20 @@ const PastJobsComponent = ({
           </div>
           <div className="padding-bottom-1">
             <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <DatePicker
-                format="DD/MM/YYYY"
-                className="custom-date-picker-initial"
-                value={dayjs(job.end_date)}
-                onChange={(value) =>
-                  handleDateUpdateData("end_date", value, index)
-                }
-              />
+            <DatePicker
+              format="DD/MM/YYYY"
+              className={`custom-date-picker-initial ${
+                isStartDateValid ? "" : "invalid-date"
+              }`}
+              value={job.end_date ? dayjs(job.end_date) : null}
+              onChange={(value) => handleDateUpdateData("end_date", value, index)}
+            />
             </LocalizationProvider>
+            {!isEndDateValid && (
+              <span className="error-message" style={{ color: "red" }}>
+                A data de término não pode ser superior à data atual.
+              </span>
+            )}
           </div>
         </div>
       </div>
@@ -306,7 +330,7 @@ const PastJobsComponent = ({
           </div>
           <div className="padding-bottom-1">
             <InputMask
-              mask="99+ (99) 99999-9999"
+              mask="+99 (99) 99999-9999"
               maskChar=""
               value={job.phone_number}
               onChange={(e) =>
@@ -317,7 +341,7 @@ const PastJobsComponent = ({
                 <TextField
                   id="outlined-basic"
                   className="style-select-work"
-                  placeholder="99+ (00) 00000-0000"
+                  placeholder="+99 (00) 00000-0000"
                   variant="outlined"
                 />
               )}

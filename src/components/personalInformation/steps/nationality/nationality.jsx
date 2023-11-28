@@ -2,13 +2,25 @@ import React, { useEffect, useState } from "react";
 import "./nationality.css";
 import { MenuItem, Select, TextField } from "@mui/material";
 import statesBrazilianService from "../../../../services/statesBrazilianService";
-import { FormControlLabel, Radio, RadioGroup } from "@mui/material";
+import { FormControlLabel, Radio, RadioGroup, OutlinedInput } from "@mui/material";
 import InsertPhotoOutlinedIcon from "@mui/icons-material/InsertPhotoOutlined";
 import Countries from "../../../../datas/countries";
 import countriesService from "../../../../services/countriesWorld";
 import statesService from "../../../../services/statesWorldMain";
 import citiesService from "../../../../services/citiesWorld";
 import { useData } from "../../../../dataContext/dataContext";
+
+// const ITEM_HEIGHT = 48;
+// const ITEM_PADDING_TOP = 8;
+// const MenuProps = {
+//   PaperProps: {
+//     style: {
+//       maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+//       width: 250,
+//     },
+//   },
+// };
+
 
 function Nationality({ validateStep }) {
   const { data, updateData } = useData();
@@ -20,6 +32,11 @@ function Nationality({ validateStep }) {
   const [cities, setCities] = useState([]);
   const [states, setStates] = useState([]);
   const [countries, setCountries] = useState([]);
+
+  // const handleChange = (event) => {
+  //   const { value } = event.target;
+  //   setPersonName(typeof value === "string" ? value.split(",") : value);
+  // };
 
   const handleImageChange = (event) => {
     const file = event.target.files?.[0];
@@ -44,6 +61,7 @@ function Nationality({ validateStep }) {
 
   const getStates = async (country) => {
     let _states = await statesService.getStateByCountry(country);
+    _states.sort((a, b) => a.name.localeCompare(b.name));
     setStates(_states);
   };
 
@@ -211,28 +229,6 @@ function Nationality({ validateStep }) {
               </Select>
             </div>
           </div>
-          <div>
-            <div style={{ paddingBottom: "1rem" }}>
-              <span className="span-state">
-                Você possui outra nacionalidade?
-                <span style={{ color: "red" }}>*</span>
-              </span>
-            </div>
-            <div className="padding-bottom-1">
-              <RadioGroup
-                aria-labelledby="demo-radio-buttons-group-label"
-                defaultValue="Sim"
-                name="radio-buttons-group"
-                className="subTitle-div-2"
-                row
-                value={data.hasAnotherNacionality}
-                onChange={handleChangeRequester}
-              >
-                <FormControlLabel value="Sim" control={<Radio />} label="Sim" />
-                <FormControlLabel value="Não" control={<Radio />} label="Não" />
-              </RadioGroup>
-            </div>
-          </div>
         </div>
         <div className="div-grid-nationality-inputs-2">
           <div>
@@ -282,6 +278,28 @@ function Nationality({ validateStep }) {
                   onChange={handleImageChange}
                 />
               </label>
+            </div>
+          </div>
+          <div className="otherNationality">
+            <div style={{ paddingBottom: "1rem" }}>
+              <span className="span-state">
+                Você possui outra nacionalidade?
+                <span style={{ color: "red" }}>*</span>
+              </span>
+            </div>
+            <div className="padding-bottom-1">
+              <RadioGroup
+                aria-labelledby="demo-radio-buttons-group-label"
+                defaultValue="Sim"
+                name="radio-buttons-group"
+                className="subTitle-div-2"
+                row
+                value={data.hasAnotherNacionality ? "Sim" : "Não"}
+                onChange={handleChangeRequester}
+              >
+                <FormControlLabel value="Sim" control={<Radio />} label="Sim" />
+                <FormControlLabel value="Não" control={<Radio />} label="Não" />
+              </RadioGroup>
             </div>
           </div>
         </div>
@@ -341,7 +359,40 @@ function Nationality({ validateStep }) {
           </div>
         </div>
       ) : null}
+      {/* <div className="div-country-padding">
+        <div className="padding-charity">
+          <div>
+            <div style={{ paddingBottom: "0.4rem" }}>
+              <span className="span-state">
+                Idiomas que você fala<span style={{ color: "red" }}>*</span>
+              </span>
+            </div>
+            <div className="padding-bottom-1">
+              <Select
+                className="style-select-travels"
+                multiple
+                value={data.languages}
+                onChange={handleChange}
+                input={<OutlinedInput />}
+                MenuProps={MenuProps}
+              >
+                {languageList.map((item, index) => (
+                  <MenuItem
+                    key={item.name}
+                    value={item.name}
+                    style={getStyles(item.name, personName, theme)}
+                  >
+                    {item.name}
+                  </MenuItem>
+                ))}
+              </Select>
+            </div>
+          </div>
+        </div>
+      </div> */}
+      
     </div>
+    
   );
 }
 

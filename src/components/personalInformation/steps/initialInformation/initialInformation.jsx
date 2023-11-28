@@ -10,8 +10,15 @@ import MaritalStatus from "../../../../datas/marital_status";
 import dayjs from "dayjs";
 
 import { useData } from "../../../../dataContext/dataContext";
+import { emailRegex } from "../../../utils/regex";
 
-function InitialInformation({ onStatusChange, validateStep }) {
+function InitialInformation({
+  onStatusChange,
+  validateStep,
+  isValidInitialInformation,
+}) {
+  const [isBirthDateValid, setIsBirthDateValid] = useState(true);
+
   const { data, updateData } = useData();
 
   const handleChangeSelect = (event) => {
@@ -28,25 +35,40 @@ function InitialInformation({ onStatusChange, validateStep }) {
 
   const handleNameChange = (event) => {
     const { value, name } = event.target;
-    updateData({ ...data, name: { ...data.name, [name]: value } });
+
+    if (/^[A-Za-z\s]+$/.test(value) || value === "") {
+      updateData({ ...data, name: { ...data.name, [name]: value } });
+    }
   };
 
   const handleBirthDateChange = (selectedDate) => {
     if (selectedDate && dayjs(selectedDate).isValid()) {
-      const formattedDate = dayjs(selectedDate).format("YYYY-MM-DD");
-      updateData({ ...data, birth: { ...data.birth, date: formattedDate } });
+      const currentDate = dayjs();
+      const selectedDateTime = dayjs(selectedDate);
+
+      if (selectedDateTime.isAfter(currentDate)) {
+        setIsBirthDateValid(false);
+      } else {
+        const formattedDate = selectedDateTime.format("YYYY-MM-DD");
+        updateData({ ...data, birth: { ...data.birth, date: formattedDate } });
+        setIsBirthDateValid(true);
+      }
     } else {
       updateData({ ...data, birth: { ...data.birth, date: "" } });
+      setIsBirthDateValid(false);
     }
   };
 
   const handlePhoneNumberChange = (event) => {
     const { value, name } = event.target;
+    console.log(value);
+    console.log(value.length);
     updateData({ ...data, [name]: value });
   };
 
   const handleEmailChange = (event) => {
     const { value } = event.target;
+
     updateData({ ...data, email_address: value });
   };
 
@@ -55,6 +77,14 @@ function InitialInformation({ onStatusChange, validateStep }) {
     updateData({
       ...data,
       other_email_adresses: [value],
+    });
+  };
+
+  const handleCPFChange = (event) => {
+    const { value } = event.target;
+    updateData({
+      ...data,
+      national_identification_number: value,
     });
   };
 
@@ -178,11 +208,16 @@ function InitialInformation({ onStatusChange, validateStep }) {
             <div className="padding-bottom-1">
               <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <DatePicker
-                  value={dayjs(data.birth.date)}
                   onChange={handleBirthDateChange}
                   format="DD/MM/YYYY"
                   className="custom-date-picker-initial"
+                  value={data.birth.date !== "" ? dayjs(data.birth.date) : null}
                 />
+                {!isBirthDateValid && (
+                  <div style={{ color: "red" }}>
+                    A data não pode ser superior à data atual.
+                  </div>
+                )}
               </LocalizationProvider>
             </div>
           </div>
@@ -193,7 +228,12 @@ function InitialInformation({ onStatusChange, validateStep }) {
               </span>
             </div>
             <div className="padding-bottom-1">
-              <InputMask mask="999.999.999-99" maskChar="">
+              <InputMask
+                mask="999.999.999-99"
+                maskChar=""
+                value={data.national_identification_number}
+                onChange={handleCPFChange}
+              >
                 {() => (
                   <TextField
                     id="outlined-basic"
@@ -204,6 +244,10 @@ function InitialInformation({ onStatusChange, validateStep }) {
                   />
                 )}
               </InputMask>
+            </div>
+
+            <div className="errorMessage">
+              {!isValidInitialInformation.cpf && <> CPF inválido </>}
             </div>
           </div>
         </div>
@@ -216,7 +260,7 @@ function InitialInformation({ onStatusChange, validateStep }) {
             </div>
             <div className="padding-bottom-1">
               <InputMask
-                mask="99+ (99) 99999-9999"
+                mask="+99 (99) 99999-9999"
                 maskChar=""
                 value={data.primary_phone_number}
                 onChange={handlePhoneNumberChange}
@@ -226,7 +270,7 @@ function InitialInformation({ onStatusChange, validateStep }) {
                     id="outlined-basic"
                     className="input-style-initial"
                     type="text"
-                    placeholder="55+ (00) 00000-0000"
+                    placeholder="+55 (00) 00000-0000"
                     variant="outlined"
                     name="primary_phone_number"
                   />
@@ -240,7 +284,7 @@ function InitialInformation({ onStatusChange, validateStep }) {
             </div>
             <div className="padding-bottom-1">
               <InputMask
-                mask="99+ (99) 99999-9999"
+                mask="+99 (99) 99999-9999"
                 maskChar=""
                 value={data.secondary_phone_number}
                 onChange={handlePhoneNumberChange}
@@ -250,7 +294,7 @@ function InitialInformation({ onStatusChange, validateStep }) {
                     id="outlined-basic"
                     className="input-style-initial"
                     type="text"
-                    placeholder="55+ (00) 00000-0000"
+                    placeholder="+55 (00) 00000-0000"
                     variant="outlined"
                     name="secondary_phone_number"
                   />
@@ -277,6 +321,12 @@ function InitialInformation({ onStatusChange, validateStep }) {
                 onChange={handleEmailChange}
               />
             </div>
+
+            <div className="errorMessage">
+              {!isValidInitialInformation.email && (
+                <> Formato de Email inválido</>
+              )}
+            </div>
           </div>
           <div>
             <div style={{ paddingBottom: "0.4rem" }}>
@@ -292,6 +342,11 @@ function InitialInformation({ onStatusChange, validateStep }) {
                 value={data.other_email_adresses[0]}
                 onChange={handleOthersEmailChange}
               />
+            </div>
+            <div className="errorMessage">
+              {!isValidInitialInformation.secondary_email && (
+                <> Formato de Email inválido</>
+              )}
             </div>
           </div>
         </div>

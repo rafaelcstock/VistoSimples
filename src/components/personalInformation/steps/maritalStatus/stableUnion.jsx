@@ -194,7 +194,7 @@ function StableUnion() {
                         </div>
                         <div>
                             <div style={{ paddingBottom: '0.4rem' }}>
-                                <span className="span-state">Complemento do companheiro(a)<span style={{ color: 'red' }}>*</span></span>
+                                <span className="span-state">Complemento do(a) companheiro(a)</span>
                             </div>
                             <div className="padding-bottom-1">
                                 <TextField id="outlined-basic" className="style-select-marital" placeholder="Preencha um complemento" variant="outlined" />
@@ -214,9 +214,9 @@ function StableUnion() {
                                     value={country}
                                     onChange={handleChangeSelectCountry}
                                 >
-                                    {countries.map((countrie, index) => (
-                                        <MenuItem key={index} value={countrie.iso2}>
-                                            {countrie.name}
+                                    {Countries.map((countrie, index) => (
+                                        <MenuItem key={index} value={countrie.key}>
+                                            {countrie.value}
                                         </MenuItem>
                                     ))}
                                 </Select>

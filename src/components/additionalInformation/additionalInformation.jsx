@@ -73,13 +73,9 @@ function AdditionalInformation(props) {
       return isValid;
     }
 
-    debugger;
-
     isValid =
       education[0].entity_name &&
       education[0].entity_name !== "" &&
-      education[0].phone_number &&
-      education[0].phone_number !== "" &&
       education[0].start_date &&
       education[0].start_date !== "" &&
       education[0].end_date &&
@@ -92,8 +88,6 @@ function AdditionalInformation(props) {
       education[0].address.city !== "" &&
       education[0].address.state &&
       education[0].address.state !== "" &&
-      education[0].address.zip_code &&
-      education[0].address.zip_code !== "" &&
       education[0].address.country &&
       education[0].address.country !== "";
 
@@ -132,10 +126,10 @@ function AdditionalInformation(props) {
 
     const { languages, charitable_organizations } = data;
 
-    if (languages.length == 0) {
-      isValid = false;
-      return isValid;
-    }
+    // if (languages.length == 0) {
+    //   isValid = false;
+    //   return isValid;
+    // }
 
     if (charitable_organizations.length == 0) {
       isValid = true;

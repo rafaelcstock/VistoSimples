@@ -11,6 +11,8 @@ import Countries from "../../../../datas/countries";
 
 function Formation({ validateStep }) {
   const { data, updateData } = useData();
+  const [isStartDateValid, setIsStartDateValid] = useState(true);
+  const [isEndDateValid, setIsEndDateValid] = useState(true);
 
   const handleAddressSelectCountry = (event) => {
     const { value, name } = event.target;
@@ -27,6 +29,8 @@ function Formation({ validateStep }) {
   };
 
   const handleDateUpdateData = (name, newDate) => {
+    let isValid = true;
+
     if (newDate && dayjs(newDate).isValid()) {
       const formattedDate = dayjs(newDate).format("YYYY-MM-DD");
 
@@ -35,10 +39,18 @@ function Formation({ validateStep }) {
         education: [{ ...data.education[0], [name]: formattedDate }],
       });
     } else {
+      isValid = false;
+
       updateData({
         ...data,
         education: [{ ...data.education[0], [name]: "" }],
       });
+    }
+
+    if (name === "start_date") {
+      setIsStartDateValid(isValid);
+    } else if (name === "end_date") {
+      setIsEndDateValid(isValid);
     }
   };
 
@@ -182,14 +194,21 @@ function Formation({ validateStep }) {
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                   <DatePicker
                     format="DD/MM/YYYY"
-                    className="custom-date-picker-initial"
-                    value={dayjs(data.education[0].start_date)}
+                    className={`custom-date-picker-initial ${
+                      isStartDateValid ? "" : "invalid-date"
+                    }`}
+                    value={data.education[0].start_date ? dayjs(data.education[0].start_date) : null}
                     onChange={(date) =>
                       handleDateUpdateData("start_date", date)
                     }
                   />
                 </LocalizationProvider>
               </div>
+              {!isStartDateValid && (
+                <span className="error-message" style={{ color: "red" }}>
+                  A data de início não pode ser superior à data atual.
+                </span>
+              )}
             </div>
             <div>
               <div style={{ paddingBottom: "0.4rem" }}>
@@ -202,12 +221,19 @@ function Formation({ validateStep }) {
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                   <DatePicker
                     format="DD/MM/YYYY"
-                    className="custom-date-picker-initial"
-                    value={dayjs(data.education[0].end_date)}
+                    className={`custom-date-picker-initial ${
+                      isEndDateValid ? "" : "invalid-date"
+                    }`}
+                    value={ data.education[0].end_date ? dayjs(data.education[0].end_date) : null}
                     onChange={(date) => handleDateUpdateData("end_date", date)}
                   />
                 </LocalizationProvider>
               </div>
+              {!isEndDateValid && (
+                <span className="error-message" style={{ color: "red" }}>
+                  A data de término não pode ser superior à data atual.
+                </span>
+              )}
             </div>
           </div>
           <div className="div-1-inputs-marital">
@@ -317,50 +343,6 @@ function Formation({ validateStep }) {
                     />
                   )}
                 </InputMask>
-              </div>
-            </div>
-          </div>
-          <div className="div-2-inputs-work">
-            <div>
-              <div style={{ paddingBottom: "0.4rem" }}>
-                <span className="span-state">
-                  Telefone da companhia/organização
-                  <span style={{ color: "red" }}>*</span>
-                </span>
-              </div>
-              <div className="padding-bottom-1">
-                <InputMask
-                  mask="99+ (99) 99999-9999"
-                  maskChar=""
-                  value={data.education[0].phone_number}
-                  onChange={handleUpdateData}
-                >
-                  {() => (
-                    <TextField
-                      id="outlined-basic"
-                      className="style-select-work"
-                      placeholder="99+ (00) 00000-0000"
-                      variant="outlined"
-                      name="phone_number"
-                    />
-                  )}
-                </InputMask>
-              </div>
-            </div>
-            <div>
-              <div style={{ paddingBottom: "0.4rem" }}>
-                <span className="span-state">
-                  Email da companhia/organização
-                  <span style={{ color: "red" }}>*</span>
-                </span>
-              </div>
-              <div className="padding-bottom-1">
-                <TextField
-                  id="outlined-basic"
-                  className="style-select-work"
-                  placeholder="email@exemplo.com"
-                  variant="outlined"
-                />
               </div>
             </div>
           </div>

@@ -11,11 +11,13 @@ import dayjs from "dayjs";
 
 function MotherInformation({ validateStep = { validateStep } }) {
   const { data, updateData } = useData();
+  const [isBirthDateValid, setIsBirthDateValid] = useState(true);
 
   const handleLocatingChange = (event) => {
     const { value } = event.target;
-
-    data({ ...data, mother: { ...data.mother, locating_in_us: value } });
+  
+    const boolValue = value === "Sim";
+    updateData({ ...data, mother: { ...data.mother, locating_in_us: boolValue } });
   };
 
   const handleInfoAboutMotherChange = (event) => {
@@ -40,25 +42,38 @@ function MotherInformation({ validateStep = { validateStep } }) {
 
   const handleBirthDateChange = (selectedDate) => {
     if (selectedDate && dayjs(selectedDate).isValid()) {
-      const formattedDate = dayjs(selectedDate).format("YYYY-MM-DD");
-      updateData({
-        ...data,
-        mother: { ...data.mother, birth_date: formattedDate },
-      });
+      const currentDate = dayjs();
+      const selectedDateTime = dayjs(selectedDate);
+  
+      if (selectedDateTime.isAfter(currentDate)) {
+        setIsBirthDateValid(false);
+      } else {
+        const formattedDate = selectedDateTime.format("YYYY-MM-DD");
+        updateData({
+          ...data,
+          mother: { ...data.mother, birth_date: formattedDate },
+        });
+        setIsBirthDateValid(true);
+      }
     } else {
       updateData({
         ...data,
         mother: { ...data.mother, birth_date: "" },
       });
+      setIsBirthDateValid(false);
     }
   };
+  
 
   const handleNameChange = (event) => {
     const { value, name } = event.target;
-    updateData({
-      ...data,
-      mother: { ...data.mother, name: { ...data.mother.name, [name]: value } },
-    });
+  
+    if (/^[a-zA-Z\s]+$/.test(value) || value === "") {
+      updateData({
+        ...data,
+        mother: { ...data.mother, name: { ...data.mother.name, [name]: value } },
+      });
+    }
   };
 
   const handleUsStatusChange = (event) => {
@@ -158,12 +173,17 @@ function MotherInformation({ validateStep = { validateStep } }) {
                 </div>
                 <div>
                   <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <DatePicker
-                      format="DD/MM/YYYY"
-                      className="custom-date-picker"
-                      value={dayjs(data.mother.birth_date)}
-                      onChange={handleBirthDateChange}
-                    />
+                  <DatePicker
+                    format="DD/MM/YYYY"
+                    className="custom-date-picker"
+                    value={data.mother.birth_date !== "" ? dayjs(data.mother.birth_date) : null}
+                    onChange={handleBirthDateChange}
+                  />
+                  {!isBirthDateValid && (
+                    <div style={{ color: "red" }}>
+                      A data de nascimento não pode ser superior à data atual.
+                    </div>
+                  )}
                   </LocalizationProvider>
                 </div>
               </div>
@@ -201,7 +221,8 @@ function MotherInformation({ validateStep = { validateStep } }) {
               </div>
             </div>
           </div>
-          <div className="div-family-padding">
+          {data.mother.locating_in_us ? (
+            <div className="div-family-padding">
             <div className="div-family-inputs">
               <div>
                 <div style={{ paddingBottom: "0.4rem" }}>
@@ -227,6 +248,7 @@ function MotherInformation({ validateStep = { validateStep } }) {
               </div>
             </div>
           </div>
+          ) : null}
         </div>
       ) : null}
     </div>

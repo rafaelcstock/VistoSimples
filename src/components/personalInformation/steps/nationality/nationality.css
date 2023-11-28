@@ -9,7 +9,7 @@
 
 .div-margin{
     margin-top: 1rem;
-    margin-left: 2rem;
+    margin-left: 4rem;
     margin-right: 4rem;
     width: auto;
 }
@@ -18,14 +18,14 @@
     font-size: 32px;
     font-weight: 700;
     line-height: 40px;
-    color: #2F5FE3
+    color: #2F5FE3;
 }
 
 .title-header-1{
     font-size: 24px;
     font-weight: 700;
     line-height: 40px;
-    color: #2F5FE3
+    color: #2F5FE3;
 }
 
 .subTitle-header{
@@ -156,7 +156,7 @@
 
 .div-info-img{
     padding-top: 2rem;    
-    margin-left: -2rem;
+    margin-left: 2rem;
     padding-bottom: 0.5rem;
 }
 
@@ -177,7 +177,7 @@
 }
 
 
-.font-button-img{
+.font-button-img {
     font-size: 16px;
     font-weight: 600;
     line-height: 19.4px;
@@ -186,6 +186,7 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
+    cursor: pointer;
 }
 
 .div-img-style{
@@ -197,6 +198,10 @@
     background-size: cover; 
     background-position: center; 
     background-repeat: no-repeat;
+}
+
+.otherNationality {
+    width: 16em;
 }
 
 

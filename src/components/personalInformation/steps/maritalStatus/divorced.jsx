@@ -83,7 +83,7 @@ function Divorced() {
                 <div className="div-2-inputs-marital">
                     <div>
                         <div style={{ paddingBottom: '0.4rem' }}>
-                            <span className="span-state">Nacionalidade do ex-companheiro(a)<span style={{ color: 'red' }}>*</span></span>
+                            <span className="span-state">Cidade de nascimento ex-companheiro(a)<span style={{ color: 'red' }}>*</span></span>
                         </div>
                         <div className="padding-bottom-1">
                             <Select

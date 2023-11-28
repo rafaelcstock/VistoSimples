@@ -34,9 +34,15 @@ function Travels({ validateStep }) {
   const theme = useTheme();
   const [personName, setPersonName] = React.useState([]);
 
+  const handleRemoveCountry = (countryToRemove) => {
+    const updatedCountries = personName.filter(name => name !== countryToRemove);
+    setPersonName(updatedCountries);
+    updateData({ ...data, visited_countries: updatedCountries });
+  };
+
   const handleUpdateVisitedCountriesChange = (event) => {
     const { value } = event.target;
-    debugger
+
     setPersonName(typeof value === 'string' ? value.split(',') : value)
 
     updateData({
@@ -93,10 +99,10 @@ function Travels({ validateStep }) {
       {data.visited_countries !== null ? (
         <div className="div-marital-padding">
           <div className="padding-bottom-title-input">
-            <span className="title-header-2">Quais  países já viajou?<span style={{ color: 'red' }}>*</span></span>
+            <span className="title-header-2">Quais  países você já viajou?<span style={{ color: 'red' }}>*</span></span>
           </div>
           <div className="padding-radio-marital">
-            <Select
+          <Select
               className="style-select-travels"
               multiple
               value={personName}
@@ -104,6 +110,22 @@ function Travels({ validateStep }) {
               input={<OutlinedInput />}
               MenuProps={MenuProps}
             >
+              {personName.map((selectedCountry) => (
+                <MenuItem
+                  key={selectedCountry}
+                  value={selectedCountry}
+                  style={getStyles(selectedCountry, personName, theme)}
+                >
+                  {selectedCountry}
+                  <button
+                    type="button"
+                    onClick={() => handleRemoveCountry(selectedCountry)}
+                    className="remove-button"
+                  >
+                    X
+                  </button>
+                </MenuItem>
+              ))}
               {Countries.map((name) => (
                 <MenuItem
                   key={name.key}
@@ -120,7 +142,7 @@ function Travels({ validateStep }) {
 
       <div className="div-marital-padding">
         <div className="padding-bottom-title-input">
-          <span className="title-header-2">Ja viajou para algum outro país nos últimos 5 anos? <span style={{ color: 'red' }}>*</span></span>
+          <span className="title-header-2">Viajou para algum outro país nos últimos 5 anos? <span style={{ color: 'red' }}>*</span></span>
         </div>
         <div className="padding-radio-marital">
           <RadioGroup

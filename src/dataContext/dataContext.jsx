@@ -120,23 +120,23 @@ export function DataProvider({ children }) {
     entity_paying: {
       entity_type: "S",
       address: {
-        street: "string",
-        complement: "string",
-        city: "string",
-        state: "string",
-        state_acronym: "string",
-        zip_code: "string",
-        country: "AFGH",
+        street: "",
+        complement: null,
+        city: "",
+        state: "",
+        state_acronym: null,
+        zip_code: "",
+        country: "",
       },
-      phone_number: "string",
+      phone_number: "",
       relationship: "C",
-      same_address: true,
-      email: "string",
-      org_name: "string",
+      same_address: false,
+      email: "",
+      org_name: "",
       person_name: {
-        surname: "string",
-        given_name: "string",
-        full_name: "string",
+        surname: "",
+        given_name: "",
+        full_name: "",
       },
     },
     escorts: null,
@@ -163,20 +163,7 @@ export function DataProvider({ children }) {
         length_of_stay: 0,
       },
     ],
-    old_visa: {
-      consulate_id: 54,
-      issue_date: "2023-11-08",
-      expiration_date: "2023-11-08",
-      number: "string",
-      applying_for_same_type: true,
-      applying_for_same_country: true,
-      ten_printed: true,
-      lost_or_stolen: true,
-      lost_or_stolen_year: 0,
-      lost_or_stolen_reason: "string",
-      revoked: true,
-      revoked_reason: "string",
-    },
+    old_visa: null,
     us_drivers_license: [
       {
         number: "",
@@ -184,9 +171,9 @@ export function DataProvider({ children }) {
       },
     ],
     refused_us_visa: true,
-    refused_us_visa_reason: "string",
+    refused_us_visa_reason: "",
     immigrant_petition: true,
-    immigrant_petition_reason: "string",
+    immigrant_petition_reason: "",
     address: {
       street: "",
       complement: "",
@@ -207,37 +194,24 @@ export function DataProvider({ children }) {
     },
     primary_phone_number: "",
     secondary_phone_number: "",
-    work_phone_number: "string",
-    other_phone_numbers: ["string"],
+    work_phone_number: "",
+    other_phone_numbers: [""],
     email_address: "",
     other_email_adresses: [""],
     social_medias: null,
     passport: {
       document_type: "R",
-      number: "string",
-      custom_document_reason: "string",
-      book_number: "string",
+      number: "",
+      custom_document_reason: "",
+      book_number: "",
       country: "AFGH",
-      city: "string",
-      state: "string",
-      issuance_date: "2023-11-08",
-      expiration_date: "2023-11-08",
-      lost_reason: "string",
+      city: "",
+      state: "",
+      issuance_date: "",
+      expiration_date: "",
+      lost_reason: null,
     },
-    lost_or_stolen_passports: [
-      {
-        document_type: "R",
-        number: "string",
-        custom_document_reason: "string",
-        book_number: "string",
-        country: "AFGH",
-        city: "string",
-        state: "string",
-        issuance_date: "2023-11-08",
-        expiration_date: "2023-11-08",
-        lost_reason: "string",
-      },
-    ],
+    lost_or_stolen_passports: null,
     us_contact: {
       person_name: null,
       organization_name: "",
@@ -261,7 +235,7 @@ export function DataProvider({ children }) {
         full_name: null,
       },
       birth_date: "",
-      locating_in_us: true,
+      locating_in_us: false,
       us_status: "S",
     },
     mother: {
@@ -371,7 +345,7 @@ export function DataProvider({ children }) {
     ],
     special_organization: "string",
     security_responses: ["string", null],
-    hasAnotherName: true,
+    hasAnotherName: false,
     hasAnotherNationality: true,
     hasInformationAboutFather: true,
     hasInformationAboutMother: true,
@@ -382,8 +356,9 @@ export function DataProvider({ children }) {
   });
 
   // console.log(data);
-  // console.log(data.group);
-  console.log(data.escorts);
+  // console.log(data.national_identification_number);
+  // console.log("------------------------- abaixo é lost");
+  // console.log(data.lost_or_stolen_passports);
 
   const updateData = (newData) => {
     setData({ ...data, ...newData });

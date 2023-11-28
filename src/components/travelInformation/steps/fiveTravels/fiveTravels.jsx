@@ -175,7 +175,7 @@ function FiveTravels({ validateStep }) {
                       format="DD/MM/YYYY"
                       className="custom-date-picker-initial"
                       value={
-                        data.us_visits[0] ? dayjs(data.us_visits[0].date) : ""
+                        data.us_visits[0].date !== "" ? dayjs(data.us_visits[0].date) : null
                       }
                       onChange={(date) => handleDateUpdateData("0", date)}
                     />
@@ -216,7 +216,7 @@ function FiveTravels({ validateStep }) {
                       className="custom-date-picker-initial"
                       name="1"
                       value={
-                        data.us_visits[1] ? dayjs(data.us_visits[1].date) : ""
+                        data.us_visits[1].date !== "" ? dayjs(data.us_visits[1].date) : null
                       }
                       onChange={(date) => handleDateUpdateData("1", date)}
                     />
@@ -257,7 +257,7 @@ function FiveTravels({ validateStep }) {
                       className="custom-date-picker-initial"
                       name="2"
                       value={
-                        data.us_visits[2] ? dayjs(data.us_visits[2].date) : ""
+                        data.us_visits[2].date !== "" ? dayjs(data.us_visits[2].date) : null
                       }
                       onChange={(date) => handleDateUpdateData("2", date)}
                     />
@@ -298,7 +298,7 @@ function FiveTravels({ validateStep }) {
                       className="custom-date-picker-initial"
                       name="3"
                       value={
-                        data.us_visits[3] ? dayjs(data.us_visits[3].date) : ""
+                        data.us_visits[3].date !== "" ? dayjs(data.us_visits[3].date) : null
                       }
                       onChange={(date) => handleDateUpdateData("3", date)}
                     />
@@ -339,7 +339,7 @@ function FiveTravels({ validateStep }) {
                       className="custom-date-picker-initial"
                       name="4"
                       value={
-                        data.us_visits[4] ? dayjs(data.us_visits[4].date) : ""
+                        data.us_visits[4].date !== "" ? dayjs(data.us_visits[4].date) : null
                       }
                       onChange={(date) => handleDateUpdateData("4", date)}
                     />

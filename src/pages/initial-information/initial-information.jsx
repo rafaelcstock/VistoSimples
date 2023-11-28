@@ -14,7 +14,6 @@ function InitialInformation() {
   const [radioRequester, setRadioRequester] = useState("Apenas para mim");
 
   const handleChangeSelect = (event) => {
-    setDs160City(event.target.value);
     updateData({ ds160_city: event.target.value });
   };
 
@@ -23,12 +22,14 @@ function InitialInformation() {
     localStorage.setItem("tipoForm", event.target.value);
   };
 
+  const sortedDs160Cities = ds160Cities.slice().sort((a, b) => a.value.localeCompare(b.value));
+
   useEffect(() => {
     localStorage.setItem("tipoForm", "Apenas para mim");
   }, []);
 
   return (
-    <div className="div-flex">
+    <div className="div-flex" >
       <div className="div-width"></div>
       <div className="div-margin">
         <div className="padding-bottom">
@@ -53,19 +54,19 @@ function InitialInformation() {
               <span className="span-state">Selecione o estado</span>
             </div>
             <div className="padding-bottom-1">
-              <Select
-                className="style-select"
-                labelId="select-state"
-                id="select-state"
-                value={ds160City}
-                onChange={handleChangeSelect}
-              >
-                {ds160Cities.map((state) => (
-                  <MenuItem key={state.key} value={state.key}>
-                    {state.value}
-                  </MenuItem>
-                ))}
-              </Select>
+            <Select
+              className="style-select"
+              labelId="select-state"
+              id="select-state"
+              value={data.ds160_city}
+              onChange={handleChangeSelect}
+            >
+              {sortedDs160Cities.map((state) => (
+                <MenuItem key={state.key} value={state.key}>
+                  {state.value}
+                </MenuItem>
+              ))}
+            </Select>
             </div>
             <div>
               <div className="padding-bottom-1">

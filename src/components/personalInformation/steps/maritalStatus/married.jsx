@@ -40,8 +40,11 @@ function Married() {
 
     const getStates = async (country) => {
         let _states = await statesService.getStateByCountry(country);
+
+        _states.sort((a, b) => a.name.localeCompare(b.name));
+      
         setStates(_states);
-    }
+      };
 
     const getCities = async (country, state) => {
         let _cities = await citiesService.getCitiesByStateByCountry(country, state);
@@ -174,8 +177,8 @@ function Married() {
                         value={gender}
                         onChange={handleChangeSelectGender}
                     >
-                        <FormControlLabel value="F" control={<Radio />} label="Feminino" />
-                        <FormControlLabel value="M" control={<Radio />} label="Masculino" />
+                        <FormControlLabel value="F" control={<Radio />} label="Sim" />
+                        <FormControlLabel value="M" control={<Radio />} label="Não" />
                     </RadioGroup>
                 </div>
             </div>
@@ -194,7 +197,7 @@ function Married() {
                     </div>
                     <div>
                         <div style={{ paddingBottom: '0.4rem' }}>
-                            <span className="span-state">Complemento do companheiro(a)<span style={{ color: 'red' }}>*</span></span>
+                            <span className="span-state">Complemento do companheiro(a)</span>
                         </div>
                         <div className="padding-bottom-1">
                             <TextField id="outlined-basic" className="style-select-marital" placeholder="Preencha um complemento" variant="outlined" />
@@ -224,7 +227,7 @@ function Married() {
                     </div>
                     <div>
                         <div style={{ paddingBottom: '0.4rem' }}>
-                            <span className="span-state">Estado do companheiro(a)<span style={{ color: 'red' }}>*</span></span>
+                            <span className="span-state">Estado do(a) companheiro(a)<span style={{ color: 'red' }}>*</span></span>
                         </div>
                         <div className="padding-bottom-1">
                             <Select

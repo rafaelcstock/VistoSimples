@@ -11,14 +11,14 @@ import dayjs from "dayjs";
 
 function FatherInformation({ validateStep }) {
   const { data, updateData } = useData();
+  const [isBirthDateValid, setIsBirthDateValid] = useState(true);
 
-  const [selectedMaritalStatus, setSelectedMaritalStatus] = useState("");
+const handleLocatingChange = (event) => {
+  const { value } = event.target;
 
-  const handleLocatingChange = (event) => {
-    const { value } = event.target;
-
-    data({ ...data, father: { ...data.father, locating_in_us: value } });
-  };
+  const boolValue = value === "Sim";
+  updateData({ ...data, father: { ...data.father, locating_in_us: boolValue } });
+};
 
   const handleInfoAboutFatherChange = (event) => {
     const { value } = event.target;
@@ -42,25 +42,40 @@ function FatherInformation({ validateStep }) {
 
   const handleBirthDateChange = (selectedDate) => {
     if (selectedDate && dayjs(selectedDate).isValid()) {
-      const formattedDate = dayjs(selectedDate).format("YYYY-MM-DD");
-      updateData({
-        ...data,
-        father: { ...data.father, birth_date: formattedDate },
-      });
+      const currentDate = dayjs();
+      const selectedDateTime = dayjs(selectedDate);
+  
+      if (selectedDateTime.isAfter(currentDate)) {
+        setIsBirthDateValid(false);
+        console.error("A data de nascimento não pode ser superior à data atual.");
+      } else {
+        const formattedDate = selectedDateTime.format("YYYY-MM-DD");
+        updateData({
+          ...data,
+          father: { ...data.father, birth_date: formattedDate },
+        });
+        setIsBirthDateValid(true);
+      }
     } else {
       updateData({
         ...data,
         father: { ...data.father, birth_date: "" },
       });
+      setIsBirthDateValid(false);
     }
   };
 
   const handleNameChange = (event) => {
     const { value, name } = event.target;
-    updateData({
-      ...data,
-      father: { ...data.father, name: { ...data.father.name, [name]: value } },
-    });
+  
+    if (/^[A-Za-z\s]+$/.test(value) || value === "") {
+      updateData({
+        ...data,
+        father: { ...data.father, name: { ...data.father.name, [name]: value } },
+      });
+    } else {
+      console.error("O nome deve conter apenas letras e espaços.");
+    }
   };
 
   const handleUsStatusChange = (event) => {
@@ -95,7 +110,7 @@ function FatherInformation({ validateStep }) {
         <div className="padding-bottom-family">
           <RadioGroup
             aria-labelledby="demo-radio-buttons-group-label"
-            defaultValue="Sim"
+            defaultValue="Não"
             name="radio-buttons-group"
             className="subTitle-div-2"
             row
@@ -160,12 +175,17 @@ function FatherInformation({ validateStep }) {
                 </div>
                 <div>
                   <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <DatePicker
-                      format="DD/MM/YYYY"
-                      className="custom-date-picker"
-                      value={dayjs(data.father.birth_date)}
-                      onChange={handleBirthDateChange}
-                    />
+                  <DatePicker
+                    format="DD/MM/YYYY"
+                    className="custom-date-picker"
+                    value={data.father.birth_date !== "" ? dayjs(data.father.birth_date) : null}
+                    onChange={handleBirthDateChange}
+                  />
+                    {!isBirthDateValid && (
+                      <div style={{ color: "red" }}>
+                        A data de nascimento não pode ser superior à data atual.
+                      </div>
+                    )}
                   </LocalizationProvider>
                 </div>
               </div>
@@ -182,11 +202,11 @@ function FatherInformation({ validateStep }) {
               <div className="padding-bottom-family">
                 <RadioGroup
                   aria-labelledby="demo-radio-buttons-group-label"
-                  defaultValue="Sim"
+                  defaultValue="Não"
                   name="radio-buttons-group"
                   className="subTitle-div-2"
                   row
-                  value={data.father.locating_in_us}
+                  value={data.father.locating_in_us ? "Sim" : "Não"}
                   onChange={handleLocatingChange}
                 >
                   <FormControlLabel
@@ -203,7 +223,8 @@ function FatherInformation({ validateStep }) {
               </div>
             </div>
           </div>
-          <div className="div-family-padding">
+          {data.father.locating_in_us ? (
+            <div className="div-family-padding">
             <div className="div-family-inputs">
               <div>
                 <div style={{ paddingBottom: "0.4rem" }}>
@@ -229,6 +250,8 @@ function FatherInformation({ validateStep }) {
               </div>
             </div>
           </div>
+          ) : null
+          }
         </div>
       ) : null}
     </div>
