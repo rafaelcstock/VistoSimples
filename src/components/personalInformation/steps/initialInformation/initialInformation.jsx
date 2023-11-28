@@ -8,15 +8,16 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import InputMask from "react-input-mask";
 import MaritalStatus from "../../../../datas/marital_status";
 import dayjs from "dayjs";
-import isEmail from 'validator/lib/isEmail';
 
 import { useData } from "../../../../dataContext/dataContext";
+import { emailRegex } from "../../../utils/regex";
 
-function InitialInformation({ onStatusChange, validateStep }) {
-
+function InitialInformation({
+  onStatusChange,
+  validateStep,
+  isValidInitialInformation,
+}) {
   const [isBirthDateValid, setIsBirthDateValid] = useState(true);
-
-  const [isEmailValid, setIsEmailValid] = useState(true);
 
   const { data, updateData } = useData();
 
@@ -33,43 +34,40 @@ function InitialInformation({ onStatusChange, validateStep }) {
   };
 
   const handleNameChange = (event) => {
-  const { value, name } = event.target;
-  
-  if (/^[A-Za-z\s]+$/.test(value) || value === "") {
-    updateData({ ...data, name: { ...data.name, [name]: value } });
-  }
-};
+    const { value, name } = event.target;
 
-const handleBirthDateChange = (selectedDate) => {
-  if (selectedDate && dayjs(selectedDate).isValid()) {
-    const currentDate = dayjs();
-    const selectedDateTime = dayjs(selectedDate);
-
-    if (selectedDateTime.isAfter(currentDate)) {
-      setIsBirthDateValid(false);
-
-    } else {
-      const formattedDate = selectedDateTime.format("YYYY-MM-DD");
-      updateData({ ...data, birth: { ...data.birth, date: formattedDate } });
-      setIsBirthDateValid(true);
+    if (/^[A-Za-z\s]+$/.test(value) || value === "") {
+      updateData({ ...data, name: { ...data.name, [name]: value } });
     }
-  } else {
-    updateData({ ...data, birth: { ...data.birth, date: "" } });
-    setIsBirthDateValid(false);
-  }
-};
-  
+  };
+
+  const handleBirthDateChange = (selectedDate) => {
+    if (selectedDate && dayjs(selectedDate).isValid()) {
+      const currentDate = dayjs();
+      const selectedDateTime = dayjs(selectedDate);
+
+      if (selectedDateTime.isAfter(currentDate)) {
+        setIsBirthDateValid(false);
+      } else {
+        const formattedDate = selectedDateTime.format("YYYY-MM-DD");
+        updateData({ ...data, birth: { ...data.birth, date: formattedDate } });
+        setIsBirthDateValid(true);
+      }
+    } else {
+      updateData({ ...data, birth: { ...data.birth, date: "" } });
+      setIsBirthDateValid(false);
+    }
+  };
+
   const handlePhoneNumberChange = (event) => {
     const { value, name } = event.target;
+    console.log(value);
+    console.log(value.length);
     updateData({ ...data, [name]: value });
   };
 
   const handleEmailChange = (event) => {
     const { value } = event.target;
-
-    const isValid = isEmail(value);
-
-    setIsEmailValid(isValid);
 
     updateData({ ...data, email_address: value });
   };
@@ -86,13 +84,13 @@ const handleBirthDateChange = (selectedDate) => {
     const { value } = event.target;
     updateData({
       ...data,
-      national_identification_number: [value],
+      national_identification_number: value,
     });
   };
 
   useEffect(() => {
     validateStep();
-  }, [data, isEmailValid]);
+  }, [data]);
 
   return (
     <div className="div-margin">
@@ -209,17 +207,17 @@ const handleBirthDateChange = (selectedDate) => {
             </div>
             <div className="padding-bottom-1">
               <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <DatePicker
-                onChange={handleBirthDateChange}
-                format="DD/MM/YYYY"
-                className="custom-date-picker-initial"
-                value={data.birth.date !== "" ? dayjs(data.birth.date) : null}
-              />
-              {!isBirthDateValid && (
-                <div style={{ color: "red" }}>
-                  A data não pode ser superior à data atual.
-                </div>
-              )}
+                <DatePicker
+                  onChange={handleBirthDateChange}
+                  format="DD/MM/YYYY"
+                  className="custom-date-picker-initial"
+                  value={data.birth.date !== "" ? dayjs(data.birth.date) : null}
+                />
+                {!isBirthDateValid && (
+                  <div style={{ color: "red" }}>
+                    A data não pode ser superior à data atual.
+                  </div>
+                )}
               </LocalizationProvider>
             </div>
           </div>
@@ -230,7 +228,12 @@ const handleBirthDateChange = (selectedDate) => {
               </span>
             </div>
             <div className="padding-bottom-1">
-              <InputMask mask="999.999.999-99" maskChar="">
+              <InputMask
+                mask="999.999.999-99"
+                maskChar=""
+                value={data.national_identification_number}
+                onChange={handleCPFChange}
+              >
                 {() => (
                   <TextField
                     id="outlined-basic"
@@ -241,6 +244,10 @@ const handleBirthDateChange = (selectedDate) => {
                   />
                 )}
               </InputMask>
+            </div>
+
+            <div className="errorMessage">
+              {!isValidInitialInformation.cpf && <> CPF inválido </>}
             </div>
           </div>
         </div>
@@ -314,6 +321,12 @@ const handleBirthDateChange = (selectedDate) => {
                 onChange={handleEmailChange}
               />
             </div>
+
+            <div className="errorMessage">
+              {!isValidInitialInformation.email && (
+                <> Formato de Email inválido</>
+              )}
+            </div>
           </div>
           <div>
             <div style={{ paddingBottom: "0.4rem" }}>
@@ -329,6 +342,11 @@ const handleBirthDateChange = (selectedDate) => {
                 value={data.other_email_adresses[0]}
                 onChange={handleOthersEmailChange}
               />
+            </div>
+            <div className="errorMessage">
+              {!isValidInitialInformation.secondary_email && (
+                <> Formato de Email inválido</>
+              )}
             </div>
           </div>
         </div>

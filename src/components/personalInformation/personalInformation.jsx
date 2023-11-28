@@ -16,16 +16,23 @@ import Divorced from "./steps/maritalStatus/divorced";
 import Widow from "./steps/maritalStatus/widow";
 
 import { useData } from "../../dataContext/dataContext";
+import { emailRegex } from "../utils/regex";
 
 function PersonalInformation(props) {
   const { data, updateData } = useData();
 
-  const [activeStep, setActiveStep] = useState(10);
+  const [activeStep, setActiveStep] = useState(0);
 
   const [skipped, setSkipped] = useState(new Set());
 
   const [maritalStatus, setMaritalStatus] = useState(null);
   const [selectedStatus, setSelectedStatus] = useState("");
+
+  const [isValidInitialInformation, setIsValidInitialInformation] = useState({
+    email: true,
+    secondary_email: true,
+    cpf: true,
+  });
 
   const [isDisabled, setIsDisabled] = useState(true);
 
@@ -37,8 +44,37 @@ function PersonalInformation(props) {
   };
 
   const validateStep0 = () => {
-    const { name, marital_status, birth, primary_phone_number, email_address } =
-      data;
+    const {
+      name,
+      marital_status,
+      birth,
+      primary_phone_number,
+      email_address,
+      other_email_adresses,
+      national_identification_number,
+    } = data;
+
+    let validateEmail = true;
+    let validateSecondaryEmail = true;
+    let validateCpf = true;
+
+    validateEmail =
+      email_address !== "" ? emailRegex.test(email_address) : true;
+    validateSecondaryEmail =
+      other_email_adresses[0] !== ""
+        ? emailRegex.test(other_email_adresses[0])
+        : true;
+
+    validateCpf =
+      national_identification_number !== ""
+        ? checkCpf(national_identification_number)
+        : true;
+
+    setIsValidInitialInformation({
+      cpf: validateCpf,
+      secondary_email: validateSecondaryEmail,
+      email: validateEmail,
+    });
 
     return (
       name.surname &&
@@ -52,7 +88,12 @@ function PersonalInformation(props) {
       primary_phone_number &&
       primary_phone_number !== "" &&
       email_address &&
-      email_address !== ""
+      email_address !== "" &&
+      validateEmail &&
+      validateSecondaryEmail &&
+      national_identification_number &&
+      national_identification_number !== "" &&
+      validateCpf
     );
   };
 
@@ -277,6 +318,42 @@ function PersonalInformation(props) {
     10: validateStep10,
   };
 
+  const checkCpf = (cpf) => {
+    const cleanedCpf = cpf.replace(/\D/g, "");
+
+    if (cleanedCpf.length !== 11) {
+      return false;
+    }
+
+    if (/^(\d)\1+$/.test(cleanedCpf)) {
+      return false;
+    }
+
+    let sum = 0;
+    for (let i = 1; i <= 9; i++) {
+      sum += parseInt(cleanedCpf.charAt(i - 1)) * (11 - i);
+    }
+    let remainder = (sum * 10) % 11;
+    if (remainder === 10 || remainder === 11) {
+      remainder = 0;
+    }
+
+    if (remainder !== parseInt(cleanedCpf.charAt(9))) {
+      return false;
+    }
+
+    sum = 0;
+    for (let i = 1; i <= 10; i++) {
+      sum += parseInt(cleanedCpf.charAt(i - 1)) * (12 - i);
+    }
+    remainder = (sum * 10) % 11;
+    if (remainder === 10 || remainder === 11) {
+      remainder = 0;
+    }
+
+    return remainder === parseInt(cleanedCpf.charAt(10));
+  };
+
   const validateStep1 = () => {
     const { name, marital_status } = data;
 
@@ -345,6 +422,7 @@ function PersonalInformation(props) {
       key="initialInformation"
       onStatusChange={handleStatusChange}
       validateStep={validateStep}
+      isValidInitialInformation={isValidInitialInformation}
     />,
     maritalStatus,
     <AnotherName key="anotherName" validateStep={validateStep} />,
