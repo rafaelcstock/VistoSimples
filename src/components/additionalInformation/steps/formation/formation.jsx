@@ -194,7 +194,7 @@ function Formation({ validateStep }) {
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                   <DatePicker
                     format="DD/MM/YYYY"
-                    className={`custom-date-picker-initial ${
+                    className={`custom-date-picker-initialFormation ${
                       isStartDateValid ? "" : "invalid-date"
                     }`}
                     value={data.education[0].start_date ? dayjs(data.education[0].start_date) : null}
@@ -221,7 +221,7 @@ function Formation({ validateStep }) {
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                   <DatePicker
                     format="DD/MM/YYYY"
-                    className={`custom-date-picker-initial ${
+                    className={`custom-date-picker-initialFormation ${
                       isEndDateValid ? "" : "invalid-date"
                     }`}
                     value={ data.education[0].end_date ? dayjs(data.education[0].end_date) : null}

@@ -1,3 +1,4 @@
+import "./pasJobsComponent.css"
 import { useEffect, useState } from "react";
 import { MenuItem, Select, TextField } from "@mui/material";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
@@ -168,8 +169,9 @@ const PastJobsComponent = ({
           <div className="padding-bottom-1">
             <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DatePicker
+              style={{color: "white"}}
               format="DD/MM/YYYY"
-              className={`custom-date-picker-initial ${
+              className={`custom-date-picker-initialPasJob ${
                 isStartDateValid ? "" : "invalid-date"
               }`}
               value={job.start_date ? dayjs(job.start_date) : null}
@@ -195,7 +197,7 @@ const PastJobsComponent = ({
             <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DatePicker
               format="DD/MM/YYYY"
-              className={`custom-date-picker-initial ${
+              className={`custom-date-picker-initialPasJob ${
                 isStartDateValid ? "" : "invalid-date"
               }`}
               value={job.end_date ? dayjs(job.end_date) : null}

@@ -72,7 +72,7 @@ function TravelInformations({ validateStep }) {
               <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <DatePicker
                   format="DD/MM/YYYY"
-                  className="custom-date-picker-initial"
+                  className="custom-date-picker-initialTravels"
                   value={data.stay.date !== "" ? dayjs(data.stay.date) : null}
                   onChange={handleDateUpdateData}
                 />

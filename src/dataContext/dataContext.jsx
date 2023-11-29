@@ -146,22 +146,6 @@ export function DataProvider({ children }) {
         date: "",
         length_of_stay: 0,
       },
-      {
-        date: "",
-        length_of_stay: 0,
-      },
-      {
-        date: "",
-        length_of_stay: 0,
-      },
-      {
-        date: "",
-        length_of_stay: 0,
-      },
-      {
-        date: "",
-        length_of_stay: 0,
-      },
     ],
     old_visa: null,
     us_drivers_license: [
@@ -281,6 +265,7 @@ export function DataProvider({ children }) {
       description: null,
       occupation_title: "",
       supervisor_name: null,
+      // retiree_salary: "",
     },
     past_jobs: [
       {
@@ -356,7 +341,7 @@ export function DataProvider({ children }) {
   });
 
   // console.log(data);
-  // console.log(data.national_identification_number);
+  console.log(data.us_visits);
   // console.log("------------------------- abaixo é lost");
   // console.log(data.lost_or_stolen_passports);
 

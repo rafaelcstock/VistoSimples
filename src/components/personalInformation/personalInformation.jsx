@@ -21,7 +21,7 @@ import { emailRegex } from "../utils/regex";
 function PersonalInformation(props) {
   const { data, updateData } = useData();
 
-  const [activeStep, setActiveStep] = useState(0);
+  const [activeStep, setActiveStep] = useState(7);
 
   const [skipped, setSkipped] = useState(new Set());
 
@@ -184,8 +184,8 @@ function PersonalInformation(props) {
       mother.name.given_name !== "" &&
       mother.birth_date &&
       mother.birth_date !== "";
-      // mother.us_status &&
-      // mother.us_status !== "";
+    // mother.us_status &&
+    // mother.us_status !== "";
 
     return isValid;
   };
@@ -217,30 +217,26 @@ function PersonalInformation(props) {
   };
 
   const validateStep7 = () => {
-    let isValid = false;
 
     const { primary_occupation } = data;
-
+    console.log(primary_occupation)
     if (!primary_occupation) {
-      isValid = true;
-      return isValid;
+      return true;
+    }
+    if (primary_occupation.type === "Employee") {
+      return primary_occupation.occupation_type &&
+        primary_occupation.entity_name &&
+        primary_occupation.start_date &&
+        primary_occupation.address.street &&
+        primary_occupation.address.city &&
+        primary_occupation.address.state;
     }
 
-    isValid =
-      primary_occupation.occupation_type &&
-      primary_occupation.occupation_type !== "" &&
-      primary_occupation.entity_name &&
-      primary_occupation.entity_name !== "" &&
-      primary_occupation.start_date &&
-      primary_occupation.start_date !== "" &&
-      primary_occupation.address.street &&
-      primary_occupation.address.street !== "" &&
-      primary_occupation.address.city &&
-      primary_occupation.address.city !== "" &&
-      primary_occupation.address.state &&
-      primary_occupation.address.state !== "";
+    if (primary_occupation.type === "Retiree") {
+      return primary_occupation.monthly_income > 0;
+    }
 
-    return isValid;
+    return false;
   };
 
   const validateStep8 = () => {
