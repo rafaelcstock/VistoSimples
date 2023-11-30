@@ -61,8 +61,7 @@ function InitialInformation({
 
   const handlePhoneNumberChange = (event) => {
     const { value, name } = event.target;
-    console.log(value);
-    console.log(value.length);
+
     updateData({ ...data, [name]: value });
   };
 

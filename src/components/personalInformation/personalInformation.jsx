@@ -219,7 +219,7 @@ function PersonalInformation(props) {
   const validateStep7 = () => {
 
     const { primary_occupation } = data;
-    console.log(primary_occupation)
+    
     if (!primary_occupation) {
       return true;
     }

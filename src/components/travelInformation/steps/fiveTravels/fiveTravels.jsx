@@ -111,7 +111,7 @@ function FiveTravels({ validateStep }) {
   };
   const handleRemoveTravel = (indexPosition) => {
     const updatedUsVisits = data.us_visits.filter((visit, index) => index !== indexPosition);
-    console.log(updatedUsVisits)
+  
     updateData({
       ...data,
       us_visits: updatedUsVisits,

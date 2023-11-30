@@ -342,9 +342,6 @@ export function DataProvider({ children }) {
   });
 
   // console.log(data);
-  console.log(data.us_visits);
-  // console.log("------------------------- abaixo é lost");
-  // console.log(data.lost_or_stolen_passports);
 
   const updateData = (newData) => {
     setData({ ...data, ...newData });
