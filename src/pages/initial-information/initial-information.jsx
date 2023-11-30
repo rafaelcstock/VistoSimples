@@ -10,11 +10,12 @@ import { useData } from "../../dataContext/dataContext";
 function InitialInformation() {
   const { data, updateData } = useData();
 
-  const [ds160City, setDs160City] = useState("");
+  const [isDisabled, setIsDisabled] = useState(true);
   const [radioRequester, setRadioRequester] = useState("Apenas para mim");
 
   const handleChangeSelect = (event) => {
     updateData({ ds160_city: event.target.value });
+    setIsDisabled(false);
   };
 
   const handleChangeRequester = (event) => {
@@ -22,14 +23,17 @@ function InitialInformation() {
     localStorage.setItem("tipoForm", event.target.value);
   };
 
-  const sortedDs160Cities = ds160Cities.slice().sort((a, b) => a.value.localeCompare(b.value));
+  const sortedDs160Cities = ds160Cities
+    .slice()
+    .sort((a, b) => a.value.localeCompare(b.value));
 
   useEffect(() => {
     localStorage.setItem("tipoForm", "Apenas para mim");
+    if (data.ds160_city && data.ds160_city !== "") setIsDisabled(false);
   }, []);
 
   return (
-    <div className="div-flex" >
+    <div className="div-flex">
       <div className="div-width"></div>
       <div className="div-margin">
         <div className="padding-bottom">
@@ -54,19 +58,19 @@ function InitialInformation() {
               <span className="span-state">Selecione o estado</span>
             </div>
             <div className="padding-bottom-1">
-            <Select
-              className="style-select"
-              labelId="select-state"
-              id="select-state"
-              value={data.ds160_city}
-              onChange={handleChangeSelect}
-            >
-              {sortedDs160Cities.map((state) => (
-                <MenuItem key={state.key} value={state.key}>
-                  {state.value}
-                </MenuItem>
-              ))}
-            </Select>
+              <Select
+                className="style-select"
+                labelId="select-state"
+                id="select-state"
+                value={data.ds160_city}
+                onChange={handleChangeSelect}
+              >
+                {sortedDs160Cities.map((state) => (
+                  <MenuItem key={state.key} value={state.key}>
+                    {state.value}
+                  </MenuItem>
+                ))}
+              </Select>
             </div>
             <div>
               <div className="padding-bottom-1">
@@ -122,7 +126,11 @@ function InitialInformation() {
 
         <div className="padding-top">
           <Link to="/form">
-            <button type="button" className="button-style">
+            <button
+              type="button"
+              disabled={isDisabled}
+              className={`button-style ${isDisabled ? "disabled-button" : ""}`}
+            >
               <span className="font-button">Próxima</span>
             </button>
           </Link>
