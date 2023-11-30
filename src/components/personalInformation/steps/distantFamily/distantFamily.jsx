@@ -42,34 +42,44 @@ function DistantFamily({ validateStep }) {
 
     setRadioOcupation(value);
 
-    if (value !== "Empregado") {
+    if (value === "Estudante") {
       updateData({ ...data, primary_occupation: null });
-    } else {
-      updateData({
-        ...data,
-        primary_occupation: {
-          occupation_type: "",
-          specify_occupation: null,
-          entity_name: "",
-          address: {
-            street: "",
-            complement: null,
-            city: "",
-            state: "",
-            state_acronym: "",
-            zip_code: "",
-            country: "",
-          },
-          phone_number: "",
-          start_date: "",
-          end_date: null,
-          monthly_income: null,
-          description: null,
-          occupation_title: "",
-          supervisor_name: null,
-        },
-      });
+      return
     }
+      if (value === "Aposentado") {
+        updateData({
+          ...data,
+          primary_occupation: {
+            type: "Retiree"
+          },
+        });
+        return
+      }
+        updateData({
+          ...data,
+          primary_occupation: {
+            type: "Employee",
+            occupation_type: "",
+            specify_occupation: null,
+            entity_name: "",
+            address: {
+              street: "",
+              complement: null,
+              city: "",
+              state: "",
+              state_acronym: "",
+              zip_code: "",
+              country: "",
+            },
+            phone_number: "",
+            start_date: "",
+            end_date: null,
+            monthly_income: null,
+            description: null,
+            occupation_title: "",
+            supervisor_name: null,
+          },
+        });
   };
 
   const handleEntityNameChange = (event) => {
@@ -190,6 +200,18 @@ function DistantFamily({ validateStep }) {
     });
   };
 
+  const handleRetireeSalary = (event) => {
+    const { value } = event.target;
+
+    updateData({
+      ...data,
+      primary_occupation: {
+        ...data.primary_occupation,
+        monthly_income: value,
+      },
+    });
+  };
+
   const sortedPrimaryOccupation = PrimaryOccupation.slice().sort((a, b) => a.value.localeCompare(b.value));
 
   useEffect(() => {
@@ -269,33 +291,33 @@ function DistantFamily({ validateStep }) {
             <div className="div-marital-padding">
               <h2 className="padding-bottom-distant" style={{ color: "#091F5F" }}  >Informações da ocupação</h2>
               <div className="div-occupationAndOffice">
-              <div style={{ width: "50%" }}>
-                <div
-                  style={{ paddingBottom: "0.4rem" }}
-                  className="padding-bottom-distant"
-                >
-                  <span className="span-state">
-                    Área de ocupação <span style={{ color: "red" }}>*</span>
-                  </span>
+                <div style={{ width: "50%" }}>
+                  <div
+                    style={{ paddingBottom: "0.4rem" }}
+                    className="padding-bottom-distant"
+                  >
+                    <span className="span-state">
+                      Área de ocupação <span style={{ color: "red" }}>*</span>
+                    </span>
+                  </div>
+                  <div className="padding-bottom-distant">
+                    <Select
+                      className="input-style-distant"
+                      labelId="select-state"
+                      id="select-state"
+                      value={data.primary_occupation.occupation_type}
+                      onChange={handleOccupationAreaChangeSelect}
+                    >
+                      {sortedPrimaryOccupation.map((state) => (
+                        <MenuItem key={state.key} value={state.key}>
+                          {state.value}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </div>
+
                 </div>
-                <div className="padding-bottom-distant">
-                <Select
-                  className="input-style-distant"
-                  labelId="select-state"
-                  id="select-state"
-                  value={data.primary_occupation.occupation_type}
-                  onChange={handleOccupationAreaChangeSelect}
-                >
-                  {sortedPrimaryOccupation.map((state) => (
-                    <MenuItem key={state.key} value={state.key}>
-                      {state.value}
-                    </MenuItem>
-                  ))}
-                </Select>
-                </div>
-                
-              </div>
-              <div style={{ width: "50%" }}>
+                <div style={{ width: "50%" }}>
                   <div style={{ paddingBottom: "0.4rem" }}>
                     <span className="span-state">
                       Nome da instituição/empresa{" "}
@@ -314,7 +336,7 @@ function DistantFamily({ validateStep }) {
                   </div>
                 </div>
               </div>
-              <div className="div-2-inputs-work">
+              <div className="div-2-inputs-work-distantFamily">
                 <div>
                   <div style={{ paddingBottom: "0.4rem" }}>
                     <span className="span-state">
@@ -323,11 +345,10 @@ function DistantFamily({ validateStep }) {
                   </div>
                   <div className="padding-bottom-1">
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <DatePicker 
+                      <DatePicker
                         format="DD/MM/YYYY"
-                        className={`custom-date-picker-initial  ${
-                          isStartDateValid ? "" : "invalid-date"
-                        }`}
+                        className={`custom-date-picker-initial  ${isStartDateValid ? "" : "invalid-date"
+                          }`}
                         value={
                           data.primary_occupation.start_date
                             ? dayjs(data.primary_occupation.start_date)
@@ -345,7 +366,7 @@ function DistantFamily({ validateStep }) {
                 </div>
               </div>
               <div className="div-1-inputs-marital">
-              <div>
+                <div>
                   <div style={{ paddingBottom: "0.4rem" }}>
                     <span className="span-state">
                       Endereço da instituição / empresa{" "}
@@ -401,26 +422,33 @@ function DistantFamily({ validateStep }) {
                   </div>
                 </div>
               </div>
-              {/* {radioOcupation === "Aposentado" ? (
-                <div>
+
+            </div>
+          </>
+        ) : null}
+        {radioOcupation === "Aposentado" ? (
+          <div>
+            <div className="div-distant-padding">
+              <div className="padding-bottom-distant">
                 <div style={{ paddingBottom: "0.4rem" }}>
-                  <span className="span-state">
-                    <span style={{ color: "red" }}>*</span>
+                  <span className="title-header-2">
+                    Quanto é o salário da aposentadoria? <span style={{ color: "red" }}>*</span>
                   </span>
                 </div>
                 <div className="padding-bottom-1">
                   <TextField
                     id="outlined-basic"
                     className="style-select-work"
-                    placeholder="Escreva o cargo"
+                    placeholder="Escreva o salário"
                     variant="outlined"
                     name="state"
+                    value={data.primary_occupation ? data.primary_occupation.monthly_income : ""}
+                    onChange={handleRetireeSalary}
                   />
                 </div>
               </div>
-              ) : null} */}
             </div>
-          </>
+          </div>
         ) : null}
       </div>
     </div>

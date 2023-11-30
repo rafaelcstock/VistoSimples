@@ -145,3 +145,9 @@
 .custom-date-picker-initial {
     width: 100%;
 }
+
+.div-2-inputs-work-distantFamily{
+    display: grid;   
+    grid-template-columns: 99%;
+    padding-left: 3rem;
+}

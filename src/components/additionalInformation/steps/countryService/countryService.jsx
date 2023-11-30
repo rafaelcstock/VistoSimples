@@ -218,7 +218,7 @@ function CountryService({ validateStep }) {
                   <LocalizationProvider dateAdapter={AdapterDayjs}>
                   <DatePicker
                     format="DD/MM/YYYY"
-                    className={`custom-date-picker-initial ${!isStartDateValid ? "invalid-date" : ""}`}
+                    className={`custom-date-picker-initialService ${!isStartDateValid ? "invalid-date" : ""}`}
                     value={data.military_info[0].start_date !== "" ? dayjs(data.military_info[0].start_date) : null}
                     onChange={(date) => handleDateUpdateData("start_date", date)}
                   />
@@ -241,7 +241,7 @@ function CountryService({ validateStep }) {
                   <LocalizationProvider dateAdapter={AdapterDayjs}>
                   <DatePicker
                     format="DD/MM/YYYY"
-                    className={`custom-date-picker-initial ${!isEndDateValid ? "invalid-date" : ""}`}
+                    className={`custom-date-picker-initialService ${!isEndDateValid ? "invalid-date" : ""}`}
                     value={data.military_info[0].end_date !== "" ? dayjs(data.military_info[0].end_date) : null}
                     onChange={(date) => handleDateUpdateData("end_date", date)}
                   />

@@ -107,30 +107,6 @@ const FamilyFormComponent = ({
             </div>
           </div>
         </div>
-        {index < 1 && (
-          <div>
-            {/* <div className="padding-usa">
-              <span className="title-header-2">
-                Possui algum outro familiar nos Estados
-                Unidos?(Esposo(a);noivo(a);filho(a);irmão(a);)
-                <span style={{ color: "red" }}>*</span>
-              </span>
-            </div>
-            <div className="padding-usa">
-              <RadioGroup
-                aria-labelledby="demo-radio-buttons-group-label"
-                defaultValue={length === 0 ? "Não" : "Sim"}
-                name="radio-buttons-group"
-                className="subTitle-div-2"
-                row
-                onChange={handleAddFamilyMember}
-              >
-                <FormControlLabel value="Sim" control={<Radio />} label="Sim" />
-                <FormControlLabel value="Não" control={<Radio />} label="Não" />
-              </RadioGroup>
-            </div> */}
-          </div>
-        )}
       </div>
     </div>
   );

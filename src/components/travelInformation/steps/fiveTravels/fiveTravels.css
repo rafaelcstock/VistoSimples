@@ -161,3 +161,73 @@
     padding-left: 3rem;
 }
 
+.custom-date-picker-initialTravels {
+    width: 98%;
+    background-color: #fff;
+}
+
+.padding-bottom-Travels {
+    width: 98%;
+    background-color: #fff;
+}
+.padding-bottom-TravelsText {
+    width: 100%;
+    background-color: #fff;
+}
+
+.div-btnTravelsAdd{
+    display: flex;
+    justify-content: start;
+    margin-bottom: 4%;
+    color: #fff;
+}
+.div-btnTravelsRemove{
+    display: flex;
+    justify-content: end;
+    margin-bottom: 4%;
+    color: #fff;
+}
+
+.button-style-imgTravels{
+    width: 124px;
+    height: 38px;
+    border-radius: 8px;
+    background-color: #B2CAFF;
+    color: #fff;
+    border: 0;
+    
+ }
+
+ .font-button-imgAdd {
+    align-items: center;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 19.4px;
+    color: #2F5FE3;    
+    text-align: -webkit-center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    cursor: pointer;
+    width: 20%;
+    border-radius: 25px;
+}
+ .font-button-imgRemove {
+    align-items: center;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 19.4px;
+    color: #2F5FE3;    
+    text-align: -webkit-center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    cursor: pointer;
+    width: 40%;
+    border-radius: 25px;
+}
+
+.travel_buttons {
+    display: flex;
+    justify-content: space-between;
+}
