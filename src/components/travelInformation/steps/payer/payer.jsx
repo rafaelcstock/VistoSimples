@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import "./payer.css";
 import { MenuItem, Select, TextField } from "@mui/material";
 import { FormControlLabel, Radio, RadioGroup } from "@mui/material";
@@ -7,9 +7,12 @@ import escortRelationship from "../../../../datas/escort_relationship";
 import { useData } from "../../../../dataContext/dataContext";
 import personPaying from "../../../../datas/person_paying";
 import Countries from "../../../../datas/countries";
+import { emailRegex } from "../../../utils/regex";
 
 function Payer({ validateStep }) {
   const { data, updateData } = useData();
+
+  const [isValidPayer, setIsValidPayer] = useState(true);
 
   const handlePaymentChangeSelect = (event) => {
     const { value } = event.target;
@@ -110,7 +113,7 @@ function Payer({ validateStep }) {
 
   const handlePersonNameChange = (event) => {
     const { value, name } = event.target;
-  
+
     if (/^[A-Za-z\s]*$/.test(value) || value === "") {
       updateData({
         entity_paying: {
@@ -154,7 +157,13 @@ function Payer({ validateStep }) {
         email: value,
       },
     });
+    validateEmail(value)
   };
+
+  const validateEmail = (email) => {
+    const validEmail = email !== "" ? emailRegex.test(email) : true;
+    setIsValidPayer(validEmail);
+  }
 
   const handlePersonRelationshipChange = (event) => {
     const { value } = event.target;
@@ -494,9 +503,15 @@ function Payer({ validateStep }) {
                   className="style-select-work"
                   placeholder="email@exemplo.com"
                   variant="outlined"
+                  type="email"
                   value={data.entity_paying.email}
                   onChange={handleEmailChange}
                 />
+              </div>
+              <div className="errorMessage">
+                {!isValidPayer && (
+                  <> Formato de Email inválido</>
+                )}
               </div>
             </div>
           </div>
@@ -504,7 +519,7 @@ function Payer({ validateStep }) {
       )}
 
       {data.entity_paying.entity_type !== "O" &&
-      data.entity_paying.entity_type !== "S" ? (
+        data.entity_paying.entity_type !== "S" ? (
         <div>
           <div className="div-marital-padding">
             <div className="padding-bottom-title-input">
@@ -720,9 +735,15 @@ function Payer({ validateStep }) {
                     className="style-select-work"
                     placeholder="email@exemplo.com"
                     variant="outlined"
+                    type="email"
                     value={data.entity_paying.email}
                     onChange={handleEmailChange}
                   />
+                </div>
+                <div className="errorMessage">
+                  {!isValidPayer && (
+                    <> Formato de Email inválido</>
+                  )}
                 </div>
               </div>
             </div>

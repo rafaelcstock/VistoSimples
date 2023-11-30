@@ -288,6 +288,7 @@ export function DataProvider({ children }) {
         description: null,
         occupation_title: "",
         supervisor_name: null,
+        email: "",
       },
     ],
     education: [

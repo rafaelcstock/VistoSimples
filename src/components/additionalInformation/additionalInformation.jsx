@@ -13,7 +13,7 @@ import { useData } from "../../dataContext/dataContext";
 function AdditionalInformation(props) {
   const { data, updateData } = useData();
 
-  const [activeStep, setActiveStep] = useState(2);
+  const [activeStep, setActiveStep] = useState(0);
   const [skipped, setSkipped] = useState(new Set());
   const [isDisabled, setIsDisabled] = useState(null);
 

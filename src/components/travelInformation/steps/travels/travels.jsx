@@ -1,12 +1,9 @@
-import React, { useEffect } from "react"
-import './travels.css'
-import { MenuItem, OutlinedInput, Select, Button } from "@mui/material";
-import { FormControlLabel, Radio, RadioGroup } from "@mui/material";
+import React, { useEffect } from "react";
+import './travels.css';
+import { Autocomplete, FormControlLabel, Radio, RadioGroup, TextField } from "@mui/material";
 import { useTheme } from '@mui/material/styles';
-import Countries from '../../../../datas/countries'
+import Countries from '../../../../datas/countries';
 import { useData } from "../../../../dataContext/dataContext";
-
-import { Dropdown } from 'primereact/dropdown';
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -29,33 +26,29 @@ function getStyles(name, personName, theme) {
 }
 
 function Travels({ validateStep }) {
-
   const { data, updateData } = useData();
-
   const theme = useTheme();
   const [personName, setPersonName] = React.useState([]);
 
-  const handleUpdateVisitedCountriesChange = (event) => {
-    const { value } = event.target;
-
-    setPersonName(typeof value === 'string' ? value.split(',') : value)
+  const handleUpdateVisitedCountriesChange = (event, value) => {
+    setPersonName(value);
 
     updateData({
-      ...data, visited_countries: typeof value === 'string' ? value.split(',') : value
-    })
+      ...data,
+      visited_countries: value.map(country => country.key)
+    });
   };
 
   const handleChangeSelect = (event) => {
     const { value } = event.target;
-    const boolValue = value === "Sim" ? true : false;
+    const boolValue = value === "Sim";
 
     if (boolValue) {
-      updateData({ ...data, visited_countries: [] })
+      updateData({ ...data, visited_countries: [] });
     } else {
-      updateData({ ...data, visited_countries: null })
+      updateData({ ...data, visited_countries: null });
     }
   };
-
 
   useEffect(() => {
     validateStep();
@@ -94,49 +87,31 @@ function Travels({ validateStep }) {
       {data.visited_countries !== null ? (
         <div className="div-marital-padding">
           <div className="padding-bottom-title-input">
-            <span className="title-header-2">Quais  países você já viajou?<span style={{ color: 'red' }}>*</span></span>
+            <span className="title-header-2">Quais países você já viajou?<span style={{ color: 'red' }}>*</span></span>
           </div>
-          <div className="padding-radio-marital">
-            <Select
-              renderValue={(options) => {
-
-                  return(
-                  <div>
-                    {options.map((option) => {
-                      const country = Countries.find((country) => country.key === option)
-                      return (
-                        <div
-                          onClick={() => {
-                            setPersonName(personName.filter(countryKey => countryKey !== country.key))
-                          }}>
-                          {country.value}
-                        </div>
-                      )
-                    })}
-                  </div>
-              )} }
-              className="style-select-travels"
+          <div className="padding-radio-maritalCountries">
+            <Autocomplete
               multiple
-              value={personName}
+              id="autocomplete-travels"
+              options={Countries}
+              value={Countries.filter(country => personName.includes(country))}
+              getOptionLabel={(option) => option.value}
               onChange={handleUpdateVisitedCountriesChange}
-              input={<OutlinedInput />}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  variant="outlined"
+                  placeholder="Selecione o país"
+                  className="style-select-travels"
+                />
+              )}
               MenuProps={MenuProps}
-            >
-              {Countries.map((name) => (
-                <MenuItem
-                  key={name.key}
-                  value={name.key}
-                  style={getStyles(name.value, personName, theme)}
-                >
-                  {name.value}
-                </MenuItem>
-              ))}
-            </Select>
+            />
           </div>
         </div>
       ) : null}
     </div>
-  )
+  );
 }
 
-export default Travels
+export default Travels;

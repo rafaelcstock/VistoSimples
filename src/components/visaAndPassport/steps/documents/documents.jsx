@@ -21,6 +21,7 @@ function Documents({ validateStep }) {
         lost_or_stolen_passports: null,
       });
     } else {
+      debugger
       const newPassportData = {
         passport: { ...data.passport, [name]: value },
         lost_or_stolen_passports: [
@@ -38,9 +39,6 @@ function Documents({ validateStep }) {
           },
         ],
       };
-
-      setShowCustomDocumentReason(value === "Outro");
-
       updateData(newPassportData);
     }
   };

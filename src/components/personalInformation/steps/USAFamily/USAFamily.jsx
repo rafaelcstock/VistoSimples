@@ -116,6 +116,19 @@ function USAFamily({ validateStep }) {
     }
   };
 
+  const handleRemoveFamilyMember = (index) => {
+    const updatedRelatives = data.immediate_relatives.filter(
+      (_, i) => i !== index
+    );
+
+    setNumFamilyMembers((prevNum) => prevNum - 1);  // Atualiza o número de membros
+
+    updateData({
+      ...data,
+      immediate_relatives: updatedRelatives,
+    });
+  };
+
   const handleNameChange = (event, index) => {
     const { value, name } = event.target;
     if (/^[a-zA-Z\s]+$/.test(value) || value === "") {
@@ -185,21 +198,23 @@ function USAFamily({ validateStep }) {
             data={data.immediate_relatives[index] || {}}
             length={data.immediate_relatives.length - 1}
             handleNameChange={(event) => handleNameChange(event, index)}
-            handleRelationshipChange={(event) => handleRelationshipChange(event, index)}
+            handleRelationshipChange={(event) =>
+              handleRelationshipChange(event, index)
+            }
             handleStatusChange={(event) => handleStatusChange(event, index)}
-            handleAddFamilyMember={handleAddFamilyMember}
+            handleRemoveFamilyMember={handleRemoveFamilyMember}
           />
         ))}
       {data.hasParentInUs && (
-      <div className="div-btn">
-        <button
-          className="font-button-img button-style-imgFamily"
-          onClick={handleAddFamilyMember}
-        >
-          + Adicionar Familiar
-        </button>
-      </div>
-    )}
+        <div className="div-btn">
+          <button
+            className="font-button-img button-style-imgFamily"
+            onClick={handleAddFamilyMember}
+          >
+            + Adicionar Familiar
+          </button>
+        </div>
+      )}
     </div>
   );
 }

@@ -201,7 +201,7 @@ function FiveTravels({ validateStep }) {
                     />
                   </div>
                 </div>
-                <div className="div-btnTravels">
+                <div className="div-btnTravelsRemove">
                   <button
                     className="font-button-imgRemove button-style-imgTravels"
                     onClick={() => handleRemoveTravel(index)}
@@ -213,7 +213,7 @@ function FiveTravels({ validateStep }) {
             ))}
 
           </div>
-          <div className="div-btnTravels">
+          <div className=".div-btnTravelsAdd">
             <button
               className="font-button-imgAdd button-style-imgTravels"
               onClick={handleAddTravel}
@@ -223,14 +223,6 @@ function FiveTravels({ validateStep }) {
           </div>
 
           <div className="div-marital-padding">
-            <div style={{ paddingBottom: "1rem", paddingLeft: "1rem" }}>
-              <span className="footer-travel">
-                <b>
-                  Caso você tenha menos que 5 viagens, preencha apenas as
-                  viagens que você fez, deixe as outras em branco!
-                </b>
-              </span>
-            </div>
             <div style={{ paddingBottom: "1rem", paddingLeft: "1rem" }}>
               <span className="footer-travel">
                 <b>Obs. 1:</b> A data de chegada pode ser uma data estimada da

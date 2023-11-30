@@ -21,7 +21,7 @@ import { emailRegex } from "../utils/regex";
 function PersonalInformation(props) {
   const { data, updateData } = useData();
 
-  const [activeStep, setActiveStep] = useState(7);
+  const [activeStep, setActiveStep] = useState(9);
 
   const [skipped, setSkipped] = useState(new Set());
 
