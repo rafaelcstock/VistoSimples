@@ -9,6 +9,7 @@ import { useData } from "../../../../../dataContext/dataContext";
 import dayjs from "dayjs";
 import PrimaryOccupation from "../../../../../datas/primary_occupation";
 
+
 const PastJobsComponent = ({
   job,
   index,
@@ -78,6 +79,21 @@ const PastJobsComponent = ({
     const newPastJobs = data.past_jobs.map((job, i) => {
       if (i === index) {
         return { ...job, address: { ...job.address, [name]: value } };
+      }
+      return job;
+    });
+
+    newObject = { ...data, past_jobs: newPastJobs };
+
+    updateContext(newObject);
+  };
+
+  const handleEmailUpdate = (name, value, index) => {
+    let newObject;
+
+    const newPastJobs = data.past_jobs.map((job, i) => {
+      if (i === index) {
+        return { ...job, [name]: value };
       }
       return job;
     });
@@ -348,21 +364,6 @@ const PastJobsComponent = ({
                 />
               )}
             </InputMask>
-          </div>
-        </div>
-        <div>
-          <div style={{ paddingBottom: "0.4rem" }}>
-            <span className="span-state">
-              Email da empresa<span style={{ color: "red" }}>*</span>
-            </span>
-          </div>
-          <div className="padding-bottom-1">
-            <TextField
-              id="outlined-basic"
-              className="style-select-work"
-              placeholder="email@exemplo.com"
-              variant="outlined"
-            />
           </div>
         </div>
       </div>

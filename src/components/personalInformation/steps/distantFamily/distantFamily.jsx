@@ -347,7 +347,7 @@ function DistantFamily({ validateStep }) {
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                       <DatePicker
                         format="DD/MM/YYYY"
-                        className={`custom-date-picker-initial  ${isStartDateValid ? "" : "invalid-date"
+                        className={`custom-date-picker-initialOccupation  ${isStartDateValid ? "" : "invalid-date"
                           }`}
                         value={
                           data.primary_occupation.start_date

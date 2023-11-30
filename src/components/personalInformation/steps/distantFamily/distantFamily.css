@@ -142,8 +142,9 @@
     display: flex;
 }
 
-.custom-date-picker-initial {
-    width: 100%;
+.custom-date-picker-initialOccupation {
+    width: 98%;
+    background-color: #fff;
 }
 
 .div-2-inputs-work-distantFamily{
