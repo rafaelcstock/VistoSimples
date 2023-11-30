@@ -12,10 +12,15 @@ function Divorced() {
     const [countryBirth, setCountryBirth] = useState("")
     const [countrySeparation, setCountrySeparation] = useState("")
     const [typeSeparation, setTypeSeparation] = useState("C");
+    
+    // const handleNameChange = (event) => {
+    //     const { value, name } = event.target;
+    
+    //     if (/^[A-Za-z\s]+$/.test(value) || value === "") {
+    //       updateData({ ...data, name: { ...data.name, [name]: value } });
+    //     }
+    //   };
 
-    const handleChangeSelectNationality = (event) => {
-        setNationality(event.target.value);
-    };
     const handleChangeSelectCountryBirth = (event) => {
         setCountryBirth(event.target.value);
     };
@@ -53,7 +58,15 @@ function Divorced() {
                             <span className="span-state">Nome do ex-companheiro(a)<span style={{ color: 'red' }}>*</span></span>
                         </div>
                         <div className="padding-bottom-1">
-                            <TextField id="outlined-basic" className="input-style-marital" placeholder="Escreva o primeiro nome" variant="outlined" />
+                            <TextField 
+                                id="outlined-basic" 
+                                className="input-style-marital" 
+                                placeholder="Escreva o primeiro nome" 
+                                variant="outlined"
+                                // name="given_name"
+                                // value={data.name.given_name}
+                                // onChange={handleNameChange}
+                            />
                         </div>
                     </div>
                     <div>
@@ -61,7 +74,15 @@ function Divorced() {
                             <span className="span-state">Sobrenome do ex-companheiro(a)<span style={{ color: 'red' }}>*</span></span>
                         </div>
                         <div className="padding-bottom-1">
-                            <TextField id="outlined-basic" className="input-style-marital" placeholder="Escreva o sobrenome" variant="outlined" />
+                            <TextField 
+                                id="outlined-basic" 
+                                className="input-style-marital" 
+                                placeholder="Escreva o sobrenome" 
+                                variant="outlined" 
+                                // name="given_name"
+                                // value={data.name.given_name}
+                                // onChange={handleNameChange}
+                            />
                         </div>
                     </div>
                     <div>
@@ -70,7 +91,11 @@ function Divorced() {
                         </div>
                         <div className="padding-bottom-1">
                             <LocalizationProvider dateAdapter={AdapterDayjs}>
-                                <DatePicker format="DD/MM/YYYY" className="custom-date-picker-initial" />
+                                <DatePicker 
+                                    format="DD/MM/YYYY" 
+                                    className="custom-date-picker-initialDivorced"
+                                    // value={data.birth.date !== "" ? dayjs(data.birth.date) : null} 
+                                />
                             </LocalizationProvider>
                         </div>
                     </div>
@@ -81,26 +106,6 @@ function Divorced() {
                     <span className="title-header-2">Dados do ex-companheiro(a)</span>
                 </div>
                 <div className="div-2-inputs-marital">
-                    <div>
-                        <div style={{ paddingBottom: '0.4rem' }}>
-                            <span className="span-state">Cidade de nascimento ex-companheiro(a)<span style={{ color: 'red' }}>*</span></span>
-                        </div>
-                        <div className="padding-bottom-1">
-                            <Select
-                                className="style-select-marital"
-                                labelId="select-state"
-                                id="select-state"
-                                value={nationality}
-                                onChange={handleChangeSelectNationality}
-                            >
-                                {Countries.map((state) => (
-                                    <MenuItem key={state.key} value={state.key}>
-                                        {state.value}
-                                    </MenuItem>
-                                ))}
-                            </Select>
-                        </div>
-                    </div>
                     <div>
                         <div style={{ paddingBottom: '0.4rem' }}>
                             <span className="span-state">País de nascimento do ex-companheiro(a)<span style={{ color: 'red' }}>*</span></span>
@@ -121,6 +126,15 @@ function Divorced() {
                             </Select>
                         </div>
                     </div>
+                    <div>
+                        <div style={{ paddingBottom: '0.4rem' }}>
+                            <span className="span-state">Cidade de nascimento ex-companheiro(a)<span style={{ color: 'red' }}>*</span></span>
+                        </div>
+                        <div className="padding-bottom-1">
+                            <TextField id="outlined-basic" className="input-style-marital" placeholder="Escreva a cidade" variant="outlined" />
+                        </div>
+                    </div>
+                    
                 </div>
             </div>
 
@@ -135,7 +149,7 @@ function Divorced() {
                         </div>
                         <div className="padding-bottom-1">
                             <LocalizationProvider dateAdapter={AdapterDayjs}>
-                                <DatePicker format="DD/MM/YYYY" className="custom-date-picker-initial" />
+                                <DatePicker format="DD/MM/YYYY" className="custom-date-picker-initialDivorced" />
                             </LocalizationProvider>
                         </div>
                     </div>
@@ -145,7 +159,7 @@ function Divorced() {
                         </div>
                         <div className="padding-bottom-1">
                             <LocalizationProvider dateAdapter={AdapterDayjs}>
-                                <DatePicker format="DD/MM/YYYY" className="custom-date-picker-initial" />
+                                <DatePicker format="DD/MM/YYYY" className="custom-date-picker-initialDivorced" />
                             </LocalizationProvider>
                         </div>
                     </div>

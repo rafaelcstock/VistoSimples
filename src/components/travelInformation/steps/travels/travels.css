@@ -140,7 +140,8 @@
     padding-left: 3rem;
 }
 
-.padding-radio-marital{
+.padding-radio-maritalCountries {
+    width: 90%;
     padding-left: 3rem;
 }
 
@@ -148,4 +149,3 @@
     width: 98%;
     background-color: #ffff;
 }
-

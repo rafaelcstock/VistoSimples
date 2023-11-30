@@ -20,27 +20,29 @@ function Documents({ validateStep }) {
         passport: { ...data.passport, [name]: value },
         lost_or_stolen_passports: null,
       });
-      return;
+    } else {
+      debugger
+      const newPassportData = {
+        passport: { ...data.passport, [name]: value },
+        lost_or_stolen_passports: [
+          {
+            document_type: "R",
+            number: "",
+            custom_document_reason: null,
+            book_number: null,
+            country: "AFGH",
+            city: null,
+            state: null,
+            issuance_date: null,
+            expiration_date: null,
+            lost_reason: null,
+          },
+        ],
+      };
+      updateData(newPassportData);
     }
-
-    updateData({
-      passport: { ...data.passport, [name]: value },
-      lost_or_stolen_passports: [
-        {
-          document_type: "R",
-          number: "",
-          custom_document_reason: null,
-          book_number: null,
-          country: "AFGH",
-          city: null,
-          state: null,
-          issuance_date: null,
-          expiration_date: null,
-          lost_reason: null,
-        },
-      ],
-    });
   };
+
 
   const handleDateUpdateData = (name, newDate) => {
     if (newDate && dayjs(newDate).isValid()) {
@@ -208,7 +210,7 @@ function Documents({ validateStep }) {
               <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <DatePicker
                   format="DD/MM/YYYY"
-                  className="custom-date-picker-initial"
+                  className="custom-date-picker-initialDocuments"
                   value={data.passport.issuance_date !== "" ? dayjs(data.passport.issuance_date) : null}
                   onChange={(date) =>
                     handleDateUpdateData("issuance_date", date)
@@ -228,7 +230,7 @@ function Documents({ validateStep }) {
               <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <DatePicker
                   format="DD/MM/YYYY"
-                  className="custom-date-picker-initial"
+                  className="custom-date-picker-initialDocuments"
                   value={data.passport.expiration_date !== "" ? dayjs(data.passport.expiration_date) : null}
                   onChange={(date) =>
                     handleDateUpdateData("expiration_date", date)
@@ -260,6 +262,7 @@ function Documents({ validateStep }) {
             </div>
           </div>
         </div>
+
         <div className="padding-documents">
           <div>
             <div style={{ paddingBottom: "0.4rem" }}>
@@ -275,9 +278,7 @@ function Documents({ validateStep }) {
                 className="subTitle-div"
                 row
                 name="lost_reason"
-                value={
-                  data.passport.lost_reason ? data.passport.lost_reason : ""
-                }
+                value={data.passport.lost_reason ? data.passport.lost_reason : ""}
                 onChange={handlePassportChange}
               >
                 <FormControlLabel
@@ -301,7 +302,7 @@ function Documents({ validateStep }) {
         </div>
       </div>
       {data.passport.lost_reason === "Perdido" ||
-      data.passport.lost_reason === "Roubado" ? (
+        data.passport.lost_reason === "Roubado" ? (
         <div className="div-marital-padding">
           <div className="padding-bottom-title-input">
             <span className="title-header-2">

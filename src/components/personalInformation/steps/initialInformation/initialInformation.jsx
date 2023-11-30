@@ -210,7 +210,7 @@ function InitialInformation({
                 <DatePicker
                   onChange={handleBirthDateChange}
                   format="DD/MM/YYYY"
-                  className="custom-date-picker-initial"
+                  className="custom-date-picker-initialInformation"
                   value={data.birth.date !== "" ? dayjs(data.birth.date) : null}
                 />
                 {!isBirthDateValid && (

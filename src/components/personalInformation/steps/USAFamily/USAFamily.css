@@ -127,3 +127,42 @@
     padding-bottom: 1rem;
 }
 
+.div-btn{
+    display: flex;
+    justify-content: end;
+    margin-bottom: 5%;
+}
+
+.button-style-imgFamily{
+    width: 124px;
+    height: 38px;
+    border-radius: 8px;
+    background-color: #fff;
+    color: #2F5FE3;
+    border: 0;
+    
+ }
+.button-style-imgFamilyRemove{
+    width: 20% !important;
+    height: 38px;
+    border-radius: 8px;
+    background-color: #2F5FE3;
+    color: #fff !important;
+    border: 0;
+    margin-left: 5%;
+    margin-top: 2%;
+ }
+
+ .font-button-img {
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 19.4px;
+    color: #2F5FE3;    
+    text-align: -webkit-center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    cursor: pointer;
+    width: 20%;
+}
+

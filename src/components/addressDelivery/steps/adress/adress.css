@@ -135,8 +135,8 @@
 }
 
 .div-3-inputs-residence{
-    display: grid;   
-    grid-template-columns: 25% 25% 25% 25%;
+    display: flex;
+    /* flex-wrap: wrap; */
     padding-left: 3rem;
 }
 

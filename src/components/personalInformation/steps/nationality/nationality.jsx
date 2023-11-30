@@ -1,30 +1,29 @@
 import React, { useEffect, useState } from "react";
 import "./nationality.css";
-import { MenuItem, Select, TextField } from "@mui/material";
-import statesBrazilianService from "../../../../services/statesBrazilianService";
-import { FormControlLabel, Radio, RadioGroup, OutlinedInput } from "@mui/material";
+import { MenuItem, Select, TextField, OutlinedInput, Autocomplete, } from "@mui/material";
+import { FormControlLabel, Radio, RadioGroup, } from "@mui/material";
 import InsertPhotoOutlinedIcon from "@mui/icons-material/InsertPhotoOutlined";
 import Countries from "../../../../datas/countries";
 import countriesService from "../../../../services/countriesWorld";
 import statesService from "../../../../services/statesWorldMain";
 import citiesService from "../../../../services/citiesWorld";
 import { useData } from "../../../../dataContext/dataContext";
+import { GetLanguages } from "react-country-state-city";
 
-// const ITEM_HEIGHT = 48;
-// const ITEM_PADDING_TOP = 8;
-// const MenuProps = {
-//   PaperProps: {
-//     style: {
-//       maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-//       width: 250,
-//     },
-//   },
-// };
-
+const ITEM_HEIGHT = 48;
+const ITEM_PADDING_TOP = 8;
+const MenuProps = {
+  PaperProps: {
+    style: {
+      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+      width: 250,
+    },
+  },
+};
 
 function Nationality({ validateStep }) {
-  const { data, updateData } = useData();
 
+  const { data, updateData } = useData();
   const [imageSrc, setImageSrc] = useState("");
   const [city, setCity] = useState("");
   const [state, setState] = useState("");
@@ -32,11 +31,33 @@ function Nationality({ validateStep }) {
   const [cities, setCities] = useState([]);
   const [states, setStates] = useState([]);
   const [countries, setCountries] = useState([]);
+  const [languageList, setLanguageList] = useState([]);
+  const [personName, setPersonName] = useState([]);
 
-  // const handleChange = (event) => {
-  //   const { value } = event.target;
-  //   setPersonName(typeof value === "string" ? value.split(",") : value);
-  // };
+  const getLanguages = async () => {
+    try {
+      const languages = await GetLanguages();
+      const languageList = languages.map((language) => ({
+        name: language.name,
+        code: language.iso2,
+      }));
+      setLanguageList(languageList);
+    } catch (error) {
+      console.error("Error fetching languages:", error);
+    }
+  };
+
+  const getStyles = (name, personName) => {
+    return {
+      fontWeight: personName.indexOf(name) === -1 ? "normal" : "bold",
+    };
+  };
+
+
+  const handleChange = (event, newValue) => {
+    setPersonName(newValue);
+    updateData({ ...data, languages: newValue });
+  };
 
   const handleImageChange = (event) => {
     const file = event.target.files?.[0];
@@ -115,6 +136,8 @@ function Nationality({ validateStep }) {
 
   useEffect(() => {
     getCountries();
+    getStates();
+    getLanguages();
   }, []);
 
   useEffect(() => {
@@ -230,6 +253,37 @@ function Nationality({ validateStep }) {
             </div>
           </div>
         </div>
+        <div className="div-country-padding">
+          <div className="padding-charity">
+            <div>
+              <div style={{ paddingBottom: "0.4rem" }}>
+                <span className="span-state">
+                  Idiomas que você fala<span style={{ color: "red" }}>*</span>
+                </span>
+              </div>
+              <div className="padding-bottom-1">
+                <Autocomplete
+                  multiple
+                  id="languages-autocomplete"
+                  options={languageList}
+                  value={personName}
+                  onChange={handleChange}
+                  getOptionLabel={(option) => option.name}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      variant="outlined"
+                      className="style-select-travels"
+                    />
+                  )}
+                  renderOption={(props, option) => (
+                    <li {...props}>{option.name}</li>
+                  )}
+                />
+              </div>
+            </div>
+          </div>
+        </div>
         <div className="div-grid-nationality-inputs-2">
           <div>
             <div style={{ paddingBottom: "0.4rem" }}>
@@ -269,7 +323,7 @@ function Nationality({ validateStep }) {
               </div>
             </div>
             <div className="div-bnt">
-              <label className="font-button-img button-style-img">
+              <label className="font-button-img button-style-imgSearch">
                 Procurar
                 <input
                   type="file"
@@ -359,40 +413,7 @@ function Nationality({ validateStep }) {
           </div>
         </div>
       ) : null}
-      {/* <div className="div-country-padding">
-        <div className="padding-charity">
-          <div>
-            <div style={{ paddingBottom: "0.4rem" }}>
-              <span className="span-state">
-                Idiomas que você fala<span style={{ color: "red" }}>*</span>
-              </span>
-            </div>
-            <div className="padding-bottom-1">
-              <Select
-                className="style-select-travels"
-                multiple
-                value={data.languages}
-                onChange={handleChange}
-                input={<OutlinedInput />}
-                MenuProps={MenuProps}
-              >
-                {languageList.map((item, index) => (
-                  <MenuItem
-                    key={item.name}
-                    value={item.name}
-                    style={getStyles(item.name, personName, theme)}
-                  >
-                    {item.name}
-                  </MenuItem>
-                ))}
-              </Select>
-            </div>
-          </div>
-        </div>
-      </div> */}
-      
     </div>
-    
   );
 }
 
