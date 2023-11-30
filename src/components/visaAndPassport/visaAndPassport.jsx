@@ -8,7 +8,7 @@ import { useData } from "../../dataContext/dataContext";
 
 function VisaAndPassport(props) {
   const { data } = useData();
-  const [activeStep, setActiveStep] = useState(1);
+  const [activeStep, setActiveStep] = useState(0);
   const [skipped, setSkipped] = useState(new Set());
   const [isDisabled, setIsDisabled] = useState(true);
 
