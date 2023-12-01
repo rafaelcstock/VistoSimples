@@ -75,39 +75,18 @@ function Nationality({ validateStep }) {
     }
   };
 
-  const getCountries = async () => {
-    let _countries = await countriesService.getCountries();
-    setCountries(_countries);
-  };
-
-  const getStates = async (country) => {
-    let _states = await statesService.getStateByCountry(country);
-    _states.sort((a, b) => a.name.localeCompare(b.name));
-    setStates(_states);
-  };
-
-  const getCities = async (country, state) => {
-    let _cities = await citiesService.getCitiesByStateByCountry(country, state);
-    setCities(_cities);
-  };
-
   const handleChangeSelectCountry = (event) => {
     const { value } = event.target;
     setCountry(value);
-    getStates(value);
     updateData({ ...data, birth: { ...data.birth, country: value } });
   };
 
-  const handleChangeSelectState = (event) => {
-    const { value } = event.target;
+  const handleChangeSelectState = (value) => {
     setState(value);
-    getCities(country, value);
-
     updateData({ ...data, birth: { ...data.birth, state: value } });
   };
 
-  const handleChangeSelectCity = (event) => {
-    const { value } = event.target;
+  const handleChangeSelectCity = (value) => {
     setCity(value);
     updateData({ ...data, birth: { ...data.birth, city: value } });
   };
@@ -135,8 +114,6 @@ function Nationality({ validateStep }) {
   };
 
   useEffect(() => {
-    getCountries();
-    getStates();
     getLanguages();
   }, []);
 
@@ -175,9 +152,9 @@ function Nationality({ validateStep }) {
                 value={country}
                 onChange={handleChangeSelectCountry}
               >
-                {countries.map((countrie, index) => (
-                  <MenuItem key={index} value={countrie.iso2}>
-                    {countrie.name}
+                {Countries.map((state) => (
+                  <MenuItem key={state.key} value={state.key}>
+                    {state.value}
                   </MenuItem>
                 ))}
               </Select>
@@ -190,19 +167,14 @@ function Nationality({ validateStep }) {
               </span>
             </div>
             <div className="padding-bottom-1">
-              <Select
+              <TextField
+                id="outlined-basic"
                 className="style-select-nationality"
-                labelId="select-state"
-                id="select-state"
+                placeholder="Digite o estado natal"
+                variant="outlined"
                 value={state}
-                onChange={handleChangeSelectState}
-              >
-                {states.map((state, index) => (
-                  <MenuItem key={index} value={state.iso2}>
-                    {state.name}
-                  </MenuItem>
-                ))}
-              </Select>
+                onChange={(event) => handleChangeSelectState(event.target.value)}
+              />
             </div>
           </div>
           <div>
@@ -212,19 +184,14 @@ function Nationality({ validateStep }) {
               </span>
             </div>
             <div className="padding-bottom-1">
-              <Select
+              <TextField
+                id="outlined-basic"
                 className="style-select-nationality"
-                labelId="select-state"
-                id="select-state"
+                placeholder="Digite a cidade natal"
+                variant="outlined"
                 value={city}
-                onChange={handleChangeSelectCity}
-              >
-                {cities.map((city, index) => (
-                  <MenuItem key={index} value={city.name}>
-                    {city.name}
-                  </MenuItem>
-                ))}
-              </Select>
+                onChange={(event) => handleChangeSelectCity(event.target.value)}
+              />
             </div>
           </div>
         </div>

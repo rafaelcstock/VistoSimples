@@ -38,16 +38,7 @@ function USAFamily({ validateStep }) {
       updateData({
         ...data,
         hasParentInUs: boolValue,
-        immediate_relatives: [
-          {
-            ...data.immediate_relatives[0],
-            name: {
-              surname: "",
-              given_name: "",
-              full_name: null,
-            },
-          },
-        ],
+        immediate_relatives: [],
       });
     }
   };

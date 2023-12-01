@@ -17,7 +17,7 @@ function AnotherName({ validateStep }) {
       updateData({
         ...data,
         hasAnotherName: boolValue,
-        other_name: { full_name: null, surname: null, given_name: null },
+        other_name: { full_name: "", surname: "", given_name: "" },
       });
     }
   };
