@@ -13,20 +13,13 @@ function MotherInformation({ validateStep = { validateStep } }) {
   const { data, updateData } = useData();
   const [isBirthDateValid, setIsBirthDateValid] = useState(true);
 
-  const handleLocatingChange = (event) => {
-    const { value } = event.target;
-  
-    const boolValue = value === "Sim";
-    updateData({ ...data, mother: { ...data.mother, locating_in_us: boolValue } });
-  };
-
   const handleInfoAboutMotherChange = (event) => {
     const { value } = event.target;
   
     const boolValue = value === "Sim" ? true : false;
   
     if (boolValue) {
-      updateData({ ...data, hasInformationAboutMother: boolValue });
+      updateData({ ...data, hasInformationAboutMother: boolValue, mother: {given_name: "", surname: ""}});
     } else {
       updateData({
         ...data,
@@ -75,6 +68,13 @@ function MotherInformation({ validateStep = { validateStep } }) {
         mother: { ...data.mother, name: { ...data.mother.name, [name]: value } },
       });
     }
+  };
+
+  const handleLocatingChange = (event) => {
+    const { value } = event.target;
+  
+    const boolValue = value === "Sim";
+    updateData({ ...data, mother: { ...data.mother, locating_in_us: boolValue } });
   };
 
   const handleUsStatusChange = (event) => {
@@ -138,7 +138,7 @@ function MotherInformation({ validateStep = { validateStep } }) {
                     placeholder="Escreva o primeiro nome"
                     variant="outlined"
                     name="given_name"
-                    value={data.mother.name.given_name}
+                    value={data.mother && data.mother.name ? data.mother.name.given_name : ""}
                     onChange={handleNameChange}
                   />
                 </div>
@@ -156,7 +156,7 @@ function MotherInformation({ validateStep = { validateStep } }) {
                     placeholder="Escreva o sobrenome"
                     variant="outlined"
                     name="surname"
-                    value={data.mother.name.surname}
+                    value={data.mother && data.mother.surname ? data.mother.surname.given_surname : ""}
                     onChange={handleNameChange}
                   />
                 </div>

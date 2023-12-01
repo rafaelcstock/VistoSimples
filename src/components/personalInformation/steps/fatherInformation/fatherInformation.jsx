@@ -13,39 +13,32 @@ function FatherInformation({ validateStep }) {
   const { data, updateData } = useData();
   const [isBirthDateValid, setIsBirthDateValid] = useState(true);
 
-const handleLocatingChange = (event) => {
-  const { value } = event.target;
+  const handleInfoAboutFatherChange = (event) => {
+    const { value } = event.target;
 
-  const boolValue = value === "Sim";
-  updateData({ ...data, father: { ...data.father, locating_in_us: boolValue } });
-};
+    const boolValue = value === "Sim" ? true : false;
 
-const handleInfoAboutFatherChange = (event) => {
-  const { value } = event.target;
-
-  const boolValue = value === "Sim" ? true : false;
-
-  if (boolValue) {
-    updateData({ ...data, hasInformationAboutFather: boolValue });
-  } else {
-    updateData({
-      ...data,
-      hasInformationAboutFather: boolValue,
-      father: {
-        name: null,
-        birth_date: null,
-        us_status: null,
-        locating_in_us: false,
-      },
-    });
-  }
-};
+    if (boolValue) {
+      updateData({ ...data, hasInformationAboutFather: boolValue, father: { given_name: "", surname: "" } });
+    } else {
+      updateData({
+        ...data,
+        hasInformationAboutFather: boolValue,
+        father: {
+          name: null,
+          birth_date: null,
+          us_status: null,
+          locating_in_us: false,
+        },
+      });
+    }
+  };
 
   const handleBirthDateChange = (selectedDate) => {
     if (selectedDate && dayjs(selectedDate).isValid()) {
       const currentDate = dayjs();
       const selectedDateTime = dayjs(selectedDate);
-  
+
       if (selectedDateTime.isAfter(currentDate)) {
         setIsBirthDateValid(false);
         console.error("A data de nascimento não pode ser superior à data atual.");
@@ -68,7 +61,7 @@ const handleInfoAboutFatherChange = (event) => {
 
   const handleNameChange = (event) => {
     const { value, name } = event.target;
-  
+
     if (/^[A-Za-z\s]+$/.test(value) || value === "") {
       updateData({
         ...data,
@@ -77,6 +70,13 @@ const handleInfoAboutFatherChange = (event) => {
     } else {
       console.error("O nome deve conter apenas letras e espaços.");
     }
+  };
+
+  const handleLocatingChange = (event) => {
+    const { value } = event.target;
+
+    const boolValue = value === "Sim";
+    updateData({ ...data, father: { ...data.father, locating_in_us: boolValue } });
   };
 
   const handleUsStatusChange = (event) => {
@@ -140,9 +140,10 @@ const handleInfoAboutFatherChange = (event) => {
                     placeholder="Escreva o primeiro nome"
                     variant="outlined"
                     name="given_name"
-                    value={data.father.name.given_name}
+                    value={data.father && data.father.name ? data.father.name.given_name : ""}
                     onChange={handleNameChange}
                   />
+
                 </div>
               </div>
               <div>
@@ -158,7 +159,7 @@ const handleInfoAboutFatherChange = (event) => {
                     placeholder="Escreva o sobrenome"
                     variant="outlined"
                     name="surname"
-                    value={data.father.name.surname}
+                    value={data.father && data.father.surname ? data.father.name.surname : ""}
                     onChange={handleNameChange}
                   />
                 </div>
@@ -176,12 +177,12 @@ const handleInfoAboutFatherChange = (event) => {
                 </div>
                 <div>
                   <LocalizationProvider dateAdapter={AdapterDayjs}>
-                  <DatePicker
-                    format="DD/MM/YYYY"
-                    className="custom-date-picker"
-                    value={data.father.birth_date !== "" ? dayjs(data.father.birth_date) : null}
-                    onChange={handleBirthDateChange}
-                  />
+                    <DatePicker
+                      format="DD/MM/YYYY"
+                      className="custom-date-picker"
+                      value={data.father.birth_date !== "" ? dayjs(data.father.birth_date) : null}
+                      onChange={handleBirthDateChange}
+                    />
                     {!isBirthDateValid && (
                       <div style={{ color: "red" }}>
                         A data de nascimento não pode ser superior à data atual.
@@ -226,31 +227,31 @@ const handleInfoAboutFatherChange = (event) => {
           </div>
           {data.father.locating_in_us ? (
             <div className="div-family-padding">
-            <div className="div-family-inputs">
-              <div>
-                <div style={{ paddingBottom: "0.4rem" }}>
-                  <span className="span-state">
-                    Qual a situação do seu pai nos Estados Unidos
-                    <span style={{ color: "red" }}>*</span>
-                  </span>
-                </div>
+              <div className="div-family-inputs">
                 <div>
-                  <Select
-                    className="style-select-initial input-style-initial"
-                    placeholder="teste"
-                    value={data.father.us_status}
-                    onChange={handleUsStatusChange}
-                  >
-                    {relativeUSStatus.map((status) => (
-                      <MenuItem key={status.key} value={status.key}>
-                        {status.value}
-                      </MenuItem>
-                    ))}
-                  </Select>
+                  <div style={{ paddingBottom: "0.4rem" }}>
+                    <span className="span-state">
+                      Qual a situação do seu pai nos Estados Unidos
+                      <span style={{ color: "red" }}>*</span>
+                    </span>
+                  </div>
+                  <div>
+                    <Select
+                      className="style-select-initial input-style-initial"
+                      placeholder="teste"
+                      value={data.father.us_status}
+                      onChange={handleUsStatusChange}
+                    >
+                      {relativeUSStatus.map((status) => (
+                        <MenuItem key={status.key} value={status.key}>
+                          {status.value}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
           ) : null
           }
         </div>

@@ -6,10 +6,6 @@ import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import Countries from "../../../../datas/countries";
 import InputMask from 'react-input-mask';
-import countriesService from "../../../../services/countriesWorld";
-import statesService from "../../../../services/statesWorldMain";
-import citiesService from "../../../../services/citiesWorld";
-
 
 function Married() {
     const [nationality, setNationality] = useState("");
@@ -18,9 +14,6 @@ function Married() {
     const [city, setCity] = useState("");
     const [state, setState] = useState("");
     const [country, setCountry] = useState("")
-    const [cities, setCities] = useState([]);
-    const [states, setStates] = useState([]);
-    const [countries, setCountries] = useState([])
 
     const handleChangeSelectNationality = (event) => {
         setNationality(event.target.value);
@@ -32,42 +25,19 @@ function Married() {
         setGender(event.target.value);
     };
 
-
-    const getCountries = async () => {
-        let _countries = await countriesService.getCountries();
-        setCountries(_countries);
-    }
-
-    const getStates = async (country) => {
-        let _states = await statesService.getStateByCountry(country);
-
-        _states.sort((a, b) => a.name.localeCompare(b.name));
-      
-        setStates(_states);
-      };
-
-    const getCities = async (country, state) => {
-        let _cities = await citiesService.getCitiesByStateByCountry(country, state);
-        setCities(_cities)
-    }
-
     const handleChangeSelectCountry = (event) => {
         setCountry(event.target.value);
-        getStates(event.target.value)
     };
 
     const handleChangeSelectState = (event) => {
         setState(event.target.value);
-        getCities(country, event.target.value)
     };
 
     const handleChangeSelectCity = (event) => {
         setCity(event.target.value);
     };
 
-
     useEffect(() => {
-        getCountries()
     }, []);
 
     return (
@@ -217,9 +187,9 @@ function Married() {
                                 value={country}
                                 onChange={handleChangeSelectCountry}
                             >
-                                {countries.map((countrie, index) => (
-                                    <MenuItem key={index} value={countrie.iso2}>
-                                        {countrie.name}
+                                {Countries.map((state) => (
+                                    <MenuItem key={state.key} value={state.key}>
+                                        {state.value}
                                     </MenuItem>
                                 ))}
                             </Select>
@@ -230,19 +200,13 @@ function Married() {
                             <span className="span-state">Estado do(a) companheiro(a)<span style={{ color: 'red' }}>*</span></span>
                         </div>
                         <div className="padding-bottom-1">
-                            <Select
+                            <TextField
                                 className="style-input-1-marital"
-                                labelId="select-state"
-                                id="select-state"
                                 value={state}
                                 onChange={handleChangeSelectState}
-                            >
-                                {states.map((state, index) => (
-                                    <MenuItem key={index} value={state.iso2}>
-                                        {state.name}
-                                    </MenuItem>
-                                ))}
-                            </Select>
+                                variant="outlined"
+                                placeholder="Digite o estado"
+                            />
                         </div>
                     </div>
                     <div>
@@ -250,19 +214,13 @@ function Married() {
                             <span className="span-state">Cidade do companheiro(a)<span style={{ color: 'red' }}>*</span></span>
                         </div>
                         <div className="padding-bottom-1">
-                            <Select
+                            <TextField
                                 className="style-input-1-marital"
-                                labelId="select-state"
-                                id="select-state"
                                 value={city}
                                 onChange={handleChangeSelectCity}
-                            >
-                                {cities.map((city, index) => (
-                                    <MenuItem key={index} value={city.name}>
-                                        {city.name}
-                                    </MenuItem>
-                                ))}
-                            </Select>
+                                variant="outlined"
+                                placeholder="Digite a cidade"
+                            />
                         </div>
                     </div>
                     <div>
@@ -273,7 +231,6 @@ function Married() {
                             <InputMask
                                 mask="99999-999"
                                 maskChar=""
-
                             >
                                 {() => <TextField id="outlined-basic" className="style-input-1-marital" placeholder="00000-000" variant="outlined" />}
                             </InputMask>
