@@ -22,9 +22,9 @@ function MotherInformation({ validateStep = { validateStep } }) {
 
   const handleInfoAboutMotherChange = (event) => {
     const { value } = event.target;
-
+  
     const boolValue = value === "Sim" ? true : false;
-
+  
     if (boolValue) {
       updateData({ ...data, hasInformationAboutMother: boolValue });
     } else {
@@ -32,9 +32,10 @@ function MotherInformation({ validateStep = { validateStep } }) {
         ...data,
         hasInformationAboutMother: boolValue,
         mother: {
-          name: { surname: "", given_name: "" },
+          name: null,
           birth_date: null,
           us_status: null,
+          locating_in_us: false,
         },
       });
     }
