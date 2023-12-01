@@ -69,7 +69,7 @@ function DistantFamily({ validateStep }) {
               state: "",
               state_acronym: "",
               zip_code: "",
-              country: "",
+              country: null,
             },
             phone_number: "",
             start_date: "",
