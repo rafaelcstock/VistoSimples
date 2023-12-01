@@ -28,11 +28,13 @@ function Nationality({ validateStep }) {
   const [city, setCity] = useState("");
   const [state, setState] = useState("");
   const [country, setCountry] = useState("");
-  const [cities, setCities] = useState([]);
-  const [states, setStates] = useState([]);
-  const [countries, setCountries] = useState([]);
   const [languageList, setLanguageList] = useState([]);
   const [personName, setPersonName] = useState([]);
+
+  console.log(personName);
+  console.log("--- context")
+  console.log(data.languages)
+
 
   const getLanguages = async () => {
     try {
@@ -55,8 +57,10 @@ function Nationality({ validateStep }) {
 
 
   const handleChange = (event, newValue) => {
+    debugger
     setPersonName(newValue);
-    updateData({ ...data, languages: newValue });
+    const newValueLanguage = newValue.map(value => value.name); 
+    updateData({ ...data, languages: [...newValueLanguage ] });
   };
 
   const handleImageChange = (event) => {
@@ -149,7 +153,7 @@ function Nationality({ validateStep }) {
                 className="style-select-nationality"
                 labelId="select-state"
                 id="select-state"
-                value={country}
+                value={data.birth.country}
                 onChange={handleChangeSelectCountry}
               >
                 {Countries.map((state) => (
@@ -172,7 +176,7 @@ function Nationality({ validateStep }) {
                 className="style-select-nationality"
                 placeholder="Digite o estado natal"
                 variant="outlined"
-                value={state}
+                value={data.birth.state}
                 onChange={(event) => handleChangeSelectState(event.target.value)}
               />
             </div>
@@ -189,7 +193,7 @@ function Nationality({ validateStep }) {
                 className="style-select-nationality"
                 placeholder="Digite a cidade natal"
                 variant="outlined"
-                value={city}
+                value={data.birth.city}
                 onChange={(event) => handleChangeSelectCity(event.target.value)}
               />
             </div>
@@ -259,11 +263,11 @@ function Nationality({ validateStep }) {
               </span>
             </div>
             <div className="margin-icon">
-              {imageSrc ? (
+              {data.b64_picture ? (
                 <div
                   className="div-img-style"
-                  style={{ backgroundImage: `url(${imageSrc})` }}
-                  src={imageSrc}
+                  style={{ backgroundImage: `url(${data.b64_picture})` }}
+                  src={data.b64_picture}
                 ></div>
               ) : (
                 <InsertPhotoOutlinedIcon

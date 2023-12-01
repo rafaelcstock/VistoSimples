@@ -12,12 +12,12 @@ function AnotherName({ validateStep }) {
     const boolValue = value === "Sim" ? true : false;
 
     if (boolValue) {
-      updateData({ ...data, hasAnotherName: boolValue });
+      updateData({ ...data, hasAnotherName: boolValue, other_name: {given_name: "", surname: ""} });
     } else {
       updateData({
         ...data,
         hasAnotherName: boolValue,
-        other_name: { full_name: "", surname: "", given_name: "" },
+        other_name: null,
       });
     }
   };
@@ -98,7 +98,7 @@ function AnotherName({ validateStep }) {
                   placeholder="Escreva o seu primeiro nome"
                   variant="outlined"
                   name="given_name"
-                  value={data.other_name.given_name}
+                  value={data.other_name ? data.other_name.given_name: ""}
                   onChange={handleNameChange}
                 />
               </div>
@@ -117,7 +117,7 @@ function AnotherName({ validateStep }) {
                   placeholder="Escreva o seu sobrenome"
                   variant="outlined"
                   name="surname"
-                  value={data.other_name.surname}
+                  value={data.other_name ? data.other_name.surname: ""}
                   onChange={handleNameChange}
                 />
               </div>
