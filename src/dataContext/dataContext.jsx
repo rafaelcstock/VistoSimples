@@ -19,11 +19,12 @@ export function DataProvider({ children }) {
       given_name: "",
       full_name: null,
     },
-    other_name: {
-      surname: null,
-      given_name: null,
-      full_name: null,
-    },
+    other_name: null,
+    // {
+    //   surname: null,
+    //   given_name: null,
+    //   full_name: null,
+    // },
     telecode_name: {
       surname: "",
       given_name: "",
@@ -31,64 +32,66 @@ export function DataProvider({ children }) {
     },
     gender: "M",
     marital_status: "S",
-    spouse: {
-      name: {
-        surname: "",
-        given_name: "",
-        full_name: "",
-      },
-      birth: {
-        date: "",
-        city: "",
-        state: "",
-        country: "",
-      },
-      nationality: "",
-      address_type: "",
-      address: {
-        street: "",
-        complement: "",
-        city: "",
-        state: "",
-        state_acronym: "",
-        zip_code: "",
-        country: "",
-      },
-    },
-    former_spouses: [
-      {
-        name: {
-          surname: "",
-          given_name: "",
-          full_name: "",
-        },
-        birth: {
-          date: "",
-          city: "",
-          state: "",
-          country: "AFGH",
-        },
-        nationality_country: "AFGH",
-        marriage_start_date: "",
-        marriage_end_date: "",
-        end_marriage_reason: "",
-        end_marriage_country: "AFGH",
-      },
-    ],
-    deceased_spouse: {
-      name: {
-        surname: "",
-        given_name: "",
-        full_name: "",
-      },
-      birth: {
-        date: "",
-        city: "",
-        state: "",
-        country: "",
-      },
-      nationality: "",
-    },
+    spouse: null,
+    // {
+    //   name: {
+    //     surname: "",
+    //     given_name: "",
+    //     full_name: "",
+    //   },
+    //   birth: {
+    //     date: "",
+    //     city: "",
+    //     state: "",
+    //     country: "",
+    //   },
+    //   nationality: "",
+    //   address_type: "",
+    //   address: {
+    //     street: "",
+    //     complement: "",
+    //     city: "",
+    //     state: "",
+    //     state_acronym: "",
+    //     zip_code: "",
+    //     country: "",
+    //   },
+    // }
+    former_spouses: null,
+    //   [{
+    //     name: {
+    //       surname: "",
+    //       given_name: "",
+    //       full_name: "",
+    //     },
+    //     birth: {
+    //       date: "",
+    //       city: "",
+    //       state: "",
+    //       country: "AFGH",
+    //     },
+    //     nationality_country: "AFGH",
+    //     marriage_start_date: "",
+    //     marriage_end_date: "",
+    //     end_marriage_reason: "",
+    //     end_marriage_country: "AFGH",
+    //   },
+    // ],
+    deceased_spouse: null,
+    // {
+    //   name: {
+    //     surname: "",
+    //     given_name: "",
+    //     full_name: "",
+    //   },
+    //   birth: {
+    //     date: "",
+    //     city: "",
+    //     state: "",
+    //     country: "",
+    //   },
+    //   nationality: "",
+    // },
     birth: {
       date: "",
       city: "",
@@ -104,7 +107,8 @@ export function DataProvider({ children }) {
     us_taxpayer_number: "",
     visa_class: "B",
     visa_class_specify: "B1-B2",
-    stay: {
+    stay:
+    {
       date: "",
       length: 0,
       address: {
@@ -114,20 +118,22 @@ export function DataProvider({ children }) {
         state: "",
         state_acronym: null,
         zip_code: "",
-        country: "",
+        country: null,
       },
     },
-    entity_paying: {
+    entity_paying: 
+    {
       entity_type: "S",
-      address: {
-        street: "",
-        complement: null,
-        city: "",
-        state: "",
-        state_acronym: null,
-        zip_code: "",
-        country: "",
-      },
+      address: null,
+      // {
+      //   street: "",
+      //   complement: null,
+      //   city: "",
+      //   state: "",
+      //   state_acronym: null,
+      //   zip_code: "",
+      //   country: "",
+      // },
       phone_number: "",
       relationship: "C",
       same_address: false,
@@ -342,9 +348,10 @@ export function DataProvider({ children }) {
   });
 
   // console.log(data);
-  console.log(data.us_visits);
+  console.log(data.birth);
   // console.log("------------------------- abaixo é lost");
   // console.log(data.lost_or_stolen_passports);
+
 
   const updateData = (newData) => {
     setData({ ...data, ...newData });

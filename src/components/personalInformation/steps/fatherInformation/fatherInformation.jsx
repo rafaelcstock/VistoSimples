@@ -20,25 +20,26 @@ const handleLocatingChange = (event) => {
   updateData({ ...data, father: { ...data.father, locating_in_us: boolValue } });
 };
 
-  const handleInfoAboutFatherChange = (event) => {
-    const { value } = event.target;
+const handleInfoAboutFatherChange = (event) => {
+  const { value } = event.target;
 
-    const boolValue = value === "Sim" ? true : false;
+  const boolValue = value === "Sim" ? true : false;
 
-    if (boolValue) {
-      updateData({ ...data, hasInformationAboutFather: boolValue });
-    } else {
-      updateData({
-        ...data,
-        hasInformationAboutFather: boolValue,
-        father: {
-          name: { surname: "", given_name: "" },
-          birth_date: null,
-          us_status: null,
-        },
-      });
-    }
-  };
+  if (boolValue) {
+    updateData({ ...data, hasInformationAboutFather: boolValue });
+  } else {
+    updateData({
+      ...data,
+      hasInformationAboutFather: boolValue,
+      father: {
+        name: null,
+        birth_date: null,
+        us_status: null,
+        locating_in_us: false,
+      },
+    });
+  }
+};
 
   const handleBirthDateChange = (selectedDate) => {
     if (selectedDate && dayjs(selectedDate).isValid()) {

@@ -17,28 +17,29 @@ function Payer({ validateStep }) {
   const handlePaymentChangeSelect = (event) => {
     const { value } = event.target;
 
-    if (value == "S") {
+    const nullValues = {
+      org_name: null,
+      person_name: null,
+      entity_type: value,
+      phone_number: "",
+      email: null,
+      address: null,
+    };
+  
+    if (value === "S") {
       updateData({
         entity_paying: {
           ...data.entity_paying,
-          org_name: null,
-          person_name: null,
-          entity_type: value,
-          phone_number: "",
-          email: "",
-          address: null,
+          ...nullValues,
         },
       });
     }
-
-    if (value == "O") {
+  
+    if (value === "O") {
       updateData({
         entity_paying: {
           ...data.entity_paying,
-          org_name: null,
-          entity_type: value,
-          phone_number: "",
-          email: "",
+          ...nullValues,
           address: {
             street: "",
             complement: null,
@@ -56,16 +57,12 @@ function Payer({ validateStep }) {
         },
       });
     }
-
+  
     if (value !== "O" && value !== "S") {
       updateData({
         entity_paying: {
           ...data.entity_paying,
-          entity_type: value,
-          org_name: "",
-          person_name: null,
-          phone_number: "",
-          email: "",
+          ...nullValues,
           address: {
             street: "",
             complement: null,
