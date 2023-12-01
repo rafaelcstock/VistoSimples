@@ -110,7 +110,7 @@ function Married() {
                         </div>
                         <div className="padding-bottom-1">
                             <LocalizationProvider dateAdapter={AdapterDayjs}>
-                                <DatePicker format="DD/MM/YYYY" className="custom-date-picker-initial" />
+                                <DatePicker format="DD/MM/YYYY" className="custom-date-picker-initialMarried" />
                             </LocalizationProvider>
                         </div>
                     </div>

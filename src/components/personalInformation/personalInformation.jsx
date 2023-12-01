@@ -184,9 +184,6 @@ function PersonalInformation(props) {
       mother.name.given_name !== "" &&
       mother.birth_date &&
       mother.birth_date !== "";
-    // mother.us_status &&
-    // mother.us_status !== "";
-
     return isValid;
   };
 
