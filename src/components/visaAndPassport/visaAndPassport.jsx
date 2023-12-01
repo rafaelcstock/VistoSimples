@@ -5,6 +5,7 @@ import RevokedVisa from "./steps/revokedVisa/revokedVisa";
 import LostVisa from "./steps/lostVisa/lostVisa";
 import Documents from "./steps/documents/documents";
 import { useData } from "../../dataContext/dataContext";
+import ds160Service from "../../services/ds160Service";
 
 function VisaAndPassport(props) {
   const { data } = useData();
@@ -90,6 +91,11 @@ function VisaAndPassport(props) {
   };
 
   const handleNext = () => {
+    if (activeStep == 3) {
+      debugger
+      ds160Service.submit(data)
+      console.log(data)
+    }
     let newSkipped = skipped;
     if (isStepSkipped(activeStep)) {
       newSkipped = new Set(newSkipped.values());
