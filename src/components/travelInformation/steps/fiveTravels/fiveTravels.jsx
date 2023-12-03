@@ -103,7 +103,7 @@ function FiveTravels({ validateStep }) {
 
   const handleAddTravel = () => {
     const updatedUsVisits = [...data.us_visits, { date: "", length_of_stay: 0 }];
-    debugger
+    
     updateData({
       ...data,
       us_visits: updatedUsVisits,

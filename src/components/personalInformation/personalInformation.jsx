@@ -25,9 +25,6 @@ function PersonalInformation(props) {
 
   const [skipped, setSkipped] = useState(new Set());
 
-  const [maritalStatus, setMaritalStatus] = useState(null);
-  const [selectedStatus, setSelectedStatus] = useState("");
-
   const [isValidInitialInformation, setIsValidInitialInformation] = useState({
     email: true,
     secondary_email: true,
@@ -95,6 +92,18 @@ function PersonalInformation(props) {
       national_identification_number !== "" &&
       validateCpf
     );
+  };
+
+  const validateStep1 = () => {
+    const { marital_status } = data;
+
+    if (marital_status == "M" || marital_status == "P")
+      return validateMarriedStep();
+
+    if (marital_status == "D" || marital_status == "L")
+      return validateFormerSpouseStep();
+
+    if (marital_status == "W") return validateDeceasedStep();
   };
 
   const validateStep2 = () => {
@@ -214,19 +223,20 @@ function PersonalInformation(props) {
   };
 
   const validateStep7 = () => {
-
     const { primary_occupation } = data;
-    
+
     if (!primary_occupation) {
       return true;
     }
     if (primary_occupation.type === "Employee") {
-      return primary_occupation.occupation_type &&
+      return (
+        primary_occupation.occupation_type &&
         primary_occupation.entity_name &&
         primary_occupation.start_date &&
         primary_occupation.address.street &&
         primary_occupation.address.city &&
-        primary_occupation.address.state;
+        primary_occupation.address.state
+      );
     }
 
     if (primary_occupation.type === "Retiree") {
@@ -297,9 +307,95 @@ function PersonalInformation(props) {
     return isValid;
   };
 
+  const validateMarriedStep = () => {
+    const { spouse } = data;
+
+    let isValid = false;
+    let isAddressValid = true;
+
+    if (!data.spouseHasSameAddress) {
+      isAddressValid =
+        spouse.address.street &&
+        spouse.address.street !== "" &&
+        spouse.address.country &&
+        spouse.address.country !== "" &&
+        spouse.address.state &&
+        spouse.address.state !== "" &&
+        spouse.address.city &&
+        spouse.address.city !== "" &&
+        spouse.address.zip_code &&
+        spouse.address.zip_code !== "";
+    }
+
+    isValid =
+      spouse.name.surname &&
+      spouse.name.surname !== "" &&
+      spouse.name.given_name &&
+      spouse.name.given_name !== "" &&
+      spouse.birth.date &&
+      spouse.birth.date !== "" &&
+      spouse.birth.country &&
+      spouse.birth.country !== "" &&
+      spouse.nationality !== "" &&
+      isAddressValid;
+
+    return isValid;
+  };
+
+  const validateFormerSpouseStep = () => {
+    const { former_spouses } = data;
+
+    let isValid = false;
+
+    isValid =
+      former_spouses[0].name.surname &&
+      former_spouses[0].name.surname !== "" &&
+      former_spouses[0].name.given_name &&
+      former_spouses[0].name.given_name !== "" &&
+      former_spouses[0].birth.date &&
+      former_spouses[0].birth.date !== "" &&
+      former_spouses[0].birth.city &&
+      former_spouses[0].birth.city !== "" &&
+      former_spouses[0].birth.country &&
+      former_spouses[0].birth.country !== "" &&
+      former_spouses[0].nationality_country &&
+      former_spouses[0].nationality_country !== "" &&
+      former_spouses[0].marriage_start_date &&
+      former_spouses[0].marriage_start_date !== "" &&
+      former_spouses[0].marriage_end_date &&
+      former_spouses[0].marriage_end_date !== "" &&
+      former_spouses[0].end_marriage_country &&
+      former_spouses[0].end_marriage_country !== "";
+
+    return isValid;
+  };
+
+  const validateDeceasedStep = () => {
+    const { deceased_spouse } = data;
+
+    let isValid = false;
+
+    isValid =
+      deceased_spouse.name.surname &&
+      deceased_spouse.name.surname !== "" &&
+      deceased_spouse.name.given_name &&
+      deceased_spouse.name.given_name !== "" &&
+      deceased_spouse.birth.date &&
+      deceased_spouse.birth.date !== "" &&
+      deceased_spouse.birth.country &&
+      deceased_spouse.birth.country !== "" &&
+      deceased_spouse.birth.state &&
+      deceased_spouse.birth.state !== "" &&
+      deceased_spouse.birth.city &&
+      deceased_spouse.birth.city !== "" &&
+      deceased_spouse.nationality;
+
+    return isValid;
+  };
+
   const stepValidations = {
     0: validateStep0,
-
+    1: validateStep1,
     2: validateStep2,
     3: validateStep3,
     4: validateStep4,
@@ -347,19 +443,6 @@ function PersonalInformation(props) {
     return remainder === parseInt(cleanedCpf.charAt(10));
   };
 
-  const validateStep1 = () => {
-    const { name, marital_status } = data;
-
-    return (
-      name.surname &&
-      name.surname !== "" &&
-      name.given_name &&
-      name.given_name !== "" &&
-      marital_status &&
-      marital_status !== ""
-    );
-  };
-
   const isStepSkipped = (step) => {
     return skipped.has(step);
   };
@@ -372,7 +455,10 @@ function PersonalInformation(props) {
       newSkipped.delete(activeStep);
     }
 
-    if ((selectedStatus === "S" || selectedStatus === "") && activeStep === 0) {
+    if (
+      (data.marital_status === "S" || data.marital_status === "") &&
+      activeStep === 0
+    ) {
       setActiveStep((prevActiveStep) => prevActiveStep + 2);
     } else {
       setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -386,38 +472,41 @@ function PersonalInformation(props) {
   };
 
   const handleBack = () => {
-    if ((selectedStatus === "S" || selectedStatus === "") && activeStep === 2) {
+    if (
+      (data.marital_status === "S" || data.marital_status === "") &&
+      activeStep === 2
+    ) {
       setActiveStep((prevActiveStep) => prevActiveStep - 2);
     } else {
       setActiveStep((prevActiveStep) => prevActiveStep - 1);
     }
   };
 
-  const handleStatusChange = (status) => {
-    setSelectedStatus(status);
-    handleNextMarital(status);
-  };
+  const handleNextMaital = () => {
+    if (data.marital_status === "P") {
+      return <StableUnion key="stableUnion" validateStep={validateStep} />;
+    }
 
-  const handleNextMarital = (selectedStatus) => {
-    if (selectedStatus === "M") {
-      setMaritalStatus(<Married key="married" />);
-    } else if (selectedStatus === "P") {
-      setMaritalStatus(<StableUnion key="stableUnion" />);
-    } else if (selectedStatus === "W") {
-      setMaritalStatus(<Widow key="window" />);
-    } else if (selectedStatus === "D" || "L") {
-      setMaritalStatus(<Divorced key="divorced" />);
+    if (data.marital_status === "M") {
+      return <Married key="married" validateStep={validateStep} />;
+    }
+
+    if (data.marital_status === "W") {
+      return <Widow key="window" validateStep={validateStep} />;
+    }
+
+    if (data.marital_status === "D" || "L") {
+      return <Divorced key="divorced" validateStep={validateStep} />;
     }
   };
 
   const allComponents = [
     <InitialInformation
       key="initialInformation"
-      onStatusChange={handleStatusChange}
       validateStep={validateStep}
       isValidInitialInformation={isValidInitialInformation}
     />,
-    maritalStatus,
+    handleNextMaital(),
     <AnotherName key="anotherName" validateStep={validateStep} />,
     <Nationality key="nationality" validateStep={validateStep} />,
     <FatherInformation key="fatherInformation" validateStep={validateStep} />,

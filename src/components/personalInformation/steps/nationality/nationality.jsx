@@ -31,11 +31,6 @@ function Nationality({ validateStep }) {
   const [languageList, setLanguageList] = useState([]);
   const [personName, setPersonName] = useState([]);
 
-  console.log(personName);
-  console.log("--- context")
-  console.log(data.languages)
-
-
   const getLanguages = async () => {
     try {
       const languages = await GetLanguages();
@@ -57,7 +52,7 @@ function Nationality({ validateStep }) {
 
 
   const handleChange = (event, newValue) => {
-    debugger
+    
     setPersonName(newValue);
     const newValueLanguage = newValue.map(value => value.name); 
     updateData({ ...data, languages: [...newValueLanguage ] });

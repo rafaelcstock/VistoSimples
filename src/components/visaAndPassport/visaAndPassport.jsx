@@ -92,9 +92,8 @@ function VisaAndPassport(props) {
 
   const handleNext = () => {
     if (activeStep == 3) {
-      debugger
-      ds160Service.submit(data)
-      console.log(data)
+      
+      ds160Service.submit(data);
     }
     let newSkipped = skipped;
     if (isStepSkipped(activeStep)) {

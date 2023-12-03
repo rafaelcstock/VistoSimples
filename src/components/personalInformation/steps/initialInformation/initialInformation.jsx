@@ -10,22 +10,109 @@ import MaritalStatus from "../../../../datas/marital_status";
 import dayjs from "dayjs";
 
 import { useData } from "../../../../dataContext/dataContext";
-import { emailRegex } from "../../../utils/regex";
 
-function InitialInformation({
-  onStatusChange,
-  validateStep,
-  isValidInitialInformation,
-}) {
+function InitialInformation({ validateStep, isValidInitialInformation }) {
   const [isBirthDateValid, setIsBirthDateValid] = useState(true);
 
   const { data, updateData } = useData();
 
-  const handleChangeSelect = (event) => {
+  const handleMaritalStatusChangeSelect = (event) => {
     const { value } = event.target;
 
-    updateData({ ...data, marital_status: value });
-    onStatusChange(event.target.value);
+    if (value == "M" || value == "P") {
+      updateData({
+        ...data,
+        spouse: {
+          name: {
+            surname: "",
+            given_name: "",
+            full_name: null,
+          },
+          birth: {
+            date: "",
+            city: "",
+            state: null,
+            country: "",
+          },
+          nationality: "",
+          address_type: "H",
+          address: {
+            street: "",
+            complement: "",
+            city: "",
+            state: "",
+            state_acronym: null,
+            zip_code: "",
+            country: "",
+          },
+        },
+        former_spouses: null,
+        deceased_spouse: null,
+        marital_status: value,
+      });
+    }
+
+    if (value == "D" || value == "L") {
+      updateData({
+        ...data,
+        former_spouses: [
+          {
+            name: {
+              surname: "",
+              given_name: "",
+              full_name: null,
+            },
+            birth: {
+              date: "",
+              city: "",
+              state: null,
+              country: "",
+            },
+            nationality_country: "",
+            marriage_start_date: "",
+            marriage_end_date: "",
+            end_marriage_reason: "Consesual",
+            end_marriage_country: "",
+          },
+        ],
+        deceased_spouse: null,
+        spouse: null,
+        marital_status: value,
+      });
+    }
+
+    if (value == "W") {
+      updateData({
+        ...data,
+        deceased_spouse: {
+          name: {
+            surname: "",
+            given_name: "",
+            full_name: null,
+          },
+          birth: {
+            date: "",
+            city: "",
+            state: null,
+            country: "",
+          },
+          nationality: "",
+        },
+        former_spouses: null,
+        spouse: null,
+        marital_status: value,
+      });
+    }
+
+    if (value == "S") {
+      updateData({
+        ...data,
+        deceased_spouse: null,
+        former_spouses: null,
+        spouse: null,
+        marital_status: value,
+      });
+    }
   };
 
   const handleChangeGender = (event) => {
@@ -48,6 +135,7 @@ function InitialInformation({
 
       if (selectedDateTime.isAfter(currentDate)) {
         setIsBirthDateValid(false);
+        updateData({ ...data, birth: { ...data.birth, date: "" } });
       } else {
         const formattedDate = selectedDateTime.format("YYYY-MM-DD");
         updateData({ ...data, birth: { ...data.birth, date: formattedDate } });
@@ -61,7 +149,7 @@ function InitialInformation({
 
   const handlePhoneNumberChange = (event) => {
     const { value, name } = event.target;
-
+   
     updateData({ ...data, [name]: value });
   };
 
@@ -157,7 +245,7 @@ function InitialInformation({
               <Select
                 className="style-select-initial input-style-initial"
                 value={data.marital_status}
-                onChange={handleChangeSelect}
+                onChange={handleMaritalStatusChangeSelect}
               >
                 {MaritalStatus.map((status) => (
                   <MenuItem key={status.key} value={status.key}>
@@ -207,10 +295,10 @@ function InitialInformation({
             <div className="padding-bottom-1">
               <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <DatePicker
-                  onChange={handleBirthDateChange}
                   format="DD/MM/YYYY"
                   className="custom-date-picker-initialInformation"
                   value={data.birth.date !== "" ? dayjs(data.birth.date) : null}
+                  onChange={handleBirthDateChange}
                 />
                 {!isBirthDateValid && (
                   <div style={{ color: "red" }}>
