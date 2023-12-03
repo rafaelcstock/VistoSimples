@@ -33,65 +33,8 @@ export function DataProvider({ children }) {
     gender: "M",
     marital_status: "S",
     spouse: null,
-    // {
-    //   name: {
-    //     surname: "",
-    //     given_name: "",
-    //     full_name: "",
-    //   },
-    //   birth: {
-    //     date: "",
-    //     city: "",
-    //     state: "",
-    //     country: "",
-    //   },
-    //   nationality: "",
-    //   address_type: "",
-    //   address: {
-    //     street: "",
-    //     complement: "",
-    //     city: "",
-    //     state: "",
-    //     state_acronym: "",
-    //     zip_code: "",
-    //     country: "",
-    //   },
-    // }
     former_spouses: null,
-    //   [{
-    //     name: {
-    //       surname: "",
-    //       given_name: "",
-    //       full_name: "",
-    //     },
-    //     birth: {
-    //       date: "",
-    //       city: "",
-    //       state: "",
-    //       country: "AFGH",
-    //     },
-    //     nationality_country: "AFGH",
-    //     marriage_start_date: "",
-    //     marriage_end_date: "",
-    //     end_marriage_reason: "",
-    //     end_marriage_country: "AFGH",
-    //   },
-    // ],
     deceased_spouse: null,
-    // {
-    //   name: {
-    //     surname: "",
-    //     given_name: "",
-    //     full_name: "",
-    //   },
-    //   birth: {
-    //     date: "",
-    //     city: "",
-    //     state: "",
-    //     country: "",
-    //   },
-    //   nationality: "",
-    // },
     birth: {
       date: "",
       city: "",
@@ -107,8 +50,7 @@ export function DataProvider({ children }) {
     us_taxpayer_number: "",
     visa_class: "B",
     visa_class_specify: "B1-B2",
-    stay:
-    {
+    stay: {
       date: "",
       length: 0,
       address: {
@@ -121,8 +63,7 @@ export function DataProvider({ children }) {
         country: null,
       },
     },
-    entity_paying: 
-    {
+    entity_paying: {
       entity_type: "S",
       address: null,
       // {
@@ -345,13 +286,8 @@ export function DataProvider({ children }) {
     hasClan: true,
     hasUsDriversLicense: true,
     companionSelected: 1,
+    spouseHasSameAddress: true,
   });
-
-  // console.log(data);
-  console.log(data.birth);
-  // console.log("------------------------- abaixo é lost");
-  // console.log(data.lost_or_stolen_passports);
-
 
   const updateData = (newData) => {
     setData({ ...data, ...newData });

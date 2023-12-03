@@ -21,7 +21,6 @@ function Documents({ validateStep }) {
         lost_or_stolen_passports: null,
       });
     } else {
-      debugger
       const newPassportData = {
         passport: { ...data.passport, [name]: value },
         lost_or_stolen_passports: [
@@ -42,7 +41,6 @@ function Documents({ validateStep }) {
       updateData(newPassportData);
     }
   };
-
 
   const handleDateUpdateData = (name, newDate) => {
     if (newDate && dayjs(newDate).isValid()) {
@@ -211,7 +209,11 @@ function Documents({ validateStep }) {
                 <DatePicker
                   format="DD/MM/YYYY"
                   className="custom-date-picker-initialDocuments"
-                  value={data.passport.issuance_date !== "" ? dayjs(data.passport.issuance_date) : null}
+                  value={
+                    data.passport.issuance_date !== ""
+                      ? dayjs(data.passport.issuance_date)
+                      : null
+                  }
                   onChange={(date) =>
                     handleDateUpdateData("issuance_date", date)
                   }
@@ -231,7 +233,11 @@ function Documents({ validateStep }) {
                 <DatePicker
                   format="DD/MM/YYYY"
                   className="custom-date-picker-initialDocuments"
-                  value={data.passport.expiration_date !== "" ? dayjs(data.passport.expiration_date) : null}
+                  value={
+                    data.passport.expiration_date !== ""
+                      ? dayjs(data.passport.expiration_date)
+                      : null
+                  }
                   onChange={(date) =>
                     handleDateUpdateData("expiration_date", date)
                   }
@@ -278,7 +284,9 @@ function Documents({ validateStep }) {
                 className="subTitle-div"
                 row
                 name="lost_reason"
-                value={data.passport.lost_reason ? data.passport.lost_reason : ""}
+                value={
+                  data.passport.lost_reason ? data.passport.lost_reason : ""
+                }
                 onChange={handlePassportChange}
               >
                 <FormControlLabel
@@ -302,7 +310,7 @@ function Documents({ validateStep }) {
         </div>
       </div>
       {data.passport.lost_reason === "Perdido" ||
-        data.passport.lost_reason === "Roubado" ? (
+      data.passport.lost_reason === "Roubado" ? (
         <div className="div-marital-padding">
           <div className="padding-bottom-title-input">
             <span className="title-header-2">
@@ -313,9 +321,7 @@ function Documents({ validateStep }) {
           <div className="div-2-inputs-work">
             <div>
               <div style={{ paddingBottom: "0.4rem" }}>
-                <span className="span-state">
-                  Número do Passaporte
-                </span>
+                <span className="span-state">Número do Passaporte</span>
               </div>
               <div className="padding-bottom-1">
                 <TextField
