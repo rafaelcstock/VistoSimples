@@ -2,18 +2,12 @@ import React, { useEffect, useState } from "react"
 import './maritalStatus.css'
 import { MenuItem, Select, TextField } from "@mui/material";
 import Countries from "../../../../datas/countries";
-import countriesService from "../../../../services/countriesWorld";
-import statesService from "../../../../services/statesWorldMain";
-import citiesService from "../../../../services/citiesWorld";
 
 function Widow() {
     const [nationality, setNationality] = useState("");
     const [countryBirth, setCountryBirth] = useState("");
     const [stateBirth, setstateBirth] = useState("");
     const [cityBirth, setCityBirth] = useState("");
-    const [cities, setCities] = useState([]);
-    const [states, setStates] = useState([]);
-    const [countries, setCountries] = useState([])
 
     const handleChangeSelectNationality = (event) => {
         setNationality(event.target.value);
@@ -33,24 +27,7 @@ function Widow() {
         setCityBirth(event.target.value);
     };
 
-
-    const getCountries = async () => {
-        let _countries = await countriesService.getCountries();
-        setCountries(_countries);
-    }
-
-    const getStates = async (country) => {
-        let _states = await statesService.getStateByCountry(country);
-        setStates(_states);
-    }
-
-    const getCities = async (country, state) => {
-        let _cities = await citiesService.getCitiesByStateByCountry(country, state);
-        setCities(_cities)
-    }
-
     useEffect(() => {
-        getCountries();
     }, []);
 
     return (
@@ -103,9 +80,9 @@ function Widow() {
                                 value={countryBirth}
                                 onChange={handleChangeSelectCountryBirth}
                             >
-                                {countries.map((countrie, index) => (
-                                    <MenuItem key={index} value={countrie.iso2}>
-                                        {countrie.name}
+                                {Countries.map((state) => (
+                                    <MenuItem key={state.key} value={state.key}>
+                                        {state.value}
                                     </MenuItem>
                                 ))}
                             </Select>
@@ -116,19 +93,13 @@ function Widow() {
                             <span className="span-state">Estado do nascimento do ex-cônjugue<span style={{ color: 'red' }}>*</span></span>
                         </div>
                         <div className="padding-bottom-1">
-                            <Select
-                                className="style-input-2-marital"
-                                labelId="select-state"
-                                id="select-state"
+                            <TextField
+                                className="style-input-1-marital"
                                 value={stateBirth}
                                 onChange={handleChangeSelectStateBirth}
-                            >
-                                {states.map((state, index) => (
-                                    <MenuItem key={index} value={state.iso2}>
-                                        {state.name}
-                                    </MenuItem>
-                                ))}
-                            </Select>
+                                variant="outlined"
+                                placeholder="Digite o estado"
+                            />
                         </div>
                     </div>
                     <div>
@@ -136,22 +107,15 @@ function Widow() {
                             <span className="span-state">Cidade de nascimento do ex-cônjugue<span style={{ color: 'red' }}>*</span></span>
                         </div>
                         <div className="padding-bottom-1">
-                            <Select
-                                className="style-input-2-marital"
-                                labelId="select-state"
-                                id="select-state"
+                            <TextField
+                                className="style-input-1-marital"
                                 value={cityBirth}
                                 onChange={handleChangeSelectCityBirth}
-                            >
-                                {cities.map((city, index) => (
-                                    <MenuItem key={index} value={city.name}>
-                                        {city.name}
-                                    </MenuItem>
-                                ))}
-                            </Select>
+                                variant="outlined"
+                                placeholder="Digite a cidade"
+                            />
                         </div>
                     </div>
-
                     <div style={{ paddingTop: '1.23rem' }}>
                         <div style={{ paddingBottom: '0.4rem' }}>
                             <span className="span-state">Nacionalidade do ex-cônjugue<span style={{ color: 'red' }}>*</span></span>

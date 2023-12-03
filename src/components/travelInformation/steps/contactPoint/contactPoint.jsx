@@ -320,7 +320,7 @@ function ContactPoint({ validateStep }) {
               </div>
               <div className="padding-bottom-1">
                 <InputMask
-                  mask="99999-999"
+                  mask="99999"
                   maskChar=""
                   value={data.us_contact.address.zip_code}
                   onChange={handleAddressChange}
@@ -329,7 +329,7 @@ function ContactPoint({ validateStep }) {
                     <TextField
                       id="outlined-basic"
                       className="style-select-work"
-                      placeholder="00000-000"
+                      placeholder="00000"
                       variant="outlined"
                       name="zip_code"
                     />
@@ -523,7 +523,7 @@ function ContactPoint({ validateStep }) {
               </div>
               <div className="padding-bottom-1">
                 <InputMask
-                  mask="99999-999"
+                  mask="99999"
                   maskChar=""
                   value={data.us_contact.address.zip_code}
                   onChange={handleAddressChange}
@@ -532,7 +532,7 @@ function ContactPoint({ validateStep }) {
                     <TextField
                       id="outlined-basic"
                       className="style-select-work"
-                      placeholder="00000-000"
+                      placeholder="00000"
                       variant="outlined"
                       name="zip_code"
                     />
