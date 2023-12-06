@@ -15,20 +15,7 @@ function DistantFamily({ validateStep }) {
   const [isStartDateValid, setIsStartDateValid] = useState(true);
   const [isEndDateValid, setIsEndDateValid] = useState(true);
 
-  const [radioOcupation, setRadioOcupation] = useState("Empregado");
-  const [city, setCity] = useState("");
-  const [state, setState] = useState("");
-  const [cities, setCities] = useState([]);
-  const [states, setStates] = useState([]);
-
-  const handleChangeSelectState = (event) => {
-    setState(event.target.value);
-    getCities("US", event.target.value);
-  };
-
-  const handleChangeSelectCity = (event) => {
-    setCity(event.target.value);
-  };
+  const [radioOcupation, setRadioOcupation] = useState("Estudante");
 
   const handleAnotherParentChange = (event) => {
     const { value } = event.target;
@@ -67,8 +54,8 @@ function DistantFamily({ validateStep }) {
               complement: null,
               city: "",
               state: "",
-              state_acronym: "",
-              zip_code: "",
+              state_acronym: null,
+              zip_code: null,
               country: null,
             },
             phone_number: "",
@@ -76,7 +63,7 @@ function DistantFamily({ validateStep }) {
             end_date: null,
             monthly_income: null,
             description: null,
-            occupation_title: "",
+            occupation_title: null,
             supervisor_name: null,
           },
         });
@@ -87,17 +74,6 @@ function DistantFamily({ validateStep }) {
     updateData({
       ...data,
       primary_occupation: { ...data.primary_occupation, entity_name: value },
-    });
-  };
-
-  const handleStateEntityChange = (event) => {
-    const { value } = event.target;
-    updateData({
-      ...data,
-      primary_occupation: {
-        ...data.primary_occupation,
-        occupation_title: value,
-      },
     });
   };
 
@@ -132,38 +108,6 @@ function DistantFamily({ validateStep }) {
     }
   };
 
-  const handleEndDateChange = (selectedDate) => {
-    deb
-    if (selectedDate && dayjs(selectedDate).isValid()) {
-      const currentDate = dayjs();
-      const selectedDateTime = dayjs(selectedDate);
-
-      if (selectedDateTime.isAfter(currentDate)) {
-        setIsEndDateValid(false);
-        console.error("A data de término não pode ser superior à data atual.");
-      } else {
-        const formattedDate = selectedDateTime.format("YYYY-MM-DD");
-        updateData({
-          ...data,
-          primary_occupation: {
-            ...data.primary_occupation,
-            end_date: formattedDate,
-          },
-        });
-        setIsEndDateValid(true);
-      }
-    } else {
-      updateData({
-        ...data,
-        primary_occupation: {
-          ...data.primary_occupation,
-          end_date: null,
-        },
-      });
-      setIsEndDateValid(false);
-    }
-  };
-
   const handleOccupationAreaChangeSelect = (event) => {
     const { value } = event.target;
 
@@ -184,18 +128,6 @@ function DistantFamily({ validateStep }) {
       primary_occupation: {
         ...data.primary_occupation,
         address: { ...data.primary_occupation.address, [name]: value },
-      },
-    });
-  };
-
-  const handleCelphoneEntityChange = (event) => {
-    const { value } = event.target;
-
-    updateData({
-      ...data,
-      primary_occupation: {
-        ...data.primary_occupation,
-        phone_number: value,
       },
     });
   };
@@ -359,7 +291,7 @@ function DistantFamily({ validateStep }) {
                     </LocalizationProvider>
                     {!isStartDateValid && (
                       <span className="error-message" style={{ color: "red" }}>
-                        A data de início não pode ser superior à data atual.
+                       <br/> A data de início não pode ser superior à data atual.
                       </span>
                     )}
                   </div>

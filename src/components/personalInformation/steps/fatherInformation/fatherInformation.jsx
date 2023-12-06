@@ -159,7 +159,7 @@ function FatherInformation({ validateStep }) {
                     placeholder="Escreva o sobrenome"
                     variant="outlined"
                     name="surname"
-                    value={data.father && data.father.surname ? data.father.name.surname : ""}
+                    value={data.father && data.father.name ? data.father.name.surname : ""}
                     onChange={handleNameChange}
                   />
                 </div>

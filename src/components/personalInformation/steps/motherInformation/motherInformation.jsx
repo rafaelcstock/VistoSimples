@@ -156,7 +156,7 @@ function MotherInformation({ validateStep = { validateStep } }) {
                     placeholder="Escreva o sobrenome"
                     variant="outlined"
                     name="surname"
-                    value={data.mother && data.mother.surname ? data.mother.surname.given_surname : ""}
+                    value={data.mother && data.mother.name ? data.mother.name.surname : ""}
                     onChange={handleNameChange}
                   />
                 </div>

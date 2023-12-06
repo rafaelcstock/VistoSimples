@@ -115,7 +115,7 @@ function Documents({ validateStep }) {
           <div>
             <div style={{ paddingBottom: "0.4rem" }}>
               <span className="span-state">
-                Número do passaporte<span style={{ color: "red" }}>*</span>
+                Número do passaporte
               </span>
             </div>
             <div className="padding-bottom-1">

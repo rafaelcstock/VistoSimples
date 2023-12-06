@@ -31,7 +31,7 @@ function Formation({ validateStep }) {
   const handleDateUpdateData = (name, newDate) => {
     let isValid = true;
 
-    if (newDate && dayjs(newDate).isValid()) {
+    if (newDate && dayjs(newDate).isValid() && dayjs(newDate).isBefore(dayjs())) {
       const formattedDate = dayjs(newDate).format("YYYY-MM-DD");
 
       updateData({
@@ -203,12 +203,12 @@ function Formation({ validateStep }) {
                     }
                   />
                 </LocalizationProvider>
-              </div>
-              {!isStartDateValid && (
+                {!isStartDateValid && (
                 <span className="error-message" style={{ color: "red" }}>
                   A data de início não pode ser superior à data atual.
                 </span>
               )}
+              </div>
             </div>
             <div>
               <div style={{ paddingBottom: "0.4rem" }}>
@@ -228,12 +228,12 @@ function Formation({ validateStep }) {
                     onChange={(date) => handleDateUpdateData("end_date", date)}
                   />
                 </LocalizationProvider>
-              </div>
-              {!isEndDateValid && (
+                {!isEndDateValid && (
                 <span className="error-message" style={{ color: "red" }}>
                   A data de término não pode ser superior à data atual.
                 </span>
               )}
+              </div>
             </div>
           </div>
           <div className="div-1-inputs-marital">
