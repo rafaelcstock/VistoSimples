@@ -32,8 +32,6 @@ function VisaAndPassport(props) {
     isValid =
       passport.document_type &&
       passport.document_type !== "" &&
-      passport.number &&
-      passport.number !== "" &&
       passport.country &&
       passport.country !== "" &&
       passport.city &&
