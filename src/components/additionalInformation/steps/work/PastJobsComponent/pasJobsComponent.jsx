@@ -6,7 +6,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import InputMask from "react-input-mask";
 import Countries from "../../../../../datas/countries";
 import { useData } from "../../../../../dataContext/dataContext";
-import dayjs from "dayjs";
+import dayjs, { Dayjs } from "dayjs";
 import PrimaryOccupation from "../../../../../datas/primary_occupation";
 
 
@@ -25,7 +25,7 @@ const PastJobsComponent = ({
     let newObject;
     let isValid = true;
 
-    if (newDate && dayjs(newDate).isValid()) {
+    if (newDate && dayjs(newDate).isValid() && dayjs(newDate).isBefore(dayjs())) {
       const formattedDate = dayjs(newDate).format("YYYY-MM-DD");
 
       const newPastJobs = data.past_jobs.map((job, i) => {

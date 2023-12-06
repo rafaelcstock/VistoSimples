@@ -49,12 +49,7 @@ function CountryService({ validateStep }) {
   const handleDateUpdateData = (name, newDate) => {
     let isValid = true;
   
-    const isDateValid = (selectedDate) => {
-      const currentDate = dayjs();
-      return selectedDate.isSameOrBefore(currentDate);
-    };
-  
-    if (newDate && dayjs(newDate).isValid() && isDateValid(dayjs(newDate))) {
+    if (newDate && dayjs(newDate).isValid() && dayjs(newDate).isBefore(dayjs())) {
       const formattedDate = dayjs(newDate).format("YYYY-MM-DD");
   
       updateData({
@@ -219,7 +214,7 @@ function CountryService({ validateStep }) {
                   <DatePicker
                     format="DD/MM/YYYY"
                     className={`custom-date-picker-initialService ${!isStartDateValid ? "invalid-date" : ""}`}
-                    value={data.military_info[0].start_date !== "" ? dayjs(data.military_info[0].start_date) : null}
+                    value={data.military_info[0].start_date ? dayjs(data.military_info[0].start_date) : null}
                     onChange={(date) => handleDateUpdateData("start_date", date)}
                   />
                   </LocalizationProvider>
@@ -242,7 +237,7 @@ function CountryService({ validateStep }) {
                   <DatePicker
                     format="DD/MM/YYYY"
                     className={`custom-date-picker-initialService ${!isEndDateValid ? "invalid-date" : ""}`}
-                    value={data.military_info[0].end_date !== "" ? dayjs(data.military_info[0].end_date) : null}
+                    value={data.military_info[0].end_date ? dayjs(data.military_info[0].end_date) : null}
                     onChange={(date) => handleDateUpdateData("end_date", date)}
                   />
                   </LocalizationProvider>
