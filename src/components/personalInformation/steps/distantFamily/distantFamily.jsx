@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./distantFamily.css";
-import { MenuItem, Select, TextField } from "@mui/material";
+import {Box, MenuItem, Select, TextField} from "@mui/material";
 import { FormControlLabel, Radio, RadioGroup } from "@mui/material";
 import PrimaryOccupation from "../../../../datas/primary_occupation";
 import { useData } from "../../../../dataContext/dataContext";
@@ -223,7 +223,7 @@ function DistantFamily({ validateStep }) {
             <div className="div-marital-padding">
               <h2 className="padding-bottom-distant" style={{ color: "#091F5F" }}  >Informações da ocupação</h2>
               <div className="div-occupationAndOffice">
-                <div style={{ width: "50%" }}>
+                <Box sx={{ width: "50%" }}>
                   <div
                     style={{ paddingBottom: "0.4rem" }}
                     className="padding-bottom-distant"
@@ -248,8 +248,13 @@ function DistantFamily({ validateStep }) {
                     </Select>
                   </div>
 
-                </div>
-                <div style={{ width: "50%" }}>
+                </Box>
+                <Box sx={{ width: "50%",
+                  "@media (max-width: 768px)": {
+                    width: "unset"
+                  }, }}
+                  className={"div-2-inputs-work-distantFamily"}
+                >
                   <div style={{ paddingBottom: "0.4rem" }}>
                     <span className="span-state">
                       Nome da instituição/empresa{" "}
@@ -266,7 +271,7 @@ function DistantFamily({ validateStep }) {
                       onChange={handleEntityNameChange}
                     />
                   </div>
-                </div>
+                </Box>
               </div>
               <div className="div-2-inputs-work-distantFamily">
                 <div>
