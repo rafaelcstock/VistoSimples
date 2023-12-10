@@ -136,23 +136,3 @@
         display: none;
     }
 }
-
-/*!* Estilos para telas entre 480px e 767px (smartphones em modo paisagem e tablets em modo retrato) *!*/
-/*@media only screen and (min-width: 480px) and (max-width: 767px) {*/
-/*    !* Seus estilos para dispositivos pequenos aqui *!*/
-/*}*/
-
-/*!* Estilos para telas menores que 767px (smartphones em modo retrato) *!*/
-/*@media only screen and (max-width: 767px) {*/
-/*    !* Seus estilos para smartphones aqui *!*/
-/*}*/
-
-/*!* Estilos para telas entre 768px e 1199px (tablets em modo retrato) *!*/
-/*@media only screen and (min-width: 768px) and (max-width: 1199px) {*/
-/*    !* Seus estilos para tablets aqui *!*/
-/*}*/
-
-/*!* Estilos para telas maiores que 1200px *!*/
-/*@media only screen and (min-width: 1200px) {*/
-/*    !* Seus estilos para desktop aqui *!*/
-/*}*/
