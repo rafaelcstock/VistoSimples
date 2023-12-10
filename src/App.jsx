@@ -1,16 +1,14 @@
 import './App.css'
 import Home from './pages/home/home'
-import InitialInformation from './pages/initial-information/initial-information'
+import {MobileProvider} from "./dataContext/mobileContext.jsx";
 
 function App() {
 
-  return (
-    <>
-    <div>
-      <Home></Home>
-    </div>
-    </>
-  )
+    return (
+        <MobileProvider>
+          <Home></Home>
+        </MobileProvider>
+    )
 }
 
 export default App

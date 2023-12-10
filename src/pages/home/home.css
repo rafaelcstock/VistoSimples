@@ -4,11 +4,11 @@
     justify-content: center;
 }
 
-.div-flex{
+.home-div-flex{
     display: flex;
 }
 
-.div-flex-docs{
+.home-div-flex-docs{
     display: flex;
     justify-content: space-around;
 }
@@ -17,7 +17,7 @@
     text-align: left;
 }
 
-.margin-div{
+.home-margin-div{
     margin-left: 2rem;
     margin-right: 4rem;
 }
@@ -70,7 +70,7 @@
     border-radius: 8px;
 }
 
-.padding-bottom{
+.home-padding-bottom{
     padding-bottom: 2rem;
 }
 
@@ -94,3 +94,72 @@
     color: white;    
 }
 
+.home-botao-iniciar-bot{
+    display: none;
+}
+
+@media only screen and (max-width: 479px) {
+    .home-div-flex{
+        flex-direction: column;
+    }
+
+    .home-imagem{
+        display: flex;
+        justify-content: center;
+    }
+
+    .home-imagem img{
+        width: 260px;
+    }
+
+    .home-margin-div{
+        margin-right: 32px;
+    }
+
+    .home-padding-bottom{
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+    }
+    .home-div-flex-docs{
+        flex-direction: column;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    .home-botao-iniciar-top button{
+        display: none;
+    }
+
+    .home-botao-iniciar-bot{
+        width: 100%;
+    }
+
+    .home-botao-iniciar-bot button{
+        width: 100%;
+    }
+
+    .informacoes-importante span{
+        display: none;
+    }
+}
+
+/*!* Estilos para telas entre 480px e 767px (smartphones em modo paisagem e tablets em modo retrato) *!*/
+/*@media only screen and (min-width: 480px) and (max-width: 767px) {*/
+/*    !* Seus estilos para dispositivos pequenos aqui *!*/
+/*}*/
+
+/*!* Estilos para telas menores que 767px (smartphones em modo retrato) *!*/
+/*@media only screen and (max-width: 767px) {*/
+/*    !* Seus estilos para smartphones aqui *!*/
+/*}*/
+
+/*!* Estilos para telas entre 768px e 1199px (tablets em modo retrato) *!*/
+/*@media only screen and (min-width: 768px) and (max-width: 1199px) {*/
+/*    !* Seus estilos para tablets aqui *!*/
+/*}*/
+
+/*!* Estilos para telas maiores que 1200px *!*/
+/*@media only screen and (min-width: 1200px) {*/
+/*    !* Seus estilos para desktop aqui *!*/
+/*}*/

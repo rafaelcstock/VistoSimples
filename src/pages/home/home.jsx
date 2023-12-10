@@ -6,13 +6,16 @@ import imageHome4 from '../../assets/imagem-4.png';
 import imageHome5 from '../../assets/imagem-5.png';
 import { Link } from 'react-router-dom';
 
+import {useMobile} from "../../dataContext/mobileContext.jsx";
+
 function Home() {
 
+  const { isMobile } = useMobile();
   return (
     <>
       <div>
-        <div className='div-flex'>
-          <div className='div-home-head-info margin-div margin-left'>
+        <div className='home-div-flex'>
+          <div className='div-home-head-info margin-div home-margin-left'>
             <div className='text-align font-size-title'>
               <span className='font-color'>Visto simplificado</span><br />
               <span className='font-color-2'>em poucos minutos!</span>
@@ -24,7 +27,7 @@ function Home() {
                 de ter todas as informações citadas abaixo.
               </span>
             </div>
-            <div className='padding-top'>
+            <div className='padding-top home-botao-iniciar-top'>
               <Link to="/initialInformation">
                 <button type='button' className='button-style'>
                   <span className='font-button'>Iniciar</span>
@@ -32,15 +35,15 @@ function Home() {
               </Link>
             </div>
           </div>
-          <div>
+          <div className="home-imagem">
             <img src={imageHome1} alt="" />
           </div>
         </div>
-        <div className='padding-bottom'>
-          <div className='margin-left font-title-div-2 font-color-2 padding-bottom'>
+        <div className='home-padding-bottom'>
+          <div className='informacoes-importante home-margin-left font-title-div-2 font-color-2 padding-bottom'>
             <span>Informações importantes</span>
           </div>
-          <div className='div-flex-docs margin-div'>
+          <div className='home-div-flex-docs home-margin-div'>
             <div className='dimension-card'>
               <div className='div-flex'>
                 <div className='div-home-head-info text-align font-card font-color-2'>
@@ -72,6 +75,13 @@ function Home() {
                 </div>
                 <img src={imageHome5} alt="" style={{ height: '148px', width: '148px' }} />
               </div>
+            </div>
+            <div className='home-botao-iniciar-bot'>
+              <Link to="/initialInformation">
+                <button type='button' className='button-style'>
+                  <span className='font-button'>Iniciar</span>
+                </button>
+              </Link>
             </div>
           </div>
         </div>

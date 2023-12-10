@@ -7,6 +7,7 @@ import Home from './pages/home/home.jsx';
 import InitialInformation from './pages/initial-information/initial-information.jsx';
 import Form from './pages/form/form.jsx';
 import { DataProvider } from './dataContext/dataContext.jsx';
+import {MobileProvider} from "./dataContext/mobileContext.jsx";
 
 const router = createBrowserRouter([
   {
@@ -26,7 +27,9 @@ const router = createBrowserRouter([
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <DataProvider>
-      <RouterProvider router={router} />
+      <MobileProvider>
+        <RouterProvider router={router} />
+      </MobileProvider>
     </DataProvider>
   </React.StrictMode>,
 )
