@@ -1,14 +1,14 @@
-.div-home-head-info{
+.div-head-info{
     display: flex;     
     flex-direction: column;
     justify-content: center;
 }
 
-.home-div-flex{
+.div-flex{
     display: flex;
 }
 
-.home-div-flex-docs{
+.div-flex-docs{
     display: flex;
     justify-content: space-around;
 }
@@ -17,9 +17,9 @@
     text-align: left;
 }
 
-.home-margin-div{
+.margin-div{
     margin-left: 2rem;
-    margin-right: 4rem;
+    margin-right: 2rem;
 }
 
 .margin-left{
@@ -70,7 +70,7 @@
     border-radius: 8px;
 }
 
-.home-padding-bottom{
+.padding-bottom{
     padding-bottom: 2rem;
 }
 
@@ -94,45 +94,45 @@
     color: white;    
 }
 
-@media only screen and (max-width: 479px) {
-    .home-div-flex{
-        flex-direction: column;
+@media only screen and (max-width: 768px) {
+    .div-flex{
+        grid-template-columns: 1fr !important;
     }
 
-    .home-imagem{
+    .imagem{
         display: flex;
         justify-content: center;
         margin-bottom: 10px;
     }
 
-    .home-imagem img{
+    .imagem img{
         width: 260px;
     }
 
-    .home-margin-div{
-        margin-right: 32px;
-    }
-
-    .home-padding-bottom{
+    .padding-bottom{
         display: flex;
         align-items: center;
         flex-direction: column;
     }
-    .home-div-flex-docs{
+    .div-flex-docs{
         flex-direction: column;
         justify-content: center;
         gap: 10px;
     }
 
-    .home-botao-iniciar-bot{
+    .botao-iniciar-bot{
         width: 100%;
     }
 
-    .home-botao-iniciar-bot button{
+    .botao-iniciar-bot button{
         width: 100%;
     }
 
     .informacoes-importante span{
         display: none;
+    }
+
+    .margin-div{
+        margin-right: 2rem;
     }
 }

@@ -14,8 +14,8 @@ function Home() {
   return (
     <>
       <div>
-        <div className='home-div-flex'>
-          <div className='div-home-head-info margin-div home-margin-left'>
+        <div className='div-flex'>
+          <div className='div-head-info margin-div margin-left'>
             <div className='text-align font-size-title'>
               <span className='font-color'>Visto simplificado</span><br />
               <span className='font-color-2'>em poucos minutos!</span>
@@ -30,7 +30,7 @@ function Home() {
             {
               (!isMobile)
                 ?
-                  <div className='padding-top home-botao-iniciar-top'>
+                  <div className='padding-top botao-iniciar-top'>
                     <Link to="/initialInformation">
                       <button type='button' className='button-style'>
                         <span className='font-button'>Iniciar</span>
@@ -40,23 +40,36 @@ function Home() {
                 : ""
             }
           </div>
-          <div className="home-imagem">
-            <img src={imageHome1} alt="" />
-          </div>
-        </div>
-        <div className='home-padding-bottom'>
           {
             (!isMobile)
               ?
-                <div className='informacoes-importante home-margin-left font-title-div-2 font-color-2 padding-bottom'>
+                <div className="imagem">
+                  <img src={imageHome1} alt="" />
+                </div>
+                : ""
+          }
+        </div>
+        {
+          (isMobile)
+              ?
+              <div className="imagem">
+                <img src={imageHome1} alt="" />
+              </div>
+              : ""
+        }
+        <div className='padding-bottom'>
+          {
+            (!isMobile)
+              ?
+                <div className='informacoes-importante margin-left font-title-div-2 font-color-2 padding-bottom'>
                   <span>Informações importantes</span>
                 </div>
                 :""
           }
-          <div className='home-div-flex-docs home-margin-div'>
+          <div className='div-flex-docs margin-div'>
             <div className='dimension-card'>
               <div className='div-flex'>
-                <div className='div-home-head-info text-align font-card font-color-2'>
+                <div className='div-head-info text-align font-card font-color-2'>
                   <span >CPF e RG, carteira de motorista e carteira de trabalho</span>
                 </div>
                 <img src={imageHome2} alt="" style={{ height: '148px', width: '148px' }} />
@@ -64,7 +77,7 @@ function Home() {
             </div>
             <div className='dimension-card'>
               <div className='div-flex'>
-                <div className='div-home-head-info text-align font-card font-color-2'>
+                <div className='div-head-info text-align font-card font-color-2'>
                   <span>Comprovante de residência</span>
                 </div>
                 <img src={imageHome3} alt="" style={{ height: '148px', width: '148px' }} />
@@ -72,7 +85,7 @@ function Home() {
             </div>
             <div className='dimension-card'>
               <div className='div-flex'>
-                <div className='div-home-head-info text-align font-card font-color-2'>
+                <div className='div-head-info text-align font-card font-color-2'>
                   <span>Passaporte novo <br /> e antigo</span>
                 </div>
                 <img src={imageHome4} alt="" style={{ height: '148px', width: '148px' }} />
@@ -80,7 +93,7 @@ function Home() {
             </div>
             <div className='dimension-card'>
               <div className='div-flex'>
-                <div className='div-home-head-info text-align font-card font-color-2'>
+                <div className='div-head-info text-align font-card font-color-2'>
                   <span>Certidão de nascimento ou casamento</span>
                 </div>
                 <img src={imageHome5} alt="" style={{ height: '148px', width: '148px' }} />
@@ -89,7 +102,7 @@ function Home() {
             {
               isMobile
                   ?
-                  <div className='home-botao-iniciar-bot'>
+                  <div className='botao-iniciar-bot'>
                     <Link to="/initialInformation">
                       <button type='button' className='button-style'>
                         <span className='font-button'>Iniciar</span>
