@@ -149,3 +149,11 @@
     width: 195%;
     background-color: #ffff;
 }
+
+@media only screen and (max-width: 768px) {
+    .div-3-inputs-residence{
+        display: grid !important;
+        grid-template-columns: 1fr !important;
+        padding: 0 0.5rem !important;
+    }
+}
