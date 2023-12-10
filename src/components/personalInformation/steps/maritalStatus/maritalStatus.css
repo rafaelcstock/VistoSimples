@@ -58,7 +58,7 @@
     padding-bottom: 2rem;
 }
 
-.padding-bottom-title-input{
+.married-padding-bottom-title-input{
     padding-left: 3rem;
     padding-bottom: 2rem;
 }
@@ -160,4 +160,21 @@
     width: 98%;
     background-color: #fff;
 }
+
+@media only screen and (max-width: 479px) {
+    .married-div-1-inputs-marital{
+        grid-template-columns: 1fr;
+        padding: 0 0.5rem !important;
+    }
+
+    .married-div-2-inputs-marital{
+        grid-template-columns: 1fr;
+        padding: 0 0.5rem !important;
+    }
+
+    .married-padding-bottom-title-input{
+        padding-left: 1rem;
+    }
+}
+
 
