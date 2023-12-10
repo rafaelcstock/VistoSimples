@@ -78,7 +78,6 @@
     color: #091F5F;   
 }
 
-
 .style-select-marital{
     width:98%;
     background:white;
@@ -162,12 +161,17 @@
 }
 
 @media only screen and (max-width: 768px) {
+    .div-1-inputs-marital{
+        grid-template-columns: 1fr !important;
+        padding: 0 0.5rem !important;
+    }
+
     .div-2-inputs-marital{
         grid-template-columns: 1fr !important;
         padding: 0 0.5rem !important;
     }
 
-    .div-1-inputs-marital{
+    .div-3-inputs-marital{
         grid-template-columns: 1fr !important;
         padding: 0 0.5rem !important;
     }
@@ -179,6 +183,10 @@
     .radio-group{
         background: red;
         grid-template-columns: 1fr!important;
+    }
+
+    .title-header-2{
+
     }
 }
 
