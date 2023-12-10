@@ -182,7 +182,9 @@ function InitialInformation({ validateStep, isValidInitialInformation }) {
   return (
     <div className="div-margin">
       <div className="padding-bottom">
-        <div style={{ display: "flex", justifyContent: "space-between" }}>
+        <div style={{ display: "flex", justifyContent: "space-between" }}
+          className={"header-informations"}
+        >
           <div>
             <span className="title-header">Informações Pessoais</span>
           </div>
@@ -241,7 +243,8 @@ function InitialInformation({ validateStep, isValidInitialInformation }) {
                 Estado Civil <span style={{ color: "red" }}>*</span>
               </span>
             </div>
-            <div className="padding-bottom-1">
+            <div className="padding-bottom-1"
+            >
               <Select
                 className="style-select-initial input-style-initial"
                 value={data.marital_status}
