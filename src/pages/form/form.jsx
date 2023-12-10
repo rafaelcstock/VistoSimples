@@ -65,6 +65,11 @@ function Form() {
           activeStep={activeStep}
           orientation="vertical"
           style={{ paddingTop: "3rem" }}
+          sx={{
+            '@media (max-width: 768px)': {
+              display: 'none'
+            },
+          }}
         >
           {steps.map((label, index) => {
             const stepProps = {};
@@ -82,7 +87,7 @@ function Form() {
           })}
         </Stepper>
       </div>
-      <div className="div-margin" style={{ width: "100%" }}>
+      <div className="div-margin all-components-wrapper " style={{ width: "100%" }}>
         <div>{allComponents[activeStep]}</div>
       </div>
     </div>
