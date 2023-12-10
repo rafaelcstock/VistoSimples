@@ -27,22 +27,32 @@ function Home() {
                 de ter todas as informações citadas abaixo.
               </span>
             </div>
-            <div className='padding-top home-botao-iniciar-top'>
-              <Link to="/initialInformation">
-                <button type='button' className='button-style'>
-                  <span className='font-button'>Iniciar</span>
-                </button>
-              </Link>
-            </div>
+            {
+              (!isMobile)
+                ?
+                  <div className='padding-top home-botao-iniciar-top'>
+                    <Link to="/initialInformation">
+                      <button type='button' className='button-style'>
+                        <span className='font-button'>Iniciar</span>
+                      </button>
+                    </Link>
+                  </div>
+                : ""
+            }
           </div>
           <div className="home-imagem">
             <img src={imageHome1} alt="" />
           </div>
         </div>
         <div className='home-padding-bottom'>
-          <div className='informacoes-importante home-margin-left font-title-div-2 font-color-2 padding-bottom'>
-            <span>Informações importantes</span>
-          </div>
+          {
+            (!isMobile)
+              ?
+                <div className='informacoes-importante home-margin-left font-title-div-2 font-color-2 padding-bottom'>
+                  <span>Informações importantes</span>
+                </div>
+                :""
+          }
           <div className='home-div-flex-docs home-margin-div'>
             <div className='dimension-card'>
               <div className='div-flex'>
@@ -76,13 +86,18 @@ function Home() {
                 <img src={imageHome5} alt="" style={{ height: '148px', width: '148px' }} />
               </div>
             </div>
-            <div className='home-botao-iniciar-bot'>
-              <Link to="/initialInformation">
-                <button type='button' className='button-style'>
-                  <span className='font-button'>Iniciar</span>
-                </button>
-              </Link>
-            </div>
+            {
+              isMobile
+                  ?
+                  <div className='home-botao-iniciar-bot'>
+                    <Link to="/initialInformation">
+                      <button type='button' className='button-style'>
+                        <span className='font-button'>Iniciar</span>
+                      </button>
+                    </Link>
+                  </div>
+                  : ""
+            }
           </div>
         </div>
       </div>

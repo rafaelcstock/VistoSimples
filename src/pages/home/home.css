@@ -94,10 +94,6 @@
     color: white;    
 }
 
-.home-botao-iniciar-bot{
-    display: none;
-}
-
 @media only screen and (max-width: 479px) {
     .home-div-flex{
         flex-direction: column;
@@ -106,6 +102,7 @@
     .home-imagem{
         display: flex;
         justify-content: center;
+        margin-bottom: 10px;
     }
 
     .home-imagem img{
@@ -125,10 +122,6 @@
         flex-direction: column;
         justify-content: center;
         gap: 10px;
-    }
-
-    .home-botao-iniciar-top button{
-        display: none;
     }
 
     .home-botao-iniciar-bot{
