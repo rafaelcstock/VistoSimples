@@ -142,7 +142,7 @@ function Married({ validateStep }) {
         <div className="padding-bottom-title-input">
           <span className="title-header-2">Dados do companheiro(a)</span>
         </div>
-        <div className="married-div-1-inputs-marital">
+        <div className="married-div-1-inputs-marital div-1-inputs-marital">
           <div>
             <div style={{ paddingBottom: "0.4rem" }}>
               <span className="span-state">
@@ -209,10 +209,10 @@ function Married({ validateStep }) {
         </div>
       </div>
       <div className="div-marital-padding">
-        <div className="married-padding-bottom-title-input">
+        <div className="padding-bottom-title-input married-padding-bottom-title-input">
           <span className="title-header-2">Nacionalidade do companheiro</span>
         </div>
-        <div className="married-div-2-inputs-marital">
+        <div className="married-div-2-inputs-marital div-2-inputs-marital">
           <div>
             <div style={{ paddingBottom: "0.4rem" }}>
               <span className="span-state">
@@ -262,7 +262,7 @@ function Married({ validateStep }) {
         </div>
       </div>
       <div className="div-marital-padding">
-        <div className="married-padding-bottom-title-input">
+        <div className="padding-bottom-title-input">
           <span className="title-header-2">
             Seu companheiro(a) mora no mesmo endereço que você?
             <span style={{ color: "red" }}>*</span>
