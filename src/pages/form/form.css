@@ -181,6 +181,84 @@
     .header-informations div{
         width: 100%;
     }
+    .div-grid-nationality-inputs{
+        grid-template-columns: 1fr !important;
+        padding: 0 .5rem !important;
+    }
+    .div-grid-nationality-inputs-1{
+        grid-template-columns: 1fr !important;
+        padding: 0 .5rem !important;
+    }
+    .padding-bottom-nationality{
+        padding-left: .5rem !important;
+    }
+    .padding-charity{
+        padding: 0 .5rem !important;
+    }
+    .div-grid-nationality-inputs-2{
+        grid-template-columns: 1fr !important;
+        padding: 0 .5rem !important;
+        place-items: center !important;
+
+    }
+    .div-grid-nationality-inputs-2 div .div-bnt, .div-grid-nationality-inputs-2 div .div-bnt label{
+        width: 100% !important;
+    }
+    .div-grid-nationality-inputs-2 div .margin-icon{
+        margin-left: 0 !important;
+        display: flex !important;
+        justify-content: center !important;
+    }
+    .div-info-img{
+        margin: 0 !important;
+    }
+    .otherNationality{
+        padding-top: 8px;
+        width: 100% !important;
+        align-items: center;
+    }
+    .title-header-2{
+        font-size: 1.2rem !important;
+        break-before: right;
+    }
+    .padding-bottom-family{
+        padding-left: .5rem !important;
+    }
+    .div-family-inputs{
+        grid-template-columns: 1fr !important;
+        gap: 1rem !important;
+        padding: 0 .5rem !important;
+    }
+    .padding-usa{
+        padding-left: .5rem !important;
+    }
+    .div-grid-usa-inputs{
+        grid-template-columns: 1fr !important;
+        gap: 1rem !important;
+        padding: 0 .5rem !important;
+    }
+    .button-style-imgFamilyRemove{
+        width: 100% !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        margin-top: 1rem !important;
+    }
+    .button-style-imgFamily{
+        width: 100% !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        margin-top: 1rem !important;
+    }
+    .padding-bottom-distant{
+        padding-left: .5rem !important;
+    }
+    .div-occupationAndOffice{
+        flex-direction: column !important;
+    }
+    .div-occupationAndOffice{
+        width: 100% !important;
+    }
+
 }
 @media (max-width:  473px) {
     .style-select-initial{
