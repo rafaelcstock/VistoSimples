@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const baseURL = 'https://main-api-visa-818713071.us-east-1.elb.amazonaws.com/api/users/ds160';
+const baseURL = 'https://api.assessoriaus.com.br/api/users/ds160';
 
 const ds160Service = {
   async submit(data) {
