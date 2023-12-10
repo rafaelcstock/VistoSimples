@@ -185,8 +185,9 @@
         grid-template-columns: 1fr!important;
     }
 
-    .title-header-2{
-
+    .titles{
+        display: flex !important;
+        flex-direction: column;
     }
 }
 

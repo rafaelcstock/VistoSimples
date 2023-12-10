@@ -128,7 +128,7 @@ function Married({ validateStep }) {
   return (
     <div className="div-margin">
       <div className="padding-bottom">
-        <div style={{ display: "flex", justifyContent: "space-between" }}>
+        <div className="titles" style={{ display: "flex", justifyContent: "space-between" }}>
           <div>
             <span className="title-header">Informações Pessoais</span>
           </div>
