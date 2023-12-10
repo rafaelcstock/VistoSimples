@@ -1,5 +1,6 @@
 .div-flex{
     display: flex;
+    min-height: 100%;
 }
 
 .div-width-step{

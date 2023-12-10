@@ -149,7 +149,7 @@ function InitialInformation({ validateStep, isValidInitialInformation }) {
 
   const handlePhoneNumberChange = (event) => {
     const { value, name } = event.target;
-  
+   
     updateData({ ...data, [name]: value });
   };
 
