@@ -7,7 +7,6 @@
     width: 22%;
     background-color: #F3F5FC;
     min-height: 100%;
-   
 }
 
 .div-margin{
@@ -114,6 +113,226 @@
     color: red;
     height: 1rem;
     margin-bottom: 0.5rem;
+}
+
+@media (max-width:  768px) {
+    .div-grid-initial-inputs{
+        grid-template-columns: 1fr;
+        padding: 0 .5rem;
+    }
+    .style-select{
+        width: 100% !important;
+    }
+    .MuiInputBase-root{
+        width: 100% !important;
+    }
+    .div-width-step{
+        width: 0 !important;
+    }
+    .all-components-wrapper div:first-child{
+        width: 99%;
+    }
+    .div-margin{
+        margin-left: .5rem !important;
+        margin-right: 0 !important;
+    }
+    /*.input-style-initial{*/
+    /*    width: 100% !important;*/
+    /*    min-width: unset !important;*/
+    /*}*/
+
+    .button-proxima-container{
+        display: flex !important;
+        justify-content: center !important;
+        width: 100%;
+    }
+    .button-proxima-container button{
+        width: 100% !important;
+    }
+    .all-buttons-form-container{
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: center !important;
+        gap: 1rem !important;
+        width: 100%;
+    }
+    .div-grid-another-inputs{
+        grid-template-columns: 1fr !important;
+        padding: 0 .5rem !important;
+    }
+    .div-another-padding{
+        padding: .25em 0.5rem !important;
+    }
+    .all-buttons-form-container button{
+        width: 100% !important;
+    }
+    .title-header{
+        font-size: 1.4rem !important;
+    }
+    .title-header-1{
+        font-size: 1.2rem !important;
+    }
+    .header-informations{
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: start !important;
+        align-items: center !important;
+    }
+    .header-informations div{
+        width: 100%;
+    }
+    .div-grid-nationality-inputs{
+        grid-template-columns: 1fr !important;
+        padding: 0 .5rem !important;
+    }
+    .div-grid-nationality-inputs-1{
+        grid-template-columns: 1fr !important;
+        padding: 0 .5rem !important;
+    }
+    .padding-bottom-nationality{
+        padding-left: .5rem !important;
+    }
+    .padding-charity{
+        padding: 0 .5rem !important;
+    }
+    .div-grid-nationality-inputs-2{
+        grid-template-columns: 1fr !important;
+        padding: 0 .5rem !important;
+        place-items: center !important;
+
+    }
+    .div-grid-nationality-inputs-2 div .div-bnt, .div-grid-nationality-inputs-2 div .div-bnt label{
+        width: 100% !important;
+    }
+    .div-grid-nationality-inputs-2 div .margin-icon{
+        margin-left: 0 !important;
+        display: flex !important;
+        justify-content: center !important;
+    }
+    .div-info-img{
+        margin: 0 !important;
+    }
+    .otherNationality{
+        padding-top: 8px;
+        width: 100% !important;
+        align-items: center;
+    }
+    .title-header-2{
+        font-size: 1.2rem !important;
+        break-before: right;
+    }
+    .padding-bottom-family{
+        padding-left: .5rem !important;
+    }
+    .div-family-inputs{
+        grid-template-columns: 1fr !important;
+        gap: 1rem !important;
+        padding: 0 .5rem !important;
+    }
+    .padding-usa{
+        padding-left: .5rem !important;
+    }
+    .div-grid-usa-inputs{
+        grid-template-columns: 1fr !important;
+        gap: 1rem !important;
+        padding: 0 .5rem !important;
+    }
+    .button-style-imgFamilyRemove{
+        width: 100% !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        margin-top: 1rem !important;
+    }
+    .button-style-imgFamily{
+        width: 100% !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        margin-top: 1rem !important;
+    }
+    .padding-bottom-distant{
+        padding-left: .5rem !important;
+    }
+    .div-occupationAndOffice{
+        flex-direction: column !important;
+    }
+    .div-occupationAndOffice{
+        width: 100% !important;
+    }
+    .div-2-inputs-work-distantFamily{
+        grid-template-columns: 1fr !important;
+        gap: 1rem !important;
+        padding: 0 .5rem !important;
+    }
+    .div-1-inputs-marital{
+        grid-template-columns: 1fr !important;
+        gap: 1rem !important;
+        padding: 0 .5rem !important;
+    }
+    .div-flex-inputs-group{
+        padding: 0 .5rem !important;
+    }
+    .div-grid-social-inputs{
+        grid-template-columns: 1fr !important;
+        gap: 1rem !important;
+        padding: 0 .5rem !important;
+    }
+    .div-cnh-inputs{
+        grid-template-columns: 1fr !important;
+        gap: 1rem !important;
+        padding: 0 .5rem !important;
+    }
+    .div-2-inputs-work{
+        grid-template-columns: 1fr !important;
+        gap: 1rem !important;
+        padding: 0 .5rem !important;
+    }
+    .padding-bottom-title-input, .padding-radio-marital{
+        padding-left: .5rem !important;
+    }
+    .padding-bottom-title-input-country{
+        padding-left: .5rem !important;
+    }
+    .div-1-inputs-residence{
+        grid-template-columns: 1fr !important;
+        gap: 1rem !important;
+        padding: 0 .5rem !important;
+    }
+    .padding-radio-maritalCountries{
+        padding-left: .5rem !important;
+    }
+    .button-style-imgTravels{
+        width: 100% !important;
+        padding: 0 !important;
+        margin: 0.5rem 0 !important;
+    }
+    .div-1-inputs-contact{
+        grid-template-columns: 1fr !important;
+        gap: 1rem !important;
+        padding: 0 .5rem !important;
+    }
+    .input-companion{
+        padding-left: .5rem !important;
+    }
+    .padding-documents{
+        padding-left: .5rem !important;
+    }
+    .padding-visa{
+        padding-left: .5rem !important;
+    }
+
+
+
+
+}
+@media (max-width:  473px) {
+    .style-select-initial{
+        width: 90% !important;
+    }
+}
+@media (max-width:  425px) {
+    .style-select-initial{
+        width: 80% !important;
+    }
 }
 
 

@@ -1,4 +1,4 @@
-.div-home-head-info{
+.div-head-info{
     display: flex;     
     flex-direction: column;
     justify-content: center;
@@ -19,7 +19,7 @@
 
 .margin-div{
     margin-left: 2rem;
-    margin-right: 4rem;
+    margin-right: 2rem;
 }
 
 .margin-left{
@@ -94,3 +94,45 @@
     color: white;    
 }
 
+@media only screen and (max-width: 768px) {
+    .div-flex{
+        grid-template-columns: 1fr !important;
+    }
+
+    .imagem{
+        display: flex;
+        justify-content: center;
+        margin-bottom: 10px;
+    }
+
+    .imagem img{
+        width: 260px;
+    }
+
+    .padding-bottom{
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+    }
+    .div-flex-docs{
+        flex-direction: column;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    .botao-iniciar-bot{
+        width: 100%;
+    }
+
+    .botao-iniciar-bot button{
+        width: 100%;
+    }
+
+    .informacoes-importante span{
+        display: none;
+    }
+
+    .margin-div{
+        margin-right: 2rem !important;
+    }
+}

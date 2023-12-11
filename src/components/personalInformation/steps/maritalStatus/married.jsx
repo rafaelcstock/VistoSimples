@@ -128,7 +128,7 @@ function Married({ validateStep }) {
   return (
     <div className="div-margin">
       <div className="padding-bottom">
-        <div style={{ display: "flex", justifyContent: "space-between" }}>
+        <div className="titles" style={{ display: "flex", justifyContent: "space-between" }}>
           <div>
             <span className="title-header">Informações Pessoais</span>
           </div>
@@ -142,7 +142,7 @@ function Married({ validateStep }) {
         <div className="padding-bottom-title-input">
           <span className="title-header-2">Dados do companheiro(a)</span>
         </div>
-        <div className="div-1-inputs-marital">
+        <div className="married-div-1-inputs-marital div-1-inputs-marital">
           <div>
             <div style={{ paddingBottom: "0.4rem" }}>
               <span className="span-state">
@@ -209,10 +209,10 @@ function Married({ validateStep }) {
         </div>
       </div>
       <div className="div-marital-padding">
-        <div className="padding-bottom-title-input">
+        <div className="padding-bottom-title-input married-padding-bottom-title-input">
           <span className="title-header-2">Nacionalidade do companheiro</span>
         </div>
-        <div className="div-2-inputs-marital">
+        <div className="married-div-2-inputs-marital div-2-inputs-marital">
           <div>
             <div style={{ paddingBottom: "0.4rem" }}>
               <span className="span-state">
@@ -285,7 +285,7 @@ function Married({ validateStep }) {
       </div>
       {!data.spouseHasSameAddress && (
         <div className="div-marital-padding">
-          <div className="padding-bottom-title-input">
+          <div className="married-padding-bottom-title-input">
             <span className="title-header-2">
               Endereço do companheiro<span style={{ color: "red" }}>*</span>
             </span>

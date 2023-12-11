@@ -89,7 +89,7 @@ function Widow({ validateStep }) {
   return (
     <div className="div-margin">
       <div className="padding-bottom">
-        <div style={{ display: "flex", justifyContent: "space-between" }}>
+        <div className="titles" style={{ display: "flex", justifyContent: "space-between" }}>
           <div>
             <span className="title-header">Informações Pessoais</span>
           </div>
@@ -108,7 +108,7 @@ function Widow({ validateStep }) {
             <div>
               <div style={{ paddingBottom: "0.4rem" }}>
                 <span className="span-state">
-                  Nome do ex-cônjugue<span style={{ color: "red" }}>*</span>
+                  Nome do ex-cônjuge<span style={{ color: "red" }}>*</span>
                 </span>
               </div>
               <div className="padding-bottom-1">
@@ -126,7 +126,7 @@ function Widow({ validateStep }) {
             <div>
               <div style={{ paddingBottom: "0.4rem" }}>
                 <span className="span-state">
-                  Sobrenome do ex-cônjugue
+                  Sobrenome do ex-cônjuge
                   <span style={{ color: "red" }}>*</span>
                 </span>
               </div>
@@ -175,7 +175,7 @@ function Widow({ validateStep }) {
           <div>
             <div style={{ paddingBottom: "0.4rem", height: 40 }}>
               <span className="span-state">
-                País do nascimento do ex-cônjugue
+                País do nascimento do ex-cônjuge
                 <span style={{ color: "red" }}>*</span>
               </span>
             </div>
@@ -199,7 +199,7 @@ function Widow({ validateStep }) {
           <div>
             <div style={{ paddingBottom: "0.4rem", height: 40 }}>
               <span className="span-state">
-                Estado do nascimento do ex-cônjugue
+                Estado do nascimento do ex-cônjuge
                 <span style={{ color: "red" }}>*</span>
               </span>
             </div>
@@ -217,7 +217,7 @@ function Widow({ validateStep }) {
           <div>
             <div style={{ paddingBottom: "0.4rem", height: 40 }}>
               <span className="span-state">
-                Cidade de nascimento do ex-cônjugue
+                Cidade de nascimento do ex-cônjuge
                 <span style={{ color: "red" }}>*</span>
               </span>
             </div>
@@ -235,7 +235,7 @@ function Widow({ validateStep }) {
           <div>
             <div style={{ paddingBottom: "0.4rem", height: 40 }}>
               <span className="span-state">
-                Nacionalidade do ex-cônjugue
+                Nacionalidade do ex-cônjuge
                 <span style={{ color: "red" }}>*</span>
               </span>
             </div>

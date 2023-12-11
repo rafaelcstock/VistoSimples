@@ -530,6 +530,7 @@ function PersonalInformation(props) {
             marginRight: "-2rem",
             paddingBottom: "2rem",
           }}
+          className={"all-buttons-form-container"}
         >
           <div style={{ paddingRight: "1rem" }}>
             <button
@@ -542,7 +543,9 @@ function PersonalInformation(props) {
               <span className="font-button">Voltar</span>
             </button>
           </div>
-          <div>
+          <div
+            className={"button-proxima-container"}
+          >
             <button
               type="button"
               className={`button-style ${isDisabled ? "disabled-button" : ""}`}

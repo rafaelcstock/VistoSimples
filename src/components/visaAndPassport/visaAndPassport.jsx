@@ -138,6 +138,7 @@ function VisaAndPassport(props) {
             marginRight: "-2rem",
             paddingBottom: "2rem",
           }}
+          className={"all-buttons-form-container"}
         >
           <div style={{ paddingRight: "1rem" }}>
             <button
