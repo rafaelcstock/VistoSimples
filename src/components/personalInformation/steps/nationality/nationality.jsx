@@ -1,59 +1,17 @@
 import React, { useEffect, useState } from "react";
 import "./nationality.css";
-import { MenuItem, Select, TextField, OutlinedInput, Autocomplete, } from "@mui/material";
+import { MenuItem, Select, TextField, Autocomplete, } from "@mui/material";
 import { FormControlLabel, Radio, RadioGroup, } from "@mui/material";
 import InsertPhotoOutlinedIcon from "@mui/icons-material/InsertPhotoOutlined";
 import Countries from "../../../../datas/countries";
-import countriesService from "../../../../services/countriesWorld";
-import statesService from "../../../../services/statesWorldMain";
-import citiesService from "../../../../services/citiesWorld";
 import { useData } from "../../../../dataContext/dataContext";
-import { GetLanguages } from "react-country-state-city";
-
-const ITEM_HEIGHT = 48;
-const ITEM_PADDING_TOP = 8;
-const MenuProps = {
-  PaperProps: {
-    style: {
-      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-      width: 250,
-    },
-  },
-};
+import Languages from "../../../../datas/languages";
 
 function Nationality({ validateStep }) {
-
   const { data, updateData } = useData();
-  const [imageSrc, setImageSrc] = useState("");
-  const [city, setCity] = useState("");
-  const [state, setState] = useState("");
-  const [country, setCountry] = useState("");
-  const [languageList, setLanguageList] = useState([]);
-  const [personName, setPersonName] = useState([]);
-
-  const getLanguages = async () => {
-    try {
-      const languages = await GetLanguages();
-      const languageList = languages.map((language) => ({
-        name: language.name,
-        code: language.iso2,
-      }));
-      setLanguageList(languageList);
-    } catch (error) {
-      console.error("Error fetching languages:", error);
-    }
-  };
-
-  const getStyles = (name, personName) => {
-    return {
-      fontWeight: personName.indexOf(name) === -1 ? "normal" : "bold",
-    };
-  };
-
 
   const handleChange = (event, newValue) => {
     
-    setPersonName(newValue);
     const newValueLanguage = newValue.map(value => value.name); 
     updateData({ ...data, languages: [...newValueLanguage ] });
   };
@@ -66,7 +24,6 @@ function Nationality({ validateStep }) {
 
       reader.onload = (e) => {
         const imageBase64 = e.target?.result;
-        setImageSrc(imageBase64);
         updateData({ ...data, b64_picture: imageBase64 });
       };
 
@@ -76,17 +33,14 @@ function Nationality({ validateStep }) {
 
   const handleChangeSelectCountry = (event) => {
     const { value } = event.target;
-    setCountry(value);
     updateData({ ...data, birth: { ...data.birth, country: value } });
   };
 
   const handleChangeSelectState = (value) => {
-    setState(value);
     updateData({ ...data, birth: { ...data.birth, state: value } });
   };
 
   const handleChangeSelectCity = (value) => {
-    setCity(value);
     updateData({ ...data, birth: { ...data.birth, city: value } });
   };
 
@@ -111,10 +65,6 @@ function Nationality({ validateStep }) {
       });
     }
   };
-
-  useEffect(() => {
-    getLanguages();
-  }, []);
 
   useEffect(() => {
     validateStep();
@@ -231,8 +181,7 @@ function Nationality({ validateStep }) {
                 <Autocomplete
                   multiple
                   id="languages-autocomplete"
-                  options={languageList}
-                  value={personName}
+                  options={Languages}
                   onChange={handleChange}
                   getOptionLabel={(option) => option.name}
                   renderInput={(params) => (
