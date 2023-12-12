@@ -81,7 +81,6 @@ function Widow({ validateStep }) {
     });
   };
 
-  console.log(data.deceased_spouse);
   useEffect(() => {
     validateStep();
   }, [data]);
