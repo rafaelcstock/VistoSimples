@@ -149,3 +149,10 @@
     background-color: #ffff;
 }
 
+@media (max-width: 700px) {
+    .padding-bottomCharity {
+        display: flex;
+        flex-direction: column;
+    }
+}
+

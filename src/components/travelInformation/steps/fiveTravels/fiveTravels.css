@@ -228,3 +228,11 @@
     width: 40%;
     border-radius: 25px;
 }
+
+@media (max-width: 700px) {
+    .padding-bottomFiveTravels {
+        display: flex;
+        flex-direction: column;
+        gap: 1em;
+    }
+}

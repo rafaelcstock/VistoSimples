@@ -10,7 +10,7 @@ import { useData } from "../../dataContext/dataContext";
 
 function TravelInformation(props) {
   const { data } = useData();
-  const [activeStep, setActiveStep] = useState(3);
+  const [activeStep, setActiveStep] = useState(4);
   const [skipped, setSkipped] = useState(new Set());
   const [isDisabled, setIsDisabled] = useState(true);
 
