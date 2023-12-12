@@ -132,7 +132,6 @@ function EmissionVisa({ validateStep }) {
                     className="input-style-work"
                     placeholder="Escreva o número do visto"
                     variant="outlined"
-                    type="number"
                     name="number"
                     value={data.old_visa.number}
                     onChange={handleOldVisaDataChange}
@@ -151,7 +150,7 @@ function EmissionVisa({ validateStep }) {
                     <DatePicker
                       format="DD/MM/YYYY"
                       className="custom-date-picker-initial"
-                      value={dayjs(data.old_visa.issue_date)}
+                      value={data.old_visa.issue_date !== "" ? dayjs(data.old_visa.issue_date) : null}
                       onChange={(newDate) =>
                         handleDateUpdateData("issue_date", newDate)
                       }
@@ -171,7 +170,7 @@ function EmissionVisa({ validateStep }) {
                     <DatePicker
                       format="DD/MM/YYYY"
                       className="custom-date-picker-initial"
-                      value={dayjs(data.old_visa.expiration_date)}
+                      value={data.old_visa.expiration_date !== "" ? dayjs(data.old_visa.expiration_date) : null}
                       onChange={(newDate) =>
                         handleDateUpdateData("expiration_date", newDate)
                       }
@@ -210,7 +209,7 @@ function EmissionVisa({ validateStep }) {
           <div className="div-marital-padding">
             <div className="padding-bottom-title-input">
               <span className="title-header-2">
-                Você estar aplicando para o mesmo tipo do seu último visto?
+                Você esta aplicando para o mesmo tipo do seu último visto?
                 <span style={{ color: "red" }}>*</span>
               </span>
             </div>

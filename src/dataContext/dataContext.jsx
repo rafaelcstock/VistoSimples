@@ -20,11 +20,6 @@ export function DataProvider({ children }) {
       full_name: null,
     },
     other_name: null,
-    // {
-    //   surname: null,
-    //   given_name: null,
-    //   full_name: null,
-    // },
     telecode_name: {
       surname: "",
       given_name: "",
@@ -66,15 +61,6 @@ export function DataProvider({ children }) {
     entity_paying: {
       entity_type: "S",
       address: null,
-      // {
-      //   street: "",
-      //   complement: null,
-      //   city: "",
-      //   state: "",
-      //   state_acronym: null,
-      //   zip_code: "",
-      //   country: "",
-      // },
       phone_number: "",
       relationship: "C",
       same_address: false,
@@ -193,7 +179,7 @@ export function DataProvider({ children }) {
     ],
     any_other_relative_in_us: true,
     primary_occupation: {
-      occupation_type: "",
+      occupation_type: "S",
       specify_occupation: null,
       entity_name: "",
       address: {
@@ -211,8 +197,7 @@ export function DataProvider({ children }) {
       monthly_income: null,
       description: null,
       occupation_title: "",
-      supervisor_name: null,
-      // retiree_salary: "",
+      supervisor_name: null
     },
     past_jobs: [
       {
@@ -265,7 +250,7 @@ export function DataProvider({ children }) {
     languages: [],
     visited_countries: [],
     charitable_organizations: [],
-    specialized_skills: "string",
+    specialized_skills: null,
     military_info: [
       {
         country: "",
@@ -287,7 +272,11 @@ export function DataProvider({ children }) {
     hasUsDriversLicense: true,
     companionSelected: 1,
     spouseHasSameAddress: true,
+    occupation_type_selected: "S"
   });
+
+
+  console.log(data.languages)
 
   const updateData = (newData) => {
     setData({ ...data, ...newData });

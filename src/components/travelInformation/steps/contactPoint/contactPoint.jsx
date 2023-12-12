@@ -366,7 +366,7 @@ function ContactPoint({ validateStep }) {
             <div>
               <div style={{ paddingBottom: "0.4rem" }}>
                 <span className="span-state">
-                  Email do hotel<span style={{ color: "red" }}>*</span>
+                  Email do hotel
                 </span>
               </div>
               <div className="padding-bottom-1">
