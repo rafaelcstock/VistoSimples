@@ -79,16 +79,17 @@ function AddressDelivery(props) {
     return isValid;
   };
 
+  const handleSkipAddress = () => {
+    setActiveStep(1);
+  };
+
   const handleNext = () => {
-    window.scrollTo(0, 0);
-    document.body.scrollTo(0, 0);
-    
     let newSkipped = skipped;
     if (isStepSkipped(activeStep)) {
       newSkipped = new Set(newSkipped.values());
       newSkipped.delete(activeStep);
     }
-  
+
     if (activeStep == 0 && data.mailing_address.street !== "") {
       props.onAddressChange();
     } else {
@@ -120,6 +121,7 @@ function AddressDelivery(props) {
     <InformationResidence
       key="informationResidence"
       validateStep={validateStep}
+      handleSkipAddress={handleSkipAddress}
     />,
     <Adress
       key="adress"

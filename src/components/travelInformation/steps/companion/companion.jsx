@@ -115,7 +115,6 @@ function Companion({ validateStep }) {
       escorts: updatedScorts,
     });
   };
-
   useEffect(() => {
     validateStep();
   }, [data]);

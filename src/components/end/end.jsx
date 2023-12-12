@@ -13,6 +13,7 @@ function End(props) {
 
   const deleteLocalStorage = () => {
     localStorage.removeItem("tipoForm");
+    localStorage.removeItem("primaryMember");
   }
 
   useEffect(() => {    

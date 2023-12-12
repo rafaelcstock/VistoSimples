@@ -3,43 +3,15 @@ import "./contactPoint.css";
 import { MenuItem, Select, TextField } from "@mui/material";
 import { FormControlLabel, Radio, RadioGroup } from "@mui/material";
 import InputMask from "react-input-mask";
-import escortRelationship from "../../../../datas/escort_relationship";
-import statesService from "../../../../services/statesWorldMain";
-import citiesService from "../../../../services/citiesWorld";
 import { useData } from "../../../../dataContext/dataContext";
 import USStates from "../../../../datas/us_states";
 import usContactRelationship from "../../../../datas/us_contact_relationship";
 import { emailRegex } from "../../../utils/regex";
 
-function ContactPoint({ validateStep }) {
+function ContactPoint({ validateStep, handleSkipAddressUsContact }) {
   const { data, updateData } = useData();
 
-  const [selectedState, setSelectedState] = useState("Hotel");
-  const [city, setCity] = useState("");
-  const [state, setState] = useState("");
-  const [cities, setCities] = useState([]);
-  const [states, setStates] = useState([]);
-
   const [isValidContactPoint, setIsValidContactPoint] = useState(true);
-
-  const getStates = async (country) => {
-    let _states = await statesService.getStateByCountry("US");
-    setStates(_states);
-  };
-
-  const getCities = async (country, state) => {
-    let _cities = await citiesService.getCitiesByStateByCountry(country, state);
-    setCities(_cities);
-  };
-
-  const handleChangeSelectState = (event) => {
-    setState(event.target.value);
-    getCities("US", event.target.value);
-  };
-
-  const handleChangeSelectCity = (event) => {
-    setCity(event.target.value);
-  };
 
   const handleLocateChangeSelect = (event) => {
     const { value } = event.target;
@@ -118,8 +90,7 @@ function ContactPoint({ validateStep }) {
           },
         },
       });
-    }
-    else {
+    } else {
       console.error("O nome deve conter apenas letras e espaços.");
     }
   };
@@ -155,8 +126,7 @@ function ContactPoint({ validateStep }) {
   const validateEmail = (email) => {
     const validEmail = email !== "" ? emailRegex.test(email) : true;
     setIsValidContactPoint(validEmail);
-  }
-
+  };
 
   const handleRelationshipChange = (event) => {
     const { value } = event.target;
@@ -182,9 +152,21 @@ function ContactPoint({ validateStep }) {
     });
   };
 
+  const checkFamilyMember = () => {
+    const storedMember = localStorage.getItem("primaryMember");
+
+    if (storedMember && data.us_contact) {
+      handleSkipAddressUsContact();
+    }
+
+    return;
+  };
+
   useEffect(() => {
     window.scrollTo(0, 0);
     document.body.scrollTo(0, 0);
+
+    checkFamilyMember();
   }, []);
 
   useEffect(() => {
@@ -370,9 +352,7 @@ function ContactPoint({ validateStep }) {
             </div>
             <div>
               <div style={{ paddingBottom: "0.4rem" }}>
-                <span className="span-state">
-                  Email do hotel
-                </span>
+                <span className="span-state">Email do hotel</span>
               </div>
               <div className="padding-bottom-1">
                 <TextField
@@ -386,9 +366,7 @@ function ContactPoint({ validateStep }) {
                 />
               </div>
               <div className="errorMessage">
-                {!isValidContactPoint && (
-                  <> Formato de Email inválido</>
-                )}
+                {!isValidContactPoint && <> Formato de Email inválido</>}
               </div>
             </div>
           </div>
@@ -590,9 +568,7 @@ function ContactPoint({ validateStep }) {
                 />
               </div>
               <div className="errorMessage">
-                {!isValidContactPoint && (
-                  <> Formato de Email inválido</>
-                )}
+                {!isValidContactPoint && <> Formato de Email inválido</>}
               </div>
             </div>
           </div>

@@ -8,6 +8,11 @@ import { Link } from 'react-router-dom';
 
 import {useMobile} from "../../dataContext/mobileContext.jsx";
 
+
+useEffect(() => {
+  localStorage.removeItem("primaryMember")
+}, [])
+
 function Home() {
 
   const { isMobile } = useMobile();

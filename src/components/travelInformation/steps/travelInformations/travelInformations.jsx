@@ -4,12 +4,11 @@ import { MenuItem, Select, TextField } from "@mui/material";
 import InputMask from "react-input-mask";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import Countries from "../../../../datas/countries";
 import USStates from "../../../../datas/us_states";
 import { useData } from "../../../../dataContext/dataContext";
 import dayjs from "dayjs";
 
-function TravelInformations({ validateStep }) {
+function TravelInformations({ validateStep, handleSkipAddress }) {
   const { data, updateData } = useData();
 
   const handleLengthDaysChange = (event) => {
@@ -45,6 +44,17 @@ function TravelInformations({ validateStep }) {
     }
   };
 
+  
+  const checkFamilyMember = () => {
+    const storedMember = localStorage.getItem("primaryMember");
+
+    if (storedMember && data.stay) {
+      handleSkipAddress();
+    }
+
+    return;
+  };
+
   useEffect(() => {
     validateStep();
   }, [data]);
@@ -52,6 +62,8 @@ function TravelInformations({ validateStep }) {
   useEffect(() => {
     window.scrollTo(0, 0);
     document.body.scrollTo(0, 0);
+    
+    checkFamilyMember();
   }, []);
 
   return (

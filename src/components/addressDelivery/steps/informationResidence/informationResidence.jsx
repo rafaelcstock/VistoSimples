@@ -6,7 +6,7 @@ import InputMask from "react-input-mask";
 import Countries from "../../../../datas/countries";
 import { useData } from "../../../../dataContext/dataContext";
 
-function InformationResidence({ validateStep }) {
+function InformationResidence({ validateStep, handleSkipAddress }) {
   const { data, updateData } = useData();
 
   const handleChangeSelect = (event) => {
@@ -70,7 +70,7 @@ function InformationResidence({ validateStep }) {
 
   const handleAddressChange = (event) => {
     const { value, name } = event.target;
-  
+
     if (data.mailing_address !== null) {
       updateData({
         ...data,
@@ -82,10 +82,21 @@ function InformationResidence({ validateStep }) {
     }
   };
 
+  const checkFamilyMember = () => {
+    const storedMember = localStorage.getItem("primaryMember");
+
+    if (storedMember && data.address) {
+      handleSkipAddress();
+    }
+
+    return;
+  };
 
   useEffect(() => {
     window.scrollTo(0, 0);
     document.body.scrollTo(0, 0);
+
+    checkFamilyMember();
   }, []);
 
   useEffect(() => {
@@ -126,9 +137,7 @@ function InformationResidence({ validateStep }) {
           </div>
           <div>
             <div style={{ paddingBottom: "0.4rem" }}>
-              <span className="span-state">
-                Complemento
-              </span>
+              <span className="span-state">Complemento</span>
             </div>
             <div className="padding-bottom-1">
               <TextField
