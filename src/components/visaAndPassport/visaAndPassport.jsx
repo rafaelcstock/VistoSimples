@@ -44,9 +44,9 @@ function VisaAndPassport(props) {
       passport.expiration_date !== "" &&
       (passport.lost_reason
         ? lost_or_stolen_passports[0].document_type &&
-          lost_or_stolen_passports[0].document_type !== "" &&
-          lost_or_stolen_passports[0].country &&
-          lost_or_stolen_passports[0].country !== ""
+        lost_or_stolen_passports[0].document_type !== "" &&
+        lost_or_stolen_passports[0].country &&
+        lost_or_stolen_passports[0].country !== ""
         : true);
 
     return isValid;
@@ -89,8 +89,12 @@ function VisaAndPassport(props) {
   };
 
   const handleNext = () => {
+    if (activeStep == 1 && data.old_visa === null) {
+      setActiveStep((prevActiveStep) => prevActiveStep + 2);
+      return
+    }
     if (activeStep == 3) {
-      
+
       ds160Service.submit(data);
     }
     let newSkipped = skipped;

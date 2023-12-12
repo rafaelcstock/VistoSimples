@@ -1,22 +1,13 @@
 import React, { useEffect, useState } from "react";
 import "./revokedVisa.css";
-import { MenuItem, Select, TextField } from "@mui/material";
+import { TextField } from "@mui/material";
 import statesBrazilianService from "../../../../services/statesBrazilianService";
 import { FormControlLabel, Radio, RadioGroup } from "@mui/material";
-import InputMask from "react-input-mask";
-import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+
 import { useData } from "../../../../dataContext/dataContext";
 
 function RevokedVisa({ validateStep }) {
   const { data, updateData } = useData();
-
-  const getStates = async () => {
-    const response = await statesBrazilianService.getStates();
-    setStates(response);
-  };
-
-  const [states, setStates] = useState([]);
 
   const handleChangeSelect = (event) => {
     const { value } = event.target;
@@ -29,10 +20,6 @@ function RevokedVisa({ validateStep }) {
     const { value } = event.target;
     updateData({ old_visa: { ...data.old_visa, revoked_reason: value } });
   };
-
-  useEffect(() => {
-    getStates();
-  }, []);
 
   useEffect(() => {
     validateStep();

@@ -275,9 +275,6 @@ export function DataProvider({ children }) {
     occupation_type_selected: "S"
   });
 
-
-  console.log(data.languages)
-
   const updateData = (newData) => {
     setData({ ...data, ...newData });
   };
