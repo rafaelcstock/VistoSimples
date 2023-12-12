@@ -58,7 +58,7 @@ function Work({ validateStep }) {
   return (
     <div className="div-margin">
       <div className="padding-bottom">
-        <div style={{ display: "flex", justifyContent: "space-between" }}>
+        <div className="padding-bottomWork" style={{ display: "flex", justifyContent: "space-between" }}>
           <div>
             <span className="title-header">Informações adicionais</span>
           </div>

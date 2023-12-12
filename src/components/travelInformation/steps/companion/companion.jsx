@@ -123,7 +123,7 @@ function Companion({ validateStep }) {
   return (
     <div className="div-margin">
       <div className="padding-bottom">
-        <div style={{ display: "flex", justifyContent: "space-between" }}>
+        <div className="padding-bottomEscorts" style={{ display: "flex", justifyContent: "space-between" }}>
           <div>
             <span className="title-header">Viagem</span>
           </div>

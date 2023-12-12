@@ -185,3 +185,11 @@
     justify-content: center;
     align-items: center;
  }
+
+ @media (max-width: 700px) {
+    .padding-bottomEscorts {
+        display: flex;
+        flex-direction: column;
+        gap: 1em;
+    }
+}
