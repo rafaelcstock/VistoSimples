@@ -124,7 +124,6 @@ function Documents({ validateStep }) {
                 className="style-select-work"
                 placeholder="Escreva o número do passaporte"
                 variant="outlined"
-                type="number"
                 name="number"
                 value={data.passport.number}
                 onChange={handlePassportChange}
@@ -210,9 +209,7 @@ function Documents({ validateStep }) {
                   format="DD/MM/YYYY"
                   className="custom-date-picker-initialDocuments"
                   value={
-                    data.passport.issuance_date !== ""
-                      ? dayjs(data.passport.issuance_date)
-                      : null
+                    data.passport.issuance_date !== "" ? dayjs(data.passport.issuance_date) : null
                   }
                   onChange={(date) =>
                     handleDateUpdateData("issuance_date", date)

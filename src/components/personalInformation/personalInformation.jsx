@@ -137,6 +137,8 @@ function PersonalInformation(props) {
       birth.city !== "" &&
       birth.state &&
       birth.state !== "" &&
+      data.languages &&
+      data.languages.length > 0 &&
       b64_picture &&
       b64_picture !== "";
 
@@ -223,27 +225,34 @@ function PersonalInformation(props) {
   };
 
   const validateStep7 = () => {
-    const { primary_occupation } = data;
+    const { primary_occupation, occupation_type_selected } = data;
 
-    if (!primary_occupation) {
+    if (occupation_type_selected === "NotOccupation") {
       return true;
     }
-    if (primary_occupation.type === "Employee") {
+
+    if (primary_occupation.occupation_type === "RT") {
+      return primary_occupation.monthly_income > 0;
+    }
+    if (primary_occupation.occupation_type === "S") {
       return (
         primary_occupation.occupation_type &&
-        primary_occupation.entity_name &&
         primary_occupation.start_date &&
+        primary_occupation.description &&
         primary_occupation.address.street &&
         primary_occupation.address.city &&
         primary_occupation.address.state
       );
     }
 
-    if (primary_occupation.type === "Retiree") {
-      return primary_occupation.monthly_income > 0;
-    }
-
-    return false;
+    return (
+      primary_occupation.occupation_type &&
+      primary_occupation.entity_name &&
+      primary_occupation.start_date &&
+      primary_occupation.address.street &&
+      primary_occupation.address.city &&
+      primary_occupation.address.state
+    );
   };
 
   const validateStep8 = () => {

@@ -10,7 +10,7 @@ import { useData } from "../../dataContext/dataContext";
 
 function TravelInformation(props) {
   const { data } = useData();
-  const [activeStep, setActiveStep] = useState(0);
+  const [activeStep, setActiveStep] = useState(3);
   const [skipped, setSkipped] = useState(new Set());
   const [isDisabled, setIsDisabled] = useState(true);
 
@@ -74,8 +74,6 @@ function TravelInformation(props) {
       stay.address.state !== "" &&
       stay.address.zip_code &&
       stay.address.zip_code !== "";
-      // stay.address.country &&
-      // stay.address.country !== "";
 
     return isValid;
   };
@@ -99,8 +97,6 @@ function TravelInformation(props) {
     isValid =
       us_contact.phone_number &&
       us_contact.phone_number !== "" &&
-      us_contact.email &&
-      us_contact.email !== "" &&
       us_contact.address.street &&
       us_contact.address.street !== "" &&
       us_contact.address.city &&
