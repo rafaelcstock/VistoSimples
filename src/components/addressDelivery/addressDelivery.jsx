@@ -81,6 +81,7 @@ function AddressDelivery(props) {
 
   const handleNext = () => {
     window.scrollTo(0, 0);
+    document.body.scrollTo(0, 0);
     
     let newSkipped = skipped;
     if (isStepSkipped(activeStep)) {
