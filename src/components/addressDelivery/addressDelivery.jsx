@@ -31,8 +31,6 @@ function AddressDelivery(props) {
     isValid =
       address.street &&
       address.street !== "" &&
-      // address.complement &&
-      // address.complement !== "" &&
       address.city &&
       address.city !== "" &&
       address.state &&
@@ -48,8 +46,6 @@ function AddressDelivery(props) {
         permanent_resident_other_country !== " " &&
         address.street &&
         address.street !== "" &&
-        // address.complement &&
-        // address.complement !== "" &&
         address.city &&
         address.city !== "" &&
         address.state &&
@@ -71,8 +67,6 @@ function AddressDelivery(props) {
     isValid =
       mailing_address.street &&
       mailing_address.street !== "" &&
-      // mailing_address.complement &&
-      // mailing_address.complement !== "" &&
       mailing_address.city &&
       mailing_address.city !== "" &&
       mailing_address.state &&
@@ -86,6 +80,8 @@ function AddressDelivery(props) {
   };
 
   const handleNext = () => {
+    window.scrollTo(0, 0);
+    
     let newSkipped = skipped;
     if (isStepSkipped(activeStep)) {
       newSkipped = new Set(newSkipped.values());
@@ -93,7 +89,6 @@ function AddressDelivery(props) {
     }
   
     if (activeStep == 0 && data.mailing_address.street !== "") {
-      // setActiveStep((prevActiveStep) => prevActiveStep + 2);
       props.onAddressChange();
     } else {
       setActiveStep((prevActiveStep) => prevActiveStep + 1);

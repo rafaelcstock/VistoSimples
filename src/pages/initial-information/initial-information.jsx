@@ -30,6 +30,8 @@ function InitialInformation() {
     .sort((a, b) => a.value.localeCompare(b.value));
 
   useEffect(() => {
+    window.scrollTo(0, 0);
+    
     localStorage.setItem("tipoForm", "Apenas para mim");
     if (data.ds160_city && data.ds160_city !== "") setIsDisabled(false);
   }, []);
