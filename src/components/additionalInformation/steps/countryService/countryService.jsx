@@ -76,6 +76,11 @@ function CountryService({ validateStep }) {
     validateStep();
   }, [data]);
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    document.body.scrollTo(0, 0);
+  }, []);
+
   return (
     <div className="div-margin">
       <div className="padding-bottom">
