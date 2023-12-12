@@ -90,7 +90,7 @@ function SocialNetwork({ validateStep }) {
             <div className="padding-bottom-1">
               <TextField
                 id="outlined-basic"
-                className="input-style-social"
+                className="input-style-social-net"
                 placeholder="@Exemplo"
                 variant="outlined"
                 name="TWIT"
@@ -114,7 +114,7 @@ function SocialNetwork({ validateStep }) {
             <div className="padding-bottom-1">
               <TextField
                 id="outlined-basic"
-                className="input-style-social"
+                className="input-style-social-netlink"
                 placeholder="Seu nome no linkedin"
                 variant="outlined"
                 name="LINK"

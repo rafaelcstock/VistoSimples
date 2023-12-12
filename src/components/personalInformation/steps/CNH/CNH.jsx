@@ -129,7 +129,7 @@ function CNH({ validateStep }) {
                 </div>
                 <div className="padding-bottom-1">
                   <Select
-                    className="style-select input-style"
+                    className="style-select input-styleSelect"
                     labelId="select-state"
                     id="select-state"
                     name="state"

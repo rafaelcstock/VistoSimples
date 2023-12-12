@@ -43,7 +43,7 @@ function End(props) {
               </Link>
             </div>
             ):(
-            <div style={{display:'flex'}}>
+            <div className='button_gap' style={{display:'flex'}}>
               <div className='padding-button-end' style={{paddingRight:'1rem'}}>
                 <Link to="/">
                   <button type='button' className='button-style-end-2' onClick={deleteLocalStorage}>
@@ -61,7 +61,7 @@ function End(props) {
             )}
           </div>
           <div>
-            <img src={imageHome6} alt="" />
+            <img className='imgEnd' src={imageHome6} alt="" />
           </div>
         </div>
       </div>

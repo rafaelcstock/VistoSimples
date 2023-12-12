@@ -9,7 +9,7 @@ import ds160Service from "../../services/ds160Service";
 
 function VisaAndPassport(props) {
   const { data } = useData();
-  const [activeStep, setActiveStep] = useState(0);
+  const [activeStep, setActiveStep] = useState(1);
   const [skipped, setSkipped] = useState(new Set());
   const [isDisabled, setIsDisabled] = useState(true);
 
