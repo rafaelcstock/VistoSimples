@@ -21,8 +21,9 @@ function InitialInformation() {
   };
 
   const handleChangeRequester = (event) => {
-    setRadioRequester(event.target.value);
-    localStorage.setItem("tipoForm", event.target.value);
+    const { value } = event.target;
+    setRadioRequester(value);
+    localStorage.setItem("tipoForm", value);
   };
 
   const sortedDs160Cities = ds160Cities
@@ -30,7 +31,11 @@ function InitialInformation() {
     .sort((a, b) => a.value.localeCompare(b.value));
 
   useEffect(() => {
+    window.scrollTo(0, 0);
+    document.body.scrollTo(0, 0);
+
     localStorage.setItem("tipoForm", "Apenas para mim");
+    
     if (data.ds160_city && data.ds160_city !== "") setIsDisabled(false);
   }, []);
 

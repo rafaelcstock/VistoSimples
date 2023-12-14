@@ -65,13 +65,21 @@ function Documents({ validateStep }) {
   };
 
   useEffect(() => {
+    window.scrollTo(0, 0);
+    document.body.scrollTo(0, 0);
+  }, []);
+
+  useEffect(() => {
     validateStep();
   }, [data]);
 
   return (
     <div className="div-margin">
       <div className="padding-bottom">
-        <div className="padding-bottomPassport" style={{ display: "flex", justifyContent: "space-between" }}>
+        <div
+          className="padding-bottomPassport"
+          style={{ display: "flex", justifyContent: "space-between" }}
+        >
           <div>
             <span className="title-header">Documentos</span>
           </div>
@@ -114,9 +122,7 @@ function Documents({ validateStep }) {
           </div>
           <div>
             <div style={{ paddingBottom: "0.4rem" }}>
-              <span className="span-state">
-                Número do passaporte
-              </span>
+              <span className="span-state">Número do passaporte</span>
             </div>
             <div className="padding-bottom-1">
               <TextField
@@ -209,7 +215,9 @@ function Documents({ validateStep }) {
                   format="DD/MM/YYYY"
                   className="custom-date-picker-initialDocuments"
                   value={
-                    data.passport.issuance_date !== "" ? dayjs(data.passport.issuance_date) : null
+                    data.passport.issuance_date !== ""
+                      ? dayjs(data.passport.issuance_date)
+                      : null
                   }
                   onChange={(date) =>
                     handleDateUpdateData("issuance_date", date)

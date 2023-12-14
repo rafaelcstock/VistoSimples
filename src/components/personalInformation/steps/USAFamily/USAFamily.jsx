@@ -142,6 +142,11 @@ function USAFamily({ validateStep }) {
   }, [data]);
 
   useEffect(() => {
+    window.scrollTo(0, 0);
+    document.body.scrollTo(0, 0);
+  }, []);
+
+  useEffect(() => {
     if (data) {
       if (data.immediate_relatives.length === 0) {
       }

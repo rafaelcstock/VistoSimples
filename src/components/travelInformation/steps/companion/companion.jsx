@@ -115,10 +115,14 @@ function Companion({ validateStep }) {
       escorts: updatedScorts,
     });
   };
-
   useEffect(() => {
     validateStep();
   }, [data]);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    document.body.scrollTo(0, 0);
+  }, []);
 
   return (
     <div className="div-margin">

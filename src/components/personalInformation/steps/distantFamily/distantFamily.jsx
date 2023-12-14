@@ -233,6 +233,11 @@ function DistantFamily({ validateStep }) {
   };
 
   useEffect(() => {
+    window.scrollTo(0, 0);
+    document.body.scrollTo(0, 0);
+  }, []);
+
+  useEffect(() => {
     validateStep();
   }, [data]);
 

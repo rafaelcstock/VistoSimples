@@ -457,8 +457,12 @@ function PersonalInformation(props) {
   };
 
   const handleNext = () => {
+    window.scrollTo(0, 0);
+    document.body.scrollTo(0, 0);
+    
     let newSkipped = skipped;
-
+  
+    // Verifica se o stepepr atual deve ser pulado
     if (isStepSkipped(activeStep)) {
       newSkipped = new Set(newSkipped.values());
       newSkipped.delete(activeStep);

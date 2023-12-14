@@ -204,14 +204,23 @@ function TravelInformation(props) {
     return isValid;
   };
 
+  const handleSkipAddress = () => {
+    setActiveStep(3);
+  };
+
+  const handleSkipAddressUsContact = () => {
+    setActiveStep(4);
+  };
+
   const handleNext = () => {
+    window.scrollTo(0, 0);
+    document.body.scrollTo(0, 0);
+
     let newSkipped = skipped;
     if (isStepSkipped(activeStep)) {
       newSkipped = new Set(newSkipped.values());
       newSkipped.delete(activeStep);
     }
-
-    
 
     setSkipped(newSkipped);
     if (activeStep === 5) {
@@ -239,8 +248,8 @@ function TravelInformation(props) {
   const allComponents = [
     <Travels key="travels" validateStep={validateStep} />,
     <FiveTravels key="fiveTravels" validateStep={validateStep} />,
-    <TravelInformations key="travelInformations" validateStep={validateStep} />,
-    <ContactPoint key="contactPoint" validateStep={validateStep} />,
+    <TravelInformations key="travelInformations" validateStep={validateStep} handleSkipAddress={handleSkipAddress} />,
+    <ContactPoint key="contactPoint" validateStep={validateStep} handleSkipAddressUsContact={handleSkipAddressUsContact} />,
     <Companion key="companion" validateStep={validateStep} />,
     <Payer key="payer" validateStep={validateStep} />,
   ];

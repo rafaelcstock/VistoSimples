@@ -6,11 +6,19 @@ import imageHome4 from '../../assets/imagem-4.png';
 import imageHome5 from '../../assets/imagem-5.png';
 import { Link } from 'react-router-dom';
 
+import { useEffect } from 'react';
 import {useMobile} from "../../dataContext/mobileContext.jsx";
+
 
 function Home() {
 
   const { isMobile } = useMobile();
+
+  
+
+useEffect(() => {
+  localStorage.removeItem("primaryMember")
+}, [])
   return (
     <>
       <div>

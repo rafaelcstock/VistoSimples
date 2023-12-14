@@ -89,6 +89,9 @@ function VisaAndPassport(props) {
   };
 
   const handleNext = () => {
+    window.scrollTo(0, 0);
+    document.body.scrollTo(0, 0);
+    
     if (activeStep == 1 && data.old_visa === null) {
       setActiveStep((prevActiveStep) => prevActiveStep + 2);
       return

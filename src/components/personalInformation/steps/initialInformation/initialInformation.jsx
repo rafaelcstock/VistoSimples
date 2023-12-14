@@ -176,6 +176,11 @@ function InitialInformation({ validateStep, isValidInitialInformation }) {
   };
 
   useEffect(() => {
+    window.scrollTo(0, 0);
+    document.body.scrollTo(0, 0);
+  }, []);
+
+  useEffect(() => {
     validateStep();
   }, [data]);
 
