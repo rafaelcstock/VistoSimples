@@ -4,8 +4,9 @@
     justify-content: center;
 }
 
-.div-flex{
+.div-flexEnd{
     display: flex;
+    flex-direction: row;
 }
 
 .div-flex-docs{
@@ -101,7 +102,6 @@
     color: white;    
 }
 
-
 .font-button-2{
     font-size: 16px;
     font-weight: 600;
@@ -128,7 +128,6 @@
     .imgEnd {
         height: 250px;
     }
-
     .button-style-end-2{
         width: 150px;
         height: 38px;
