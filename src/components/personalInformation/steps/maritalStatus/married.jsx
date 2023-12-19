@@ -110,6 +110,20 @@ function Married({ validateStep }) {
     });
   };
 
+  const handleBirthCityChange = (event) => {
+    const { value } = event.target;
+  
+    updateData({
+      spouse: {
+        ...data.spouse,
+        birth: {
+          ...data.spouse.birth,
+          city: value,
+        },
+      },
+    });
+  };
+
   const handleAddressChange = (event) => {
     const { value, name } = event.target;
 
@@ -257,6 +271,25 @@ function Married({ validateStep }) {
                   </MenuItem>
                 ))}
               </Select>
+            </div>
+          </div>
+          <div>
+            <div style={{ paddingBottom: "0.4rem" }}>
+              <span className="span-state">
+                Cidade de nascimento companheiro(a)
+                <span style={{ color: "red" }}>*</span>
+              </span>
+            </div>
+            <div className="padding-bottom-1">
+              <TextField
+                id="outlined-basic"
+                className="input-style-marital"
+                placeholder="Escreva a cidade"
+                variant="outlined"
+                name="city"
+                value={data.spouse?.birth.city}
+                onChange={handleBirthCityChange}
+              />
             </div>
           </div>
         </div>

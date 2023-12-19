@@ -169,7 +169,6 @@ function MotherInformation({ validateStep = { validateStep } }) {
                 <div style={{ paddingBottom: "0.4rem" }}>
                   <span className="span-state">
                     Qual a data de nascimento da sua mãe
-                    <span style={{ color: "red" }}>*</span>
                   </span>
                 </div>
                 <div>

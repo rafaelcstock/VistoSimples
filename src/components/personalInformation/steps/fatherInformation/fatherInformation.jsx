@@ -172,7 +172,6 @@ function FatherInformation({ validateStep }) {
                 <div style={{ paddingBottom: "0.4rem" }}>
                   <span className="span-state">
                     Qual a data de nascimento do seu pai
-                    <span style={{ color: "red" }}>*</span>
                   </span>
                 </div>
                 <div>

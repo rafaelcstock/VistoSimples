@@ -11,9 +11,9 @@ function Nationality({ validateStep }) {
   const { data, updateData } = useData();
 
   const handleChange = (event, newValue) => {
-    
-    const newValueLanguage = newValue.map(value => value.name); 
-    updateData({ ...data, languages: [...newValueLanguage ] });
+
+    const newValueLanguage = newValue.map(value => value.name);
+    updateData({ ...data, languages: [...newValueLanguage] });
   };
 
   const handleImageChange = (event) => {
@@ -203,7 +203,10 @@ function Nationality({ validateStep }) {
           <div>
             <div style={{ paddingBottom: "0.4rem" }}>
               <span className="span-state">
-                Insira sua foto<span style={{ color: "red" }}>*</span>
+                Insira sua foto
+                {["BRA", "RDJ", "SPL"].includes(data.ds160_city) ? null : (
+                  <span style={{ color: "red" }}>*</span>
+                )}
               </span>
             </div>
             <div className="margin-icon">

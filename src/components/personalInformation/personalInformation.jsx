@@ -138,9 +138,11 @@ function PersonalInformation(props) {
       birth.state &&
       birth.state !== "" &&
       data.languages &&
-      data.languages.length > 0 &&
-      b64_picture &&
-      b64_picture !== "";
+      data.languages.length > 0;
+
+      if (isValid && ["RCF", "PTA"].includes(data.ds160_city)) {
+        isValid = b64_picture && b64_picture !== "";
+      }
 
     if (!hasAnotherNacionality) return isValid;
 
@@ -164,14 +166,11 @@ function PersonalInformation(props) {
     }
 
     isValid =
-      father.birth_date &&
-      father.birth_date !== "" &&
+      father.name &&
       father.name.surname &&
       father.name.surname !== "" &&
       father.name.given_name &&
-      father.name.given_name !== "" &&
-      father.birth_date &&
-      father.birth_date !== "";
+      father.name.given_name !== ""
 
     return isValid;
   };
@@ -187,14 +186,11 @@ function PersonalInformation(props) {
     }
 
     isValid =
-      mother.birth_date &&
-      mother.birth_date !== "" &&
+      mother.name &&
       mother.name.surname &&
       mother.name.surname !== "" &&
       mother.name.given_name &&
-      mother.name.given_name !== "" &&
-      mother.birth_date &&
-      mother.birth_date !== "";
+      mother.name.given_name !== "";
     return isValid;
   };
 
@@ -251,7 +247,8 @@ function PersonalInformation(props) {
       primary_occupation.start_date &&
       primary_occupation.address.street &&
       primary_occupation.address.city &&
-      primary_occupation.address.state
+      primary_occupation.address.state &&
+      primary_occupation.monthly_income > 0
     );
   };
 
