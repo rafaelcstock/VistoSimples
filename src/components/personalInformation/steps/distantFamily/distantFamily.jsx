@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from "react";
 import "./distantFamily.css";
 import { Box, MenuItem, Select, TextField } from "@mui/material";
-import { FormControlLabel, Radio, RadioGroup } from "@mui/material";
+import { FormControlLabel, Radio, RadioGroup, InputAdornment } from "@mui/material";
 import PrimaryOccupation from "../../../../datas/primary_occupation";
 import { useData } from "../../../../dataContext/dataContext";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import dayjs from "dayjs";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import Countries from "../../../../datas/countries";
 import InputMask from "react-input-mask";
 
 function DistantFamily({ validateStep }) {
@@ -183,6 +182,18 @@ function DistantFamily({ validateStep }) {
   };
 
   const handleRetireeSalary = (event) => {
+    const { value } = event.target;
+
+    updateData({
+      ...data,
+      primary_occupation: {
+        ...data.primary_occupation,
+        monthly_income: value,
+      },
+    });
+  };
+
+  const handleMonthlyIncomeChange = (event) => {
     const { value } = event.target;
 
     updateData({
@@ -496,32 +507,63 @@ function DistantFamily({ validateStep }) {
                 </Box>
               </div>
               <div className="div-2-inputs-work-distantFamily">
-                <div>
-                  <div style={{ paddingBottom: "0.4rem" }}>
-                    <span className="span-state">
-                      Data de inicio <span style={{ color: "red" }}>*</span>
-                    </span>
-                  </div>
-                  <div className="padding-bottom-1">
-                    <LocalizationProvider dateAdapter={AdapterDayjs}>
-                      <DatePicker
-                        format="DD/MM/YYYY"
-                        className={`custom-date-picker-initialOccupation  ${isStartDateValid ? "" : "invalid-date"
-                          }`}
-                        value={
-                          data.primary_occupation.start_date
-                            ? dayjs(data.primary_occupation.start_date)
-                            : null
-                        }
-                        onChange={handleStartDateChange}
-                      />
-                    </LocalizationProvider>
-                    {!isStartDateValid && (
-                      <span className="error-message" style={{ color: "red" }}>
-                        <br /> A data de início não pode ser superior à data atual.
+                <div style={{ display: "flex", gap: ".3em" }}>
+                  <div>
+                    <div style={{ paddingBottom: "0.4rem", width: "100%" }}>
+                      <span className="span-state">
+                        Data de inicio <span style={{ color: "red" }}>*</span>
                       </span>
-                    )}
+                    </div>
+                    <div className="padding-bottom-1">
+                      <LocalizationProvider dateAdapter={AdapterDayjs}>
+                        <DatePicker sx={{width: "286px"}}
+                          format="DD/MM/YYYY"
+                          className={`custom-date-picker-initialOccupation  ${isStartDateValid ? "" : "invalid-date"
+                            }`}
+                          value={
+                            data.primary_occupation.start_date
+                              ? dayjs(data.primary_occupation.start_date)
+                              : null
+                          }
+                          onChange={handleStartDateChange}
+                        />
+                      </LocalizationProvider>
+                      {!isStartDateValid && (
+                        <span className="error-message" style={{ color: "red" }}>
+                          <br /> A data de início não pode ser superior à data atual.
+                        </span>
+                      )}
+                    </div>
                   </div>
+                  <div>
+                    <div style={{ paddingBottom: "0.4rem" }}>
+                      <span className="span-state">
+                        Média salarial{" "}
+                        <span style={{ color: "red" }}>*</span>
+                      </span>
+                    </div>
+                    <div className="padding-bottom-1">
+                      <TextField
+                        sx={{ width: "286px" }}
+                        id="outlined-basic"
+                        className="style-select-work"
+                        placeholder="Escreva o salário"
+                        variant="outlined"
+                        type="number"
+                        name="monthly_income"
+                        value={data.primary_occupation ? data.primary_occupation.monthly_income : ""}
+                        onChange={handleMonthlyIncomeChange}
+                        InputProps={{
+                          startAdornment: (
+                            <InputAdornment position="start">
+                              R$
+                            </InputAdornment>
+                          ),
+                        }}
+                      />
+                    </div>
+                  </div>
+
                 </div>
               </div>
               <div className="div-1-inputs-marital">
@@ -604,6 +646,11 @@ function DistantFamily({ validateStep }) {
                     name="state"
                     value={data.primary_occupation ? data.primary_occupation.monthly_income : ""}
                     onChange={handleRetireeSalary}
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">R$</InputAdornment>
+                      ),
+                    }}
                   />
                 </div>
               </div>

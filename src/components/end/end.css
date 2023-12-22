@@ -110,7 +110,7 @@
 }
 
 @media (max-width: 700px) {
-    .div-flex {
+    .div-flexEnd {
         flex-direction: column-reverse;
         align-items: center;
         margin-top: 1em;

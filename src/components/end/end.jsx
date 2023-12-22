@@ -24,7 +24,7 @@ function End(props) {
   return (
     <>
       <div>
-        <div className='div-flex'>
+        <div className='div-flexEnd'>
           <div className='div-home-head-info margin-div margin-left'>
             <div className='text-align font-size-title'>
               <span className='font-color'>Parabéns</span>             

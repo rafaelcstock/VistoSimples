@@ -11,9 +11,9 @@ function Nationality({ validateStep }) {
   const { data, updateData } = useData();
 
   const handleChange = (event, newValue) => {
-    
-    const newValueLanguage = newValue.map(value => value.name); 
-    updateData({ ...data, languages: [...newValueLanguage ] });
+
+    const newValueLanguage = newValue.map(value => value.name);
+    updateData({ ...data, languages: [...newValueLanguage] });
   };
 
   const handleImageChange = (event) => {
@@ -199,77 +199,85 @@ function Nationality({ validateStep }) {
             </div>
           </div>
         </div>
-        <div className="div-grid-nationality-inputs-2">
-          <div>
-            <div style={{ paddingBottom: "0.4rem" }}>
-              <span className="span-state">
-                Insira sua foto<span style={{ color: "red" }}>*</span>
-              </span>
-            </div>
-            <div className="margin-icon">
-              {data.b64_picture ? (
-                <div
-                  className="div-img-style"
-                  style={{ backgroundImage: `url(${data.b64_picture})` }}
-                  src={data.b64_picture}
-                ></div>
-              ) : (
-                <InsertPhotoOutlinedIcon
-                  sx={{ fontSize: 200 }}
-                  color="disabled"
-                />
-              )}
-            </div>
-          </div>
-          <div>
-            <div className="div-info-img">
-              <div className="div-info-img-2">
-                <div style={{ paddingBottom: "0.4rem" }}>
-                  <span className="span-state">Sua foto deve ter</span>
-                </div>
-                <div>
-                  <li className="inf-img">
-                    Rosto visivel, sem óculos, bonés ou obstruções faciais.
-                  </li>
-                  <li className="inf-img">
-                    Fundo claro, preferencialmente branco, sem cores ou padrões.
-                  </li>
-                </div>
+        {!["BRA", "RDJ", "SPL"].includes(data.ds160_city) && (
+          <div className="div-grid-nationality-inputs-2">
+            <div>
+              <div style={{ paddingBottom: "0.4rem" }}>
+                <span className="span-state">
+                  Insira sua foto
+                  {["BRA", "RDJ", "SPL"].includes(data.ds160_city) ? null : (
+                    <span style={{ color: "red" }}>*</span>
+                  )}
+                </span>
+              </div>
+              <div className="margin-icon">
+                {data.b64_picture ? (
+                  <div
+                    className="div-img-style"
+                    style={{ backgroundImage: `url(${data.b64_picture})` }}
+                    src={data.b64_picture}
+                  ></div>
+                ) : (
+                  <InsertPhotoOutlinedIcon
+                    sx={{ fontSize: 200 }}
+                    color="disabled"
+                  />
+                )}
               </div>
             </div>
-            <div className="div-bnt">
-              <label className="font-button-img button-style-imgSearch">
-                Procurar
-                <input
-                  type="file"
-                  accept="image/*"
-                  style={{ zIndex: "4", display: "none" }}
-                  onChange={handleImageChange}
-                />
-              </label>
+            <div>
+              <div className="div-info-img">
+                <div className="div-info-img-2">
+                  <div style={{ paddingBottom: "0.4rem" }}>
+                    <span className="span-state">Sua foto deve ter</span>
+                  </div>
+                  <div>
+                    <li className="inf-img">
+                      Rosto visivel, sem óculos, bonés ou obstruções faciais.
+                    </li>
+                    <li className="inf-img">
+                      Fundo claro, preferencialmente branco, sem cores ou padrões.
+                    </li>
+                  </div>
+                </div>
+              </div>
+              <div className="div-bnt">
+                <label className="font-button-img button-style-imgSearch">
+                  Procurar
+                  <input
+                    type="file"
+                    accept="image/*"
+                    style={{ zIndex: "4", display: "none" }}
+                    onChange={handleImageChange}
+                  />
+                </label>
+              </div>
             </div>
+
           </div>
-          <div className="otherNationality">
-            <div style={{ paddingBottom: "1rem" }}>
-              <span className="span-state">
-                Você possui outra nacionalidade?
-                <span style={{ color: "red" }}>*</span>
-              </span>
-            </div>
-            <div className="padding-bottom-1">
-              <RadioGroup
-                aria-labelledby="demo-radio-buttons-group-label"
-                defaultValue="Sim"
-                name="radio-buttons-group"
-                className="subTitle-div-2"
-                row
-                value={data.hasAnotherNacionality ? "Sim" : "Não"}
-                onChange={handleChangeRequester}
-              >
-                <FormControlLabel value="Sim" control={<Radio />} label="Sim" />
-                <FormControlLabel value="Não" control={<Radio />} label="Não" />
-              </RadioGroup>
-            </div>
+        )}
+      </div>
+      <div className="div-grid-nationality-inputs-2">
+        <div className="otherNationality">
+          <div style={{ paddingBottom: "1rem" }}>
+            <span className="span-state">
+              Você possui outra nacionalidade?
+              <span style={{ color: "red" }}>*</span>
+            </span>
+          </div>
+          <div className="padding-bottom-1">
+            <RadioGroup
+              aria-labelledby="demo-radio-buttons-group-label"
+              defaultValue="Sim"
+              name="radio-buttons-group"
+              className="subTitle-div-2"
+              row
+              value={data.hasAnotherNacionality ? "Sim" : "Não"}
+              onChange={handleChangeRequester}
+            >
+              <FormControlLabel value="Sim" control={<Radio />} label="Sim" />
+              <FormControlLabel value="Não" control={<Radio />} label="Não" />
+            </RadioGroup>
           </div>
         </div>
       </div>
