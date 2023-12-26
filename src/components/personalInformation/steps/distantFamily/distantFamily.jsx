@@ -243,6 +243,17 @@ function DistantFamily({ validateStep }) {
     });
   };
 
+  const handleCEPChange = (event) => {
+    const { value } = event.target;
+    updateData({
+      ...data,
+      primary_occupation: {
+        ...data.primary_occupation,
+        address: { ...data.primary_occupation.address, zip_code: value },
+      },
+    });
+  };
+
   useEffect(() => {
     validateStep();
   }, [data]);
@@ -401,6 +412,29 @@ function DistantFamily({ validateStep }) {
                   <div>
                     <div style={{ paddingBottom: "0.4rem" }}>
                       <span className="span-state">
+                        CEP da instituição <span style={{ color: "red" }}>*</span>
+                      </span>
+                    </div>
+                    <InputMask
+                      mask="99999-999"
+                      maskChar=""
+                      value={data.primary_occupation.address.zip_code}
+                      onChange={handleCEPChange}
+                    >
+                      {() => (
+                        <TextField
+                          id="outlined-basic"
+                          className="style-select-work"
+                          placeholder="00000-000"
+                          variant="outlined"
+                          name="zip_code"
+                        />
+                      )}
+                    </InputMask>
+                  </div>
+                  <div>
+                    <div style={{ paddingBottom: "0.4rem" }}>
+                      <span className="span-state">
                         Data de início <span style={{ color: "red" }}>*</span>
                       </span>
                     </div>
@@ -516,7 +550,7 @@ function DistantFamily({ validateStep }) {
                     </div>
                     <div className="padding-bottom-1">
                       <LocalizationProvider dateAdapter={AdapterDayjs}>
-                        <DatePicker sx={{width: "286px"}}
+                        <DatePicker sx={{ width: "286px" }}
                           format="DD/MM/YYYY"
                           className={`custom-date-picker-initialOccupation  ${isStartDateValid ? "" : "invalid-date"
                             }`}
@@ -621,6 +655,29 @@ function DistantFamily({ validateStep }) {
                       onChange={handleAddressEntityChange}
                     />
                   </div>
+                </div>
+                <div>
+                  <div style={{ paddingBottom: "0.4rem" }}>
+                    <span className="span-state">
+                      CEP da instituição <span style={{ color: "red" }}>*</span>
+                    </span>
+                  </div>
+                  <InputMask
+                    mask="99999-999"
+                    maskChar=""
+                    value={data.primary_occupation.address.zip_code}
+                    onChange={handleCEPChange}
+                  >
+                    {() => (
+                      <TextField
+                        id="outlined-basic"
+                        className="style-select-work"
+                        placeholder="00000-000"
+                        variant="outlined"
+                        name="zip_code"
+                      />
+                    )}
+                  </InputMask>
                 </div>
               </div>
 
