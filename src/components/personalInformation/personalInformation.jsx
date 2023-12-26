@@ -237,7 +237,8 @@ function PersonalInformation(props) {
         primary_occupation.description &&
         primary_occupation.address.street &&
         primary_occupation.address.city &&
-        primary_occupation.address.state
+        primary_occupation.address.state &&
+        primary_occupation.address.zip_code
       );
     }
 
@@ -248,6 +249,7 @@ function PersonalInformation(props) {
       primary_occupation.address.street &&
       primary_occupation.address.city &&
       primary_occupation.address.state &&
+      primary_occupation.address.zip_code &&
       primary_occupation.monthly_income > 0
     );
   };
