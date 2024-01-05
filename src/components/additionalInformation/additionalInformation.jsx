@@ -63,10 +63,6 @@ function AdditionalInformation(props) {
   const validateStep1 = () => {
     const { education } = data;
 
-    if (education.length === 0) {
-      return false;
-    }
-
     const isAnyFormationEmpty = education.some((educationItem) => {
       return (
         !educationItem.entity_name ||
