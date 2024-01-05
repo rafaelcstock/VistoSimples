@@ -20,26 +20,26 @@ function Documents({ validateStep }) {
         passport: { ...data.passport, [name]: value },
         lost_or_stolen_passports: null,
       });
-      return;
+    } else {
+      const newPassportData = {
+        passport: { ...data.passport, [name]: value },
+        lost_or_stolen_passports: [
+          {
+            document_type: "R",
+            number: "",
+            custom_document_reason: null,
+            book_number: null,
+            country: "AFGH",
+            city: null,
+            state: null,
+            issuance_date: null,
+            expiration_date: null,
+            lost_reason: null,
+          },
+        ],
+      };
+      updateData(newPassportData);
     }
-
-    updateData({
-      passport: { ...data.passport, [name]: value },
-      lost_or_stolen_passports: [
-        {
-          document_type: "R",
-          number: "",
-          custom_document_reason: null,
-          book_number: null,
-          country: "AFGH",
-          city: null,
-          state: null,
-          issuance_date: null,
-          expiration_date: null,
-          lost_reason: null,
-        },
-      ],
-    });
   };
 
   const handleDateUpdateData = (name, newDate) => {
@@ -71,7 +71,7 @@ function Documents({ validateStep }) {
   return (
     <div className="div-margin">
       <div className="padding-bottom">
-        <div style={{ display: "flex", justifyContent: "space-between" }}>
+        <div className="padding-bottomPassport" style={{ display: "flex", justifyContent: "space-between" }}>
           <div>
             <span className="title-header">Documentos</span>
           </div>
@@ -115,7 +115,7 @@ function Documents({ validateStep }) {
           <div>
             <div style={{ paddingBottom: "0.4rem" }}>
               <span className="span-state">
-                Número do passaporte<span style={{ color: "red" }}>*</span>
+                Número do passaporte
               </span>
             </div>
             <div className="padding-bottom-1">
@@ -124,7 +124,6 @@ function Documents({ validateStep }) {
                 className="style-select-work"
                 placeholder="Escreva o número do passaporte"
                 variant="outlined"
-                type="number"
                 name="number"
                 value={data.passport.number}
                 onChange={handlePassportChange}
@@ -200,26 +199,6 @@ function Documents({ validateStep }) {
           <div>
             <div style={{ paddingBottom: "0.4rem" }}>
               <span className="span-state">
-                Data de expiração do passaporte
-                <span style={{ color: "red" }}>*</span>
-              </span>
-            </div>
-            <div className="padding-bottom-1">
-              <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <DatePicker
-                  format="DD/MM/YYYY"
-                  className="custom-date-picker-initial"
-                  value={dayjs(data.passport.expiration_date)}
-                  onChange={(date) =>
-                    handleDateUpdateData("expiration_date", date)
-                  }
-                />
-              </LocalizationProvider>
-            </div>
-          </div>
-          <div>
-            <div style={{ paddingBottom: "0.4rem" }}>
-              <span className="span-state">
                 Data de emissão do passaporte
                 <span style={{ color: "red" }}>*</span>
               </span>
@@ -228,10 +207,36 @@ function Documents({ validateStep }) {
               <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <DatePicker
                   format="DD/MM/YYYY"
-                  className="custom-date-picker-initial"
-                  value={dayjs(data.passport.issuance_date)}
+                  className="custom-date-picker-initialDocuments"
+                  value={
+                    data.passport.issuance_date !== "" ? dayjs(data.passport.issuance_date) : null
+                  }
                   onChange={(date) =>
                     handleDateUpdateData("issuance_date", date)
+                  }
+                />
+              </LocalizationProvider>
+            </div>
+          </div>
+          <div>
+            <div style={{ paddingBottom: "0.4rem" }}>
+              <span className="span-state">
+                Data de expiração do passaporte
+                <span style={{ color: "red" }}>*</span>
+              </span>
+            </div>
+            <div className="padding-bottom-1">
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <DatePicker
+                  format="DD/MM/YYYY"
+                  className="custom-date-picker-initialDocuments"
+                  value={
+                    data.passport.expiration_date !== ""
+                      ? dayjs(data.passport.expiration_date)
+                      : null
+                  }
+                  onChange={(date) =>
+                    handleDateUpdateData("expiration_date", date)
                   }
                 />
               </LocalizationProvider>
@@ -260,6 +265,7 @@ function Documents({ validateStep }) {
             </div>
           </div>
         </div>
+
         <div className="padding-documents">
           <div>
             <div style={{ paddingBottom: "0.4rem" }}>
@@ -312,9 +318,7 @@ function Documents({ validateStep }) {
           <div className="div-2-inputs-work">
             <div>
               <div style={{ paddingBottom: "0.4rem" }}>
-                <span className="span-state">
-                  Número do passaporte<span style={{ color: "red" }}>*</span>
-                </span>
+                <span className="span-state">Número do Passaporte</span>
               </div>
               <div className="padding-bottom-1">
                 <TextField

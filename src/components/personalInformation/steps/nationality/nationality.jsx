@@ -1,25 +1,20 @@
 import React, { useEffect, useState } from "react";
 import "./nationality.css";
-import { MenuItem, Select, TextField } from "@mui/material";
-import statesBrazilianService from "../../../../services/statesBrazilianService";
-import { FormControlLabel, Radio, RadioGroup } from "@mui/material";
+import { MenuItem, Select, TextField, Autocomplete, } from "@mui/material";
+import { FormControlLabel, Radio, RadioGroup, } from "@mui/material";
 import InsertPhotoOutlinedIcon from "@mui/icons-material/InsertPhotoOutlined";
 import Countries from "../../../../datas/countries";
-import countriesService from "../../../../services/countriesWorld";
-import statesService from "../../../../services/statesWorldMain";
-import citiesService from "../../../../services/citiesWorld";
 import { useData } from "../../../../dataContext/dataContext";
+import Languages from "../../../../datas/languages";
 
 function Nationality({ validateStep }) {
   const { data, updateData } = useData();
 
-  const [imageSrc, setImageSrc] = useState("");
-  const [city, setCity] = useState("");
-  const [state, setState] = useState("");
-  const [country, setCountry] = useState("");
-  const [cities, setCities] = useState([]);
-  const [states, setStates] = useState([]);
-  const [countries, setCountries] = useState([]);
+  const handleChange = (event, newValue) => {
+
+    const newValueLanguage = newValue.map(value => value.name);
+    updateData({ ...data, languages: [...newValueLanguage] });
+  };
 
   const handleImageChange = (event) => {
     const file = event.target.files?.[0];
@@ -29,7 +24,6 @@ function Nationality({ validateStep }) {
 
       reader.onload = (e) => {
         const imageBase64 = e.target?.result;
-        setImageSrc(imageBase64);
         updateData({ ...data, b64_picture: imageBase64 });
       };
 
@@ -37,39 +31,16 @@ function Nationality({ validateStep }) {
     }
   };
 
-  const getCountries = async () => {
-    let _countries = await countriesService.getCountries();
-    setCountries(_countries);
-  };
-
-  const getStates = async (country) => {
-    let _states = await statesService.getStateByCountry(country);
-    setStates(_states);
-  };
-
-  const getCities = async (country, state) => {
-    let _cities = await citiesService.getCitiesByStateByCountry(country, state);
-    setCities(_cities);
-  };
-
   const handleChangeSelectCountry = (event) => {
     const { value } = event.target;
-    setCountry(value);
-    getStates(value);
     updateData({ ...data, birth: { ...data.birth, country: value } });
   };
 
-  const handleChangeSelectState = (event) => {
-    const { value } = event.target;
-    setState(value);
-    getCities(country, value);
-
+  const handleChangeSelectState = (value) => {
     updateData({ ...data, birth: { ...data.birth, state: value } });
   };
 
-  const handleChangeSelectCity = (event) => {
-    const { value } = event.target;
-    setCity(value);
+  const handleChangeSelectCity = (value) => {
     updateData({ ...data, birth: { ...data.birth, city: value } });
   };
 
@@ -94,10 +65,6 @@ function Nationality({ validateStep }) {
       });
     }
   };
-
-  useEffect(() => {
-    getCountries();
-  }, []);
 
   useEffect(() => {
     validateStep();
@@ -131,12 +98,12 @@ function Nationality({ validateStep }) {
                 className="style-select-nationality"
                 labelId="select-state"
                 id="select-state"
-                value={country}
+                value={data.birth.country}
                 onChange={handleChangeSelectCountry}
               >
-                {countries.map((countrie, index) => (
-                  <MenuItem key={index} value={countrie.iso2}>
-                    {countrie.name}
+                {Countries.map((state) => (
+                  <MenuItem key={state.key} value={state.key}>
+                    {state.value}
                   </MenuItem>
                 ))}
               </Select>
@@ -149,19 +116,14 @@ function Nationality({ validateStep }) {
               </span>
             </div>
             <div className="padding-bottom-1">
-              <Select
+              <TextField
+                id="outlined-basic"
                 className="style-select-nationality"
-                labelId="select-state"
-                id="select-state"
-                value={state}
-                onChange={handleChangeSelectState}
-              >
-                {states.map((state, index) => (
-                  <MenuItem key={index} value={state.iso2}>
-                    {state.name}
-                  </MenuItem>
-                ))}
-              </Select>
+                placeholder="Digite o estado natal"
+                variant="outlined"
+                value={data.birth.state}
+                onChange={(event) => handleChangeSelectState(event.target.value)}
+              />
             </div>
           </div>
           <div>
@@ -171,19 +133,14 @@ function Nationality({ validateStep }) {
               </span>
             </div>
             <div className="padding-bottom-1">
-              <Select
+              <TextField
+                id="outlined-basic"
                 className="style-select-nationality"
-                labelId="select-state"
-                id="select-state"
-                value={city}
-                onChange={handleChangeSelectCity}
-              >
-                {cities.map((city, index) => (
-                  <MenuItem key={index} value={city.name}>
-                    {city.name}
-                  </MenuItem>
-                ))}
-              </Select>
+                placeholder="Digite a cidade natal"
+                variant="outlined"
+                value={data.birth.city}
+                onChange={(event) => handleChangeSelectCity(event.target.value)}
+              />
             </div>
           </div>
         </div>
@@ -211,78 +168,116 @@ function Nationality({ validateStep }) {
               </Select>
             </div>
           </div>
-          <div>
-            <div style={{ paddingBottom: "1rem" }}>
-              <span className="span-state">
-                Você possui outra nacionalidade?
-                <span style={{ color: "red" }}>*</span>
-              </span>
-            </div>
-            <div className="padding-bottom-1">
-              <RadioGroup
-                aria-labelledby="demo-radio-buttons-group-label"
-                defaultValue="Sim"
-                name="radio-buttons-group"
-                className="subTitle-div-2"
-                row
-                value={data.hasAnotherNacionality}
-                onChange={handleChangeRequester}
-              >
-                <FormControlLabel value="Sim" control={<Radio />} label="Sim" />
-                <FormControlLabel value="Não" control={<Radio />} label="Não" />
-              </RadioGroup>
+        </div>
+        <div className="div-country-padding">
+          <div className="padding-charity">
+            <div>
+              <div style={{ paddingBottom: "0.4rem" }}>
+                <span className="span-state">
+                  Idiomas que você fala<span style={{ color: "red" }}>*</span>
+                </span>
+              </div>
+              <div className="padding-bottom-1">
+                <Autocomplete
+                  multiple
+                  id="languages-autocomplete"
+                  options={Languages}
+                  onChange={handleChange}
+                  getOptionLabel={(option) => option.name}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      variant="outlined"
+                      className="style-select-travels"
+                    />
+                  )}
+                  renderOption={(props, option) => (
+                    <li {...props}>{option.name}</li>
+                  )}
+                />
+              </div>
             </div>
           </div>
         </div>
-        <div className="div-grid-nationality-inputs-2">
-          <div>
-            <div style={{ paddingBottom: "0.4rem" }}>
-              <span className="span-state">
-                Insira sua foto<span style={{ color: "red" }}>*</span>
-              </span>
-            </div>
-            <div className="margin-icon">
-              {imageSrc ? (
-                <div
-                  className="div-img-style"
-                  style={{ backgroundImage: `url(${imageSrc})` }}
-                  src={imageSrc}
-                ></div>
-              ) : (
-                <InsertPhotoOutlinedIcon
-                  sx={{ fontSize: 200 }}
-                  color="disabled"
-                />
-              )}
-            </div>
-          </div>
-          <div>
-            <div className="div-info-img">
-              <div className="div-info-img-2">
-                <div style={{ paddingBottom: "0.4rem" }}>
-                  <span className="span-state">Sua foto deve ter</span>
-                </div>
-                <div>
-                  <li className="inf-img">
-                    Rosto visivel, sem óculos, bonés ou obstruções faciais.
-                  </li>
-                  <li className="inf-img">
-                    Fundo claro, preferencialmente branco, sem cores ou padrões.
-                  </li>
-                </div>
+        {!["BRA", "RDJ", "SPL"].includes(data.ds160_city) && (
+          <div className="div-grid-nationality-inputs-2">
+            <div>
+              <div style={{ paddingBottom: "0.4rem" }}>
+                <span className="span-state">
+                  Insira sua foto
+                  {["BRA", "RDJ", "SPL"].includes(data.ds160_city) ? null : (
+                    <span style={{ color: "red" }}>*</span>
+                  )}
+                </span>
+              </div>
+              <div className="margin-icon">
+                {data.b64_picture ? (
+                  <div
+                    className="div-img-style"
+                    style={{ backgroundImage: `url(${data.b64_picture})` }}
+                    src={data.b64_picture}
+                  ></div>
+                ) : (
+                  <InsertPhotoOutlinedIcon
+                    sx={{ fontSize: 200 }}
+                    color="disabled"
+                  />
+                )}
               </div>
             </div>
-            <div className="div-bnt">
-              <label className="font-button-img button-style-img">
-                Procurar
-                <input
-                  type="file"
-                  accept="image/*"
-                  style={{ zIndex: "4", display: "none" }}
-                  onChange={handleImageChange}
-                />
-              </label>
+            <div>
+              <div className="div-info-img">
+                <div className="div-info-img-2">
+                  <div style={{ paddingBottom: "0.4rem" }}>
+                    <span className="span-state">Sua foto deve ter</span>
+                  </div>
+                  <div>
+                    <li className="inf-img">
+                      Rosto visivel, sem óculos, bonés ou obstruções faciais.
+                    </li>
+                    <li className="inf-img">
+                      Fundo claro, preferencialmente branco, sem cores ou padrões.
+                    </li>
+                  </div>
+                </div>
+              </div>
+              <div className="div-bnt">
+                <label className="font-button-img button-style-imgSearch">
+                  Procurar
+                  <input
+                    type="file"
+                    accept="image/*"
+                    style={{ zIndex: "4", display: "none" }}
+                    onChange={handleImageChange}
+                  />
+                </label>
+              </div>
             </div>
+
+          </div>
+        )}
+      </div>
+      <div className="div-grid-nationality-inputs-2">
+        <div className="otherNationality">
+          <div style={{ paddingBottom: "1rem" }}>
+            <span className="span-state">
+              Você possui outra nacionalidade?
+              <span style={{ color: "red" }}>*</span>
+            </span>
+          </div>
+          <div className="padding-bottom-1">
+            <RadioGroup
+              aria-labelledby="demo-radio-buttons-group-label"
+              defaultValue="Sim"
+              name="radio-buttons-group"
+              className="subTitle-div-2"
+              row
+              value={data.hasAnotherNacionality ? "Sim" : "Não"}
+              onChange={handleChangeRequester}
+            >
+              <FormControlLabel value="Sim" control={<Radio />} label="Sim" />
+              <FormControlLabel value="Não" control={<Radio />} label="Não" />
+            </RadioGroup>
           </div>
         </div>
       </div>

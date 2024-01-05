@@ -16,6 +16,7 @@ import Divorced from "./steps/maritalStatus/divorced";
 import Widow from "./steps/maritalStatus/widow";
 
 import { useData } from "../../dataContext/dataContext";
+import { emailRegex } from "../utils/regex";
 
 function PersonalInformation(props) {
   const { data, updateData } = useData();
@@ -24,8 +25,11 @@ function PersonalInformation(props) {
 
   const [skipped, setSkipped] = useState(new Set());
 
-  const [maritalStatus, setMaritalStatus] = useState(null);
-  const [selectedStatus, setSelectedStatus] = useState("");
+  const [isValidInitialInformation, setIsValidInitialInformation] = useState({
+    email: true,
+    secondary_email: true,
+    cpf: true,
+  });
 
   const [isDisabled, setIsDisabled] = useState(true);
 
@@ -37,8 +41,37 @@ function PersonalInformation(props) {
   };
 
   const validateStep0 = () => {
-    const { name, marital_status, birth, primary_phone_number, email_address } =
-      data;
+    const {
+      name,
+      marital_status,
+      birth,
+      primary_phone_number,
+      email_address,
+      other_email_adresses,
+      national_identification_number,
+    } = data;
+
+    let validateEmail = true;
+    let validateSecondaryEmail = true;
+    let validateCpf = true;
+
+    validateEmail =
+      email_address !== "" ? emailRegex.test(email_address) : true;
+    validateSecondaryEmail =
+      other_email_adresses[0] !== ""
+        ? emailRegex.test(other_email_adresses[0])
+        : true;
+
+    validateCpf =
+      national_identification_number !== ""
+        ? checkCpf(national_identification_number)
+        : true;
+
+    setIsValidInitialInformation({
+      cpf: validateCpf,
+      secondary_email: validateSecondaryEmail,
+      email: validateEmail,
+    });
 
     return (
       name.surname &&
@@ -52,8 +85,25 @@ function PersonalInformation(props) {
       primary_phone_number &&
       primary_phone_number !== "" &&
       email_address &&
-      email_address !== ""
+      email_address !== "" &&
+      validateEmail &&
+      validateSecondaryEmail &&
+      national_identification_number &&
+      national_identification_number !== "" &&
+      validateCpf
     );
+  };
+
+  const validateStep1 = () => {
+    const { marital_status } = data;
+
+    if (marital_status == "M" || marital_status == "P")
+      return validateMarriedStep();
+
+    if (marital_status == "D" || marital_status == "L")
+      return validateFormerSpouseStep();
+
+    if (marital_status == "W") return validateDeceasedStep();
   };
 
   const validateStep2 = () => {
@@ -87,8 +137,12 @@ function PersonalInformation(props) {
       birth.city !== "" &&
       birth.state &&
       birth.state !== "" &&
-      b64_picture &&
-      b64_picture !== "";
+      data.languages &&
+      data.languages.length > 0;
+
+      if (isValid && ["RCF", "PTA"].includes(data.ds160_city)) {
+        isValid = b64_picture && b64_picture !== "";
+      }
 
     if (!hasAnotherNacionality) return isValid;
 
@@ -112,16 +166,11 @@ function PersonalInformation(props) {
     }
 
     isValid =
-      father.birth_date &&
-      father.birth_date !== "" &&
+      father.name &&
       father.name.surname &&
       father.name.surname !== "" &&
       father.name.given_name &&
-      father.name.given_name !== "" &&
-      father.birth_date &&
-      father.birth_date !== "" &&
-      father.us_status &&
-      father.us_status !== "";
+      father.name.given_name !== ""
 
     return isValid;
   };
@@ -137,17 +186,11 @@ function PersonalInformation(props) {
     }
 
     isValid =
-      mother.birth_date &&
-      mother.birth_date !== "" &&
+      mother.name &&
       mother.name.surname &&
       mother.name.surname !== "" &&
       mother.name.given_name &&
-      mother.name.given_name !== "" &&
-      mother.birth_date &&
-      mother.birth_date !== "" &&
-      mother.us_status &&
-      mother.us_status !== "";
-
+      mother.name.given_name !== "";
     return isValid;
   };
 
@@ -178,38 +221,35 @@ function PersonalInformation(props) {
   };
 
   const validateStep7 = () => {
-    let isValid = false;
+    const { primary_occupation, occupation_type_selected } = data;
 
-    const { primary_occupation } = data;
-
-    if (!primary_occupation) {
-      isValid = true;
-      return isValid;
+    if (occupation_type_selected === "NotOccupation") {
+      return true;
     }
 
-    isValid =
-      primary_occupation.occupation_type &&
-      primary_occupation.occupation_type !== "" &&
-      primary_occupation.entity_name &&
-      primary_occupation.entity_name !== "" &&
-      primary_occupation.phone_number &&
-      primary_occupation.phone_number !== "" &&
-      primary_occupation.start_date &&
-      primary_occupation.start_date !== "" &&
-      primary_occupation.occupation_title &&
-      primary_occupation.occupation_title !== "" &&
-      primary_occupation.address.country &&
-      primary_occupation.address.country !== "" &&
-      primary_occupation.address.street &&
-      primary_occupation.address.street !== "" &&
-      primary_occupation.address.city &&
-      primary_occupation.address.city !== "" &&
-      primary_occupation.address.state &&
-      primary_occupation.address.state !== "" &&
-      primary_occupation.address.zip_code &&
-      primary_occupation.address.zip_code !== "";
+    if (primary_occupation.occupation_type === "RT") {
+      return primary_occupation.monthly_income > 0;
+    }
+    if (primary_occupation.occupation_type === "S") {
+      return (
+        primary_occupation.occupation_type &&
+        primary_occupation.start_date &&
+        primary_occupation.description &&
+        primary_occupation.address.street &&
+        primary_occupation.address.city &&
+        primary_occupation.address.state
+      );
+    }
 
-    return isValid;
+    return (
+      primary_occupation.occupation_type &&
+      primary_occupation.entity_name &&
+      primary_occupation.start_date &&
+      primary_occupation.address.street &&
+      primary_occupation.address.city &&
+      primary_occupation.address.state &&
+      primary_occupation.monthly_income > 0
+    );
   };
 
   const validateStep8 = () => {
@@ -273,9 +313,95 @@ function PersonalInformation(props) {
     return isValid;
   };
 
+  const validateMarriedStep = () => {
+    const { spouse } = data;
+
+    let isValid = false;
+    let isAddressValid = true;
+
+    if (!data.spouseHasSameAddress) {
+      isAddressValid =
+        spouse.address.street &&
+        spouse.address.street !== "" &&
+        spouse.address.country &&
+        spouse.address.country !== "" &&
+        spouse.address.state &&
+        spouse.address.state !== "" &&
+        spouse.address.city &&
+        spouse.address.city !== "" &&
+        spouse.address.zip_code &&
+        spouse.address.zip_code !== "";
+    }
+
+    isValid =
+      spouse.name.surname &&
+      spouse.name.surname !== "" &&
+      spouse.name.given_name &&
+      spouse.name.given_name !== "" &&
+      spouse.birth.date &&
+      spouse.birth.date !== "" &&
+      spouse.birth.country &&
+      spouse.birth.country !== "" &&
+      spouse.nationality !== "" &&
+      isAddressValid;
+
+    return isValid;
+  };
+
+  const validateFormerSpouseStep = () => {
+    const { former_spouses } = data;
+
+    let isValid = false;
+
+    isValid =
+      former_spouses[0].name.surname &&
+      former_spouses[0].name.surname !== "" &&
+      former_spouses[0].name.given_name &&
+      former_spouses[0].name.given_name !== "" &&
+      former_spouses[0].birth.date &&
+      former_spouses[0].birth.date !== "" &&
+      former_spouses[0].birth.city &&
+      former_spouses[0].birth.city !== "" &&
+      former_spouses[0].birth.country &&
+      former_spouses[0].birth.country !== "" &&
+      former_spouses[0].nationality_country &&
+      former_spouses[0].nationality_country !== "" &&
+      former_spouses[0].marriage_start_date &&
+      former_spouses[0].marriage_start_date !== "" &&
+      former_spouses[0].marriage_end_date &&
+      former_spouses[0].marriage_end_date !== "" &&
+      former_spouses[0].end_marriage_country &&
+      former_spouses[0].end_marriage_country !== "";
+
+    return isValid;
+  };
+
+  const validateDeceasedStep = () => {
+    const { deceased_spouse } = data;
+
+    let isValid = false;
+
+    isValid =
+      deceased_spouse.name.surname &&
+      deceased_spouse.name.surname !== "" &&
+      deceased_spouse.name.given_name &&
+      deceased_spouse.name.given_name !== "" &&
+      deceased_spouse.birth.date &&
+      deceased_spouse.birth.date !== "" &&
+      deceased_spouse.birth.country &&
+      deceased_spouse.birth.country !== "" &&
+      deceased_spouse.birth.state &&
+      deceased_spouse.birth.state !== "" &&
+      deceased_spouse.birth.city &&
+      deceased_spouse.birth.city !== "" &&
+      deceased_spouse.nationality;
+
+    return isValid;
+  };
+
   const stepValidations = {
     0: validateStep0,
-
+    1: validateStep1,
     2: validateStep2,
     3: validateStep3,
     4: validateStep4,
@@ -287,18 +413,41 @@ function PersonalInformation(props) {
     10: validateStep10,
   };
 
-  // const validateStep1 = () => {
-  //   const { name, marital_status } = data;
+  const checkCpf = (cpf) => {
+    const cleanedCpf = cpf.replace(/\D/g, "");
 
-  //   return (
-  //     name.surname &&
-  //     name.surname !== "" &&
-  //     name.given_name &&
-  //     name.given_name !== "" &&
-  //     marital_status &&
-  //     marital_status !== ""
-  //   );
-  // };
+    if (cleanedCpf.length !== 11) {
+      return false;
+    }
+
+    if (/^(\d)\1+$/.test(cleanedCpf)) {
+      return false;
+    }
+
+    let sum = 0;
+    for (let i = 1; i <= 9; i++) {
+      sum += parseInt(cleanedCpf.charAt(i - 1)) * (11 - i);
+    }
+    let remainder = (sum * 10) % 11;
+    if (remainder === 10 || remainder === 11) {
+      remainder = 0;
+    }
+
+    if (remainder !== parseInt(cleanedCpf.charAt(9))) {
+      return false;
+    }
+
+    sum = 0;
+    for (let i = 1; i <= 10; i++) {
+      sum += parseInt(cleanedCpf.charAt(i - 1)) * (12 - i);
+    }
+    remainder = (sum * 10) % 11;
+    if (remainder === 10 || remainder === 11) {
+      remainder = 0;
+    }
+
+    return remainder === parseInt(cleanedCpf.charAt(10));
+  };
 
   const isStepSkipped = (step) => {
     return skipped.has(step);
@@ -312,7 +461,10 @@ function PersonalInformation(props) {
       newSkipped.delete(activeStep);
     }
 
-    if ((selectedStatus === "S" || selectedStatus === "") && activeStep === 0) {
+    if (
+      (data.marital_status === "S" || data.marital_status === "") &&
+      activeStep === 0
+    ) {
       setActiveStep((prevActiveStep) => prevActiveStep + 2);
     } else {
       setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -326,37 +478,41 @@ function PersonalInformation(props) {
   };
 
   const handleBack = () => {
-    if ((selectedStatus === "S" || selectedStatus === "") && activeStep === 2) {
+    if (
+      (data.marital_status === "S" || data.marital_status === "") &&
+      activeStep === 2
+    ) {
       setActiveStep((prevActiveStep) => prevActiveStep - 2);
     } else {
       setActiveStep((prevActiveStep) => prevActiveStep - 1);
     }
   };
 
-  const handleStatusChange = (status) => {
-    setSelectedStatus(status);
-    handleNextMarital(status);
-  };
+  const handleNextMaital = () => {
+    if (data.marital_status === "P") {
+      return <StableUnion key="stableUnion" validateStep={validateStep} />;
+    }
 
-  const handleNextMarital = (selectedStatus) => {
-    if (selectedStatus === "M") {
-      setMaritalStatus(<Married key="married" />);
-    } else if (selectedStatus === "P") {
-      setMaritalStatus(<StableUnion key="stableUnion" />);
-    } else if (selectedStatus === "W") {
-      setMaritalStatus(<Widow key="window" />);
-    } else if (selectedStatus === "D" || "L") {
-      setMaritalStatus(<Divorced key="divorced" />);
+    if (data.marital_status === "M") {
+      return <Married key="married" validateStep={validateStep} />;
+    }
+
+    if (data.marital_status === "W") {
+      return <Widow key="window" validateStep={validateStep} />;
+    }
+
+    if (data.marital_status === "D" || "L") {
+      return <Divorced key="divorced" validateStep={validateStep} />;
     }
   };
 
   const allComponents = [
     <InitialInformation
       key="initialInformation"
-      onStatusChange={handleStatusChange}
       validateStep={validateStep}
+      isValidInitialInformation={isValidInitialInformation}
     />,
-    maritalStatus,
+    handleNextMaital(),
     <AnotherName key="anotherName" validateStep={validateStep} />,
     <Nationality key="nationality" validateStep={validateStep} />,
     <FatherInformation key="fatherInformation" validateStep={validateStep} />,
@@ -380,6 +536,7 @@ function PersonalInformation(props) {
             marginRight: "-2rem",
             paddingBottom: "2rem",
           }}
+          className={"all-buttons-form-container"}
         >
           <div style={{ paddingRight: "1rem" }}>
             <button
@@ -392,7 +549,9 @@ function PersonalInformation(props) {
               <span className="font-button">Voltar</span>
             </button>
           </div>
-          <div>
+          <div
+            className={"button-proxima-container"}
+          >
             <button
               type="button"
               className={`button-style ${isDisabled ? "disabled-button" : ""}`}

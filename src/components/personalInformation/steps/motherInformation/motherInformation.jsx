@@ -11,28 +11,24 @@ import dayjs from "dayjs";
 
 function MotherInformation({ validateStep = { validateStep } }) {
   const { data, updateData } = useData();
-
-  const handleLocatingChange = (event) => {
-    const { value } = event.target;
-
-    data({ ...data, mother: { ...data.mother, locating_in_us: value } });
-  };
+  const [isBirthDateValid, setIsBirthDateValid] = useState(true);
 
   const handleInfoAboutMotherChange = (event) => {
     const { value } = event.target;
-
+  
     const boolValue = value === "Sim" ? true : false;
-
+  
     if (boolValue) {
-      updateData({ ...data, hasInformationAboutMother: boolValue });
+      updateData({ ...data, hasInformationAboutMother: boolValue, mother: {given_name: "", surname: ""}});
     } else {
       updateData({
         ...data,
         hasInformationAboutMother: boolValue,
         mother: {
-          name: { surname: "", given_name: "" },
+          name: null,
           birth_date: null,
           us_status: null,
+          locating_in_us: false,
         },
       });
     }
@@ -40,25 +36,45 @@ function MotherInformation({ validateStep = { validateStep } }) {
 
   const handleBirthDateChange = (selectedDate) => {
     if (selectedDate && dayjs(selectedDate).isValid()) {
-      const formattedDate = dayjs(selectedDate).format("YYYY-MM-DD");
-      updateData({
-        ...data,
-        mother: { ...data.mother, birth_date: formattedDate },
-      });
+      const currentDate = dayjs();
+      const selectedDateTime = dayjs(selectedDate);
+  
+      if (selectedDateTime.isAfter(currentDate)) {
+        setIsBirthDateValid(false);
+      } else {
+        const formattedDate = selectedDateTime.format("YYYY-MM-DD");
+        updateData({
+          ...data,
+          mother: { ...data.mother, birth_date: formattedDate },
+        });
+        setIsBirthDateValid(true);
+      }
     } else {
       updateData({
         ...data,
         mother: { ...data.mother, birth_date: "" },
       });
+      setIsBirthDateValid(false);
     }
   };
+  
 
   const handleNameChange = (event) => {
     const { value, name } = event.target;
-    updateData({
-      ...data,
-      mother: { ...data.mother, name: { ...data.mother.name, [name]: value } },
-    });
+  
+    if (/^[a-zA-Z\s]+$/.test(value) || value === "") {
+      updateData({
+        ...data,
+        mother: { ...data.mother, name: { ...data.mother.name, [name]: value } },
+      });
+    }
+  };
+
+  const handleLocatingChange = (event) => {
+    const { value } = event.target;
+  
+    const boolValue = value === "Sim";
+    updateData({ ...data, mother: { ...data.mother, locating_in_us: boolValue } });
   };
 
   const handleUsStatusChange = (event) => {
@@ -122,7 +138,7 @@ function MotherInformation({ validateStep = { validateStep } }) {
                     placeholder="Escreva o primeiro nome"
                     variant="outlined"
                     name="given_name"
-                    value={data.mother.name.given_name}
+                    value={data.mother && data.mother.name ? data.mother.name.given_name : ""}
                     onChange={handleNameChange}
                   />
                 </div>
@@ -140,7 +156,7 @@ function MotherInformation({ validateStep = { validateStep } }) {
                     placeholder="Escreva o sobrenome"
                     variant="outlined"
                     name="surname"
-                    value={data.mother.name.surname}
+                    value={data.mother && data.mother.name ? data.mother.name.surname : ""}
                     onChange={handleNameChange}
                   />
                 </div>
@@ -153,17 +169,21 @@ function MotherInformation({ validateStep = { validateStep } }) {
                 <div style={{ paddingBottom: "0.4rem" }}>
                   <span className="span-state">
                     Qual a data de nascimento da sua mãe
-                    <span style={{ color: "red" }}>*</span>
                   </span>
                 </div>
                 <div>
                   <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <DatePicker
-                      format="DD/MM/YYYY"
-                      className="custom-date-picker"
-                      value={dayjs(data.mother.birth_date)}
-                      onChange={handleBirthDateChange}
-                    />
+                  <DatePicker
+                    format="DD/MM/YYYY"
+                    className="custom-date-picker"
+                    value={data.mother.birth_date !== "" ? dayjs(data.mother.birth_date) : null}
+                    onChange={handleBirthDateChange}
+                  />
+                  {!isBirthDateValid && (
+                    <div style={{ color: "red" }}>
+                      A data de nascimento não pode ser superior à data atual.
+                    </div>
+                  )}
                   </LocalizationProvider>
                 </div>
               </div>
@@ -201,7 +221,8 @@ function MotherInformation({ validateStep = { validateStep } }) {
               </div>
             </div>
           </div>
-          <div className="div-family-padding">
+          {data.mother.locating_in_us ? (
+            <div className="div-family-padding">
             <div className="div-family-inputs">
               <div>
                 <div style={{ paddingBottom: "0.4rem" }}>
@@ -227,6 +248,7 @@ function MotherInformation({ validateStep = { validateStep } }) {
               </div>
             </div>
           </div>
+          ) : null}
         </div>
       ) : null}
     </div>

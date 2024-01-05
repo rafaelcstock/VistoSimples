@@ -12,19 +12,25 @@ function AnotherName({ validateStep }) {
     const boolValue = value === "Sim" ? true : false;
 
     if (boolValue) {
-      updateData({ ...data, hasAnotherName: boolValue });
+      updateData({ ...data, hasAnotherName: boolValue, other_name: {given_name: "", surname: ""} });
     } else {
       updateData({
         ...data,
         hasAnotherName: boolValue,
-        other_name: { full_name: null, surname: null, given_name: null },
+        other_name: null,
       });
     }
   };
 
   const handleNameChange = (event) => {
     const { value, name } = event.target;
-    updateData({ ...data, other_name: { ...data.other_name, [name]: value } });
+
+    if (/^[a-zA-Z\s]+$/.test(value) || value === "") {
+      updateData({
+        ...data,
+        other_name: { ...data.other_name, [name]: value },
+      });
+    }
   };
 
   useEffect(() => {
@@ -34,7 +40,7 @@ function AnotherName({ validateStep }) {
   return (
     <div className="div-margin">
       <div className="padding-bottom">
-        <div style={{ display: "flex", justifyContent: "space-between" }}>
+        <div className="titles" style={{ display: "flex", justifyContent: "space-between" }}>
           <div>
             <span className="title-header">Informações Pessoais</span>
           </div>
@@ -55,18 +61,18 @@ function AnotherName({ validateStep }) {
             </span>
           </div>
           <div className="div-another-padding">
-            <RadioGroup
-              aria-labelledby="demo-radio-buttons-group-label"
-              defaultValue="Sim"
-              name="radio-buttons-group"
-              className="subTitle-div-2"
-              row
-              value={data.hasAnotherName ? "Sim" : "Não"}
-              onChange={handleChangeSelect}
-            >
-              <FormControlLabel value="Sim" control={<Radio />} label="Sim" />
-              <FormControlLabel value="Não" control={<Radio />} label="Não" />
-            </RadioGroup>
+          <RadioGroup
+            aria-labelledby="demo-radio-buttons-group-label"
+            defaultValue="Não"
+            name="radio-buttons-group"
+            className="subTitle-div-2"
+            row
+            value={data.hasAnotherName ? "Sim" : "Não"}
+            onChange={handleChangeSelect}
+          >
+            <FormControlLabel value="Sim" control={<Radio />} label="Sim" />
+            <FormControlLabel value="Não" control={<Radio />} label="Não" />
+          </RadioGroup>
           </div>
         </div>
       </div>
@@ -92,7 +98,7 @@ function AnotherName({ validateStep }) {
                   placeholder="Escreva o seu primeiro nome"
                   variant="outlined"
                   name="given_name"
-                  value={data.other_name.given_name}
+                  value={data.other_name ? data.other_name.given_name: ""}
                   onChange={handleNameChange}
                 />
               </div>
@@ -111,7 +117,7 @@ function AnotherName({ validateStep }) {
                   placeholder="Escreva o seu sobrenome"
                   variant="outlined"
                   name="surname"
-                  value={data.other_name.surname}
+                  value={data.other_name ? data.other_name.surname: ""}
                   onChange={handleNameChange}
                 />
               </div>

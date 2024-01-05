@@ -5,10 +5,11 @@ import RevokedVisa from "./steps/revokedVisa/revokedVisa";
 import LostVisa from "./steps/lostVisa/lostVisa";
 import Documents from "./steps/documents/documents";
 import { useData } from "../../dataContext/dataContext";
+import ds160Service from "../../services/ds160Service";
 
 function VisaAndPassport(props) {
   const { data } = useData();
-  const [activeStep, setActiveStep] = useState();
+  const [activeStep, setActiveStep] = useState(0);
   const [skipped, setSkipped] = useState(new Set());
   const [isDisabled, setIsDisabled] = useState(true);
 
@@ -31,8 +32,6 @@ function VisaAndPassport(props) {
     isValid =
       passport.document_type &&
       passport.document_type !== "" &&
-      passport.number &&
-      passport.number !== "" &&
       passport.country &&
       passport.country !== "" &&
       passport.city &&
@@ -47,9 +46,7 @@ function VisaAndPassport(props) {
         ? lost_or_stolen_passports[0].document_type &&
           lost_or_stolen_passports[0].document_type !== "" &&
           lost_or_stolen_passports[0].country &&
-          lost_or_stolen_passports[0].country !== "" &&
-          lost_or_stolen_passports[0].number &&
-          lost_or_stolen_passports[0].number !== ""
+          lost_or_stolen_passports[0].country !== ""
         : true);
 
     return isValid;
@@ -92,6 +89,10 @@ function VisaAndPassport(props) {
   };
 
   const handleNext = () => {
+    if (activeStep == 3) {
+      
+      ds160Service.submit(data);
+    }
     let newSkipped = skipped;
     if (isStepSkipped(activeStep)) {
       newSkipped = new Set(newSkipped.values());
@@ -137,6 +138,7 @@ function VisaAndPassport(props) {
             marginRight: "-2rem",
             paddingBottom: "2rem",
           }}
+          className={"all-buttons-form-container"}
         >
           <div style={{ paddingRight: "1rem" }}>
             <button

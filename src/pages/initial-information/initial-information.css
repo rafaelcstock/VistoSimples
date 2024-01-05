@@ -1,4 +1,4 @@
-.div-flex{
+.initial-div-flex{
     display: flex;
 }
 
@@ -7,7 +7,7 @@
     background-color: #F3F5FC;
 }
 
-.div-margin{
+.initial-div-margin{
     margin-top: 1rem;
     margin-left: 2rem;
     margin-right: 4rem;
@@ -49,11 +49,11 @@
     padding-bottom: 2rem;
 }
 
-.padding-bottom-1{
+.initial-padding-bottom-1{
     padding-bottom: 1rem;
 }
 
-.div-home-padding{
+.initial-div-home-padding{
     background-color: #F3F5FC;
     padding: 2rem 0rem 2rem 0rem;
     border-radius: 8px;
@@ -68,7 +68,7 @@
     color: #091F5F;   
 }
 
-.style-select{
+.initial-style-select{
     width:29rem;
     background:white;
 }
@@ -85,19 +85,55 @@
     color: #C92B2B;
 }
 
-.padding-top{
+.initial-padding-top{
     padding-top: 1.5rem;
     display: flex;
     justify-content: end;
     padding-bottom: 1rem;
 }
 
-.button-style{
+.initial-button-style{
    width: 124px;
    height: 48px;
    border-radius: 8px;
    background-color: #2F5FE3;
    border: 0;
-   
 }
 
+@media only screen and (max-width: 479px) {
+    .initial-style-select{
+        width: 100%;
+    }
+
+    .initial-div-margin {
+        margin-top: 1rem;
+        margin-left: 1rem;
+        margin-right: 1rem;
+    }
+
+    .initial-subTitle-header{
+        width: 100%;
+    }
+
+    .initial-div-flex{
+        width: 100vw;
+    }
+
+    .initial-div-home-padding{
+        width: 85vw;
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+
+    .initial-padding-top{
+        width: 100%;
+    }
+
+    .initial-padding-top a{
+        width: 100%;
+    }
+
+    .initial-button-style{
+        width: 100%;
+    }
+}

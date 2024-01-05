@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import "./payer.css";
 import { MenuItem, Select, TextField } from "@mui/material";
 import { FormControlLabel, Radio, RadioGroup } from "@mui/material";
@@ -7,35 +7,39 @@ import escortRelationship from "../../../../datas/escort_relationship";
 import { useData } from "../../../../dataContext/dataContext";
 import personPaying from "../../../../datas/person_paying";
 import Countries from "../../../../datas/countries";
+import { emailRegex } from "../../../utils/regex";
 
 function Payer({ validateStep }) {
   const { data, updateData } = useData();
 
+  const [isValidPayer, setIsValidPayer] = useState(true);
+
   const handlePaymentChangeSelect = (event) => {
     const { value } = event.target;
 
-    if (value == "S") {
+    const nullValues = {
+      org_name: null,
+      person_name: null,
+      entity_type: value,
+      phone_number: "",
+      email: null,
+      address: null,
+    };
+  
+    if (value === "S") {
       updateData({
         entity_paying: {
           ...data.entity_paying,
-          org_name: null,
-          person_name: null,
-          entity_type: value,
-          phone_number: "",
-          email: "",
-          address: null,
+          ...nullValues,
         },
       });
     }
-
-    if (value == "O") {
+  
+    if (value === "O") {
       updateData({
         entity_paying: {
           ...data.entity_paying,
-          org_name: null,
-          entity_type: value,
-          phone_number: "",
-          email: "",
+          ...nullValues,
           address: {
             street: "",
             complement: null,
@@ -53,16 +57,12 @@ function Payer({ validateStep }) {
         },
       });
     }
-
+  
     if (value !== "O" && value !== "S") {
       updateData({
         entity_paying: {
           ...data.entity_paying,
-          entity_type: value,
-          org_name: "",
-          person_name: null,
-          phone_number: "",
-          email: "",
+          ...nullValues,
           address: {
             street: "",
             complement: null,
@@ -111,12 +111,16 @@ function Payer({ validateStep }) {
   const handlePersonNameChange = (event) => {
     const { value, name } = event.target;
 
-    updateData({
-      entity_paying: {
-        ...data.entity_paying,
-        person_name: { ...data.entity_paying.person_name, [name]: value },
-      },
-    });
+    if (/^[A-Za-z\s]*$/.test(value) || value === "") {
+      updateData({
+        entity_paying: {
+          ...data.entity_paying,
+          person_name: { ...data.entity_paying.person_name, [name]: value },
+        },
+      });
+    } else {
+      console.error("O nome deve conter apenas letras e espaços.");
+    }
   };
 
   const handleAddressChange = (event) => {
@@ -150,7 +154,13 @@ function Payer({ validateStep }) {
         email: value,
       },
     });
+    validateEmail(value)
   };
+
+  const validateEmail = (email) => {
+    const validEmail = email !== "" ? emailRegex.test(email) : true;
+    setIsValidPayer(validEmail);
+  }
 
   const handlePersonRelationshipChange = (event) => {
     const { value } = event.target;
@@ -462,7 +472,7 @@ function Payer({ validateStep }) {
               </div>
               <div className="padding-bottom-1">
                 <InputMask
-                  mask="99+ (99) 99999-9999"
+                  mask="+99 (99) 99999-9999"
                   maskChar=""
                   value={data.entity_paying.phone_number}
                   onChange={handlePhoneNumberChange}
@@ -471,7 +481,7 @@ function Payer({ validateStep }) {
                     <TextField
                       id="outlined-basic"
                       className="style-select-work"
-                      placeholder="99+ (00) 00000-0000"
+                      placeholder="+99 (00) 00000-0000"
                       variant="outlined"
                     />
                   )}
@@ -490,9 +500,15 @@ function Payer({ validateStep }) {
                   className="style-select-work"
                   placeholder="email@exemplo.com"
                   variant="outlined"
+                  type="email"
                   value={data.entity_paying.email}
                   onChange={handleEmailChange}
                 />
+              </div>
+              <div className="errorMessage">
+                {!isValidPayer && (
+                  <> Formato de Email inválido</>
+                )}
               </div>
             </div>
           </div>
@@ -500,7 +516,7 @@ function Payer({ validateStep }) {
       )}
 
       {data.entity_paying.entity_type !== "O" &&
-      data.entity_paying.entity_type !== "S" ? (
+        data.entity_paying.entity_type !== "S" ? (
         <div>
           <div className="div-marital-padding">
             <div className="padding-bottom-title-input">
@@ -687,7 +703,7 @@ function Payer({ validateStep }) {
                 </div>
                 <div className="padding-bottom-1">
                   <InputMask
-                    mask="99+ (99) 99999-9999"
+                    mask="+99 (99) 99999-9999"
                     maskChar=""
                     value={data.entity_paying.phone_number}
                     onChange={handlePhoneNumberChange}
@@ -696,7 +712,7 @@ function Payer({ validateStep }) {
                       <TextField
                         id="outlined-basic"
                         className="style-select-work"
-                        placeholder="99+ (00) 00000-0000"
+                        placeholder="+99 (00) 00000-0000"
                         variant="outlined"
                       />
                     )}
@@ -716,9 +732,15 @@ function Payer({ validateStep }) {
                     className="style-select-work"
                     placeholder="email@exemplo.com"
                     variant="outlined"
+                    type="email"
                     value={data.entity_paying.email}
                     onChange={handleEmailChange}
                   />
+                </div>
+                <div className="errorMessage">
+                  {!isValidPayer && (
+                    <> Formato de Email inválido</>
+                  )}
                 </div>
               </div>
             </div>

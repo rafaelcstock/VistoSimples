@@ -67,18 +67,18 @@ const PrimaryOccupation = [
       key: "R",
       value: "Pesquisador"
     },
-    {
-      key: "RT",
-      value: "Aposentado"
-    },
+    // {
+    //   key: "RT",
+    //   value: "Aposentado"
+    // },
     {
       key: "SS",
       value: "Ciências Sociais"
     },
-    {
-      key: "S",
-      value: "Estudante"
-    },
+    // {
+    //   key: "S",
+    //   value: "Estudante"
+    // },
     {
       key: "N",
       value: "Não empregado"

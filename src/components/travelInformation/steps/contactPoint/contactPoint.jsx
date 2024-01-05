@@ -9,6 +9,7 @@ import citiesService from "../../../../services/citiesWorld";
 import { useData } from "../../../../dataContext/dataContext";
 import USStates from "../../../../datas/us_states";
 import usContactRelationship from "../../../../datas/us_contact_relationship";
+import { emailRegex } from "../../../utils/regex";
 
 function ContactPoint({ validateStep }) {
   const { data, updateData } = useData();
@@ -18,6 +19,8 @@ function ContactPoint({ validateStep }) {
   const [state, setState] = useState("");
   const [cities, setCities] = useState([]);
   const [states, setStates] = useState([]);
+
+  const [isValidContactPoint, setIsValidContactPoint] = useState(true);
 
   const getStates = async (country) => {
     let _states = await statesService.getStateByCountry("US");
@@ -104,16 +107,21 @@ function ContactPoint({ validateStep }) {
   const handleContactNameChange = (event) => {
     const { value, name } = event.target;
 
-    updateData({
-      ...data,
-      us_contact: {
-        ...data.us_contact,
-        person_name: {
-          ...data.us_contact.person_name,
-          [name]: value,
+    if (/^[A-Za-z\s]+$/.test(value) || value === "") {
+      updateData({
+        ...data,
+        us_contact: {
+          ...data.us_contact,
+          person_name: {
+            ...data.us_contact.person_name,
+            [name]: value,
+          },
         },
-      },
-    });
+      });
+    }
+    else {
+      console.error("O nome deve conter apenas letras e espaços.");
+    }
   };
 
   const handleAddressChange = (event) => {
@@ -141,7 +149,14 @@ function ContactPoint({ validateStep }) {
         email: value,
       },
     });
+    validateEmail(value);
   };
+
+  const validateEmail = (email) => {
+    const validEmail = email !== "" ? emailRegex.test(email) : true;
+    setIsValidContactPoint(validEmail);
+  }
+
 
   const handleRelationshipChange = (event) => {
     const { value } = event.target;
@@ -305,7 +320,7 @@ function ContactPoint({ validateStep }) {
               </div>
               <div className="padding-bottom-1">
                 <InputMask
-                  mask="99999-999"
+                  mask="99999"
                   maskChar=""
                   value={data.us_contact.address.zip_code}
                   onChange={handleAddressChange}
@@ -314,7 +329,7 @@ function ContactPoint({ validateStep }) {
                     <TextField
                       id="outlined-basic"
                       className="style-select-work"
-                      placeholder="00000-000"
+                      placeholder="00000"
                       variant="outlined"
                       name="zip_code"
                     />
@@ -332,7 +347,7 @@ function ContactPoint({ validateStep }) {
               </div>
               <div className="padding-bottom-1">
                 <InputMask
-                  mask="99+ (99) 99999-9999"
+                  mask="+99 (99) 99999-9999"
                   maskChar=""
                   value={data.us_contact.phone_number}
                   onChange={handlePhoneNumberChange}
@@ -341,7 +356,7 @@ function ContactPoint({ validateStep }) {
                     <TextField
                       id="outlined-basic"
                       className="style-select-work"
-                      placeholder="99+ (00) 00000-0000"
+                      placeholder="+99 (00) 00000-0000"
                       variant="outlined"
                     />
                   )}
@@ -351,7 +366,7 @@ function ContactPoint({ validateStep }) {
             <div>
               <div style={{ paddingBottom: "0.4rem" }}>
                 <span className="span-state">
-                  Email do hotel<span style={{ color: "red" }}>*</span>
+                  E-mail do hotel
                 </span>
               </div>
               <div className="padding-bottom-1">
@@ -360,9 +375,15 @@ function ContactPoint({ validateStep }) {
                   className="style-select-work"
                   placeholder="email@exemplo.com"
                   variant="outlined"
+                  type="email"
                   value={data.us_contact.email}
                   onChange={handleEmailChange}
                 />
+              </div>
+              <div className="errorMessage">
+                {!isValidContactPoint && (
+                  <> Formato de Email inválido</>
+                )}
               </div>
             </div>
           </div>
@@ -502,7 +523,7 @@ function ContactPoint({ validateStep }) {
               </div>
               <div className="padding-bottom-1">
                 <InputMask
-                  mask="99999-999"
+                  mask="99999"
                   maskChar=""
                   value={data.us_contact.address.zip_code}
                   onChange={handleAddressChange}
@@ -511,7 +532,7 @@ function ContactPoint({ validateStep }) {
                     <TextField
                       id="outlined-basic"
                       className="style-select-work"
-                      placeholder="00000-000"
+                      placeholder="00000"
                       variant="outlined"
                       name="zip_code"
                     />
@@ -529,7 +550,7 @@ function ContactPoint({ validateStep }) {
               </div>
               <div className="padding-bottom-1">
                 <InputMask
-                  mask="99+ (99) 99999-9999"
+                  mask="+99 (99) 99999-9999"
                   maskChar=""
                   value={data.us_contact.phone_number}
                   onChange={handlePhoneNumberChange}
@@ -538,7 +559,7 @@ function ContactPoint({ validateStep }) {
                     <TextField
                       id="outlined-basic"
                       className="style-select-work"
-                      placeholder="99+ (00) 00000-0000"
+                      placeholder="+99 (00) 00000-0000"
                       variant="outlined"
                     />
                   )}
@@ -557,9 +578,16 @@ function ContactPoint({ validateStep }) {
                   className="style-select-work"
                   placeholder="email@exemplo.com"
                   variant="outlined"
+                  type="email"
                   value={data.us_contact.email}
                   onChange={handleEmailChange}
+                  // error={!isValidContactPoint}
                 />
+              </div>
+              <div className="errorMessage">
+                {!isValidContactPoint && (
+                  <> Formato de Email inválido</>
+                )}
               </div>
             </div>
           </div>

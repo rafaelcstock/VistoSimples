@@ -58,7 +58,7 @@
     padding-bottom: 2rem;
 }
 
-.padding-bottom-title-input{
+.married-padding-bottom-title-input{
     padding-left: 3rem;
     padding-bottom: 2rem;
 }
@@ -77,7 +77,6 @@
     line-height: 21px;
     color: #091F5F;   
 }
-
 
 .style-select-marital{
     width:98%;
@@ -123,7 +122,7 @@
 }
 
 .div-1-inputs-marital{
-    display: grid;   
+    display: flex;   
     grid-template-columns: 33% 33% 33%;
     padding-left: 3rem;
 }
@@ -150,4 +149,46 @@
     width: 40%;
     background-color: #ffff;
 }
+
+.custom-date-picker-initialDivorced {
+    width: 98%;
+    background-color: #fff;
+}
+
+.custom-date-picker-initialMarried {
+    width: 98%;
+    background-color: #fff;
+}
+
+@media only screen and (max-width: 768px) {
+    .div-1-inputs-marital{
+        grid-template-columns: 1fr !important;
+        padding: 0 0.5rem !important;
+    }
+
+    .div-2-inputs-marital{
+        grid-template-columns: 1fr !important;
+        padding: 0 0.5rem !important;
+    }
+
+    .div-3-inputs-marital{
+        grid-template-columns: 1fr !important;
+        padding: 0 0.5rem !important;
+    }
+
+    .padding-radio-marital{
+        padding-left: 1rem !important;
+    }
+
+    .radio-group{
+        background: red;
+        grid-template-columns: 1fr!important;
+    }
+
+    .titles{
+        display: flex !important;
+        flex-direction: column;
+    }
+}
+
 

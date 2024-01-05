@@ -122,9 +122,6 @@
     width: 98%;
 }
 
-
-
-
 .div-grid-inputs-distant{
     display: grid;   
     grid-template-columns: 52% 50%;    
@@ -138,3 +135,17 @@
     padding-left: 3rem;
 }
 
+.div-occupationAndOffice {
+    display: flex;
+}
+
+.custom-date-picker-initialOccupation {
+    width: 98%;
+    background-color: #fff;
+}
+
+.div-2-inputs-work-distantFamily{
+    display: grid;   
+    grid-template-columns: 99%;
+    padding-left: 3rem;
+}

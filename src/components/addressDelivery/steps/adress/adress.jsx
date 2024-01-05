@@ -53,9 +53,7 @@ function Adress({ validateStep }) {
           </div>
           <div>
             <div style={{ paddingBottom: "0.4rem" }}>
-              <span className="span-state">
-                Complemento<span style={{ color: "red" }}>*</span>
-              </span>
+              <span className="span-state"> Complemento </span>
             </div>
             <div className="padding-bottom-1">
               <TextField
@@ -137,7 +135,7 @@ function Adress({ validateStep }) {
             </div>
           </div>
           <div>
-            <div style={{ paddingBottom: "0.4rem" }}>
+            <div style={{ paddingBottom: "0.4rem", marginTop: "1.25em" }}>
               <span className="span-state">
                 CEP<span style={{ color: "red" }}>*</span>
               </span>

@@ -19,11 +19,11 @@
 
 .margin-div{
     margin-left: 2rem;
-    margin-right: 4rem;
+    margin-right: 0rem;
 }
 
 .margin-left{
-    margin-left: 4rem;
+    margin-left: 2rem;
 }
 
 .font-size-title{
@@ -107,5 +107,46 @@
     font-weight: 600;
     line-height: 19.4px;
     color: #243A72;    
+}
+
+@media (max-width: 700px) {
+    .div-flexEnd {
+        flex-direction: column-reverse;
+        align-items: center;
+        margin-top: 1em;
+    }
+
+    .margin-left{
+        margin-left: 4rem;
+    }
+    .font-size-title {
+        font-size: 38px;
+    }
+    .font-size-title-end{
+        width: 95%;
+    }
+    .imgEnd {
+        height: 250px;
+    }
+
+    .button-style-end-2{
+        width: 150px;
+        height: 38px;
+    }
+    .button-style-end{
+        width: 150px;
+        height: 38px;
+    }
+
+    .font-button-2{
+        font-size: 14px;   
+    }
+    .font-button{
+        font-size: 14px;
+    }
+    
+    .button_gap {
+        margin-right: 1em;
+    }
 }
 

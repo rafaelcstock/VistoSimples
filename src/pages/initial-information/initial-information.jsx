@@ -6,15 +6,18 @@ import { FormControlLabel, Radio, RadioGroup } from "@mui/material";
 import { Link } from "react-router-dom";
 import ds160Cities from "../../datas/ds160_city";
 import { useData } from "../../dataContext/dataContext";
+import {useMobile} from "../../dataContext/mobileContext.jsx";
 
 function InitialInformation() {
+  const isMobile = useMobile();
   const { data, updateData } = useData();
 
-  const [ds160City, setDs160City] = useState("");
+  const [isDisabled, setIsDisabled] = useState(true);
   const [radioRequester, setRadioRequester] = useState("Apenas para mim");
 
   const handleChangeSelect = (event) => {
     updateData({ ds160_city: event.target.value });
+    setIsDisabled(false);
   };
 
   const handleChangeRequester = (event) => {
@@ -22,26 +25,35 @@ function InitialInformation() {
     localStorage.setItem("tipoForm", event.target.value);
   };
 
+  const sortedDs160Cities = ds160Cities
+    .slice()
+    .sort((a, b) => a.value.localeCompare(b.value));
+
   useEffect(() => {
     localStorage.setItem("tipoForm", "Apenas para mim");
+    if (data.ds160_city && data.ds160_city !== "") setIsDisabled(false);
   }, []);
 
   return (
-    <div className="div-flex" >
-      <div className="div-width"></div>
-      <div className="div-margin">
+    <div className="initial-div-flex">
+      {
+        (!isMobile)
+          ? <div className="div-width"></div>
+          : ""
+      }
+      <div className="initial-div-margin">
         <div className="padding-bottom">
           <span className="title-header">Informações iniciais</span>
           <br />
           <hr className="hr-color" />
-          <span className="subTitle-header">
+          <span className="initial-subTitle-header">
             O formulário DS-160 é um formulário obrigatório para preenchimento
             por todos os solicitantes do visto americano de não imigrante. Nesta
             categoria, estão diversos tipos de visto, como turismo, estudos,
             negócios, entre outros.
           </span>
         </div>
-        <div className="div-home-padding ">
+        <div className="initial-div-home-padding">
           <div className="padding-bottom-1">
             <span className="title-header-2">
               Consulado de preferência para adicionar ao DS-160
@@ -51,15 +63,15 @@ function InitialInformation() {
             <div style={{ paddingBottom: "0.4rem" }}>
               <span className="span-state">Selecione o estado</span>
             </div>
-            <div className="padding-bottom-1">
+            <div className="initial-padding-bottom-1">
               <Select
-                className="style-select"
+                className="initial-style-select"
                 labelId="select-state"
                 id="select-state"
                 value={data.ds160_city}
                 onChange={handleChangeSelect}
               >
-                {ds160Cities.map((state) => (
+                {sortedDs160Cities.map((state) => (
                   <MenuItem key={state.key} value={state.key}>
                     {state.value}
                   </MenuItem>
@@ -118,9 +130,13 @@ function InitialInformation() {
           </div>
         ) : null}
 
-        <div className="padding-top">
+        <div className="initial-padding-top">
           <Link to="/form">
-            <button type="button" className="button-style">
+            <button
+              type="button"
+              disabled={isDisabled}
+              className={`initial-button-style ${isDisabled ? "disabled-button" : ""}`}
+            >
               <span className="font-button">Próxima</span>
             </button>
           </Link>

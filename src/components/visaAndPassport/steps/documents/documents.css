@@ -149,3 +149,16 @@
     background-color: #ffff;
 }
 
+.custom-date-picker-initialDocuments {
+    width: 98%;
+    background-color: #fff;
+}
+
+@media (max-width: 700px) {
+    .padding-bottomPassport {
+        display: flex;
+        flex-direction: column;
+        gap: 1em;
+    }
+}
+

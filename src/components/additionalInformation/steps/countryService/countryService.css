@@ -68,7 +68,7 @@
     padding: 1rem 0rem 1rem 0rem;
     border-radius: 8px;
     margin-bottom: 3rem;
-    width: 100%;
+    width: 96%;
 }
 
 .title-header-2{
@@ -142,5 +142,17 @@
 
 .padding-radio-marital{
     padding-left: 3rem;
+}
+
+.custom-date-picker-initialService {
+    width: 98%;
+    background-color: white;
+}
+
+@media (max-width: 700px) {
+    .padding-bottomCountryService {
+        display: flex;
+        flex-direction: column;
+    }
 }
 

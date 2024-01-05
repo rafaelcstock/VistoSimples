@@ -109,7 +109,7 @@
 }
 
 .button-style{
-   width: 124px;
+   width: 100px !important;
    height: 48px;
    border-radius: 8px;
    background-color: #2F5FE3;
@@ -142,5 +142,17 @@
 
 .padding-radio-marital{
     padding-left: 3rem;
+}
+
+.custom-date-picker-initialFormation {
+    width: 98%;
+    background-color: white;
+}
+
+@media (max-width: 700px) {
+    .padding-bottomFormation {
+        display: flex;
+        flex-direction: column;
+    }
 }
 

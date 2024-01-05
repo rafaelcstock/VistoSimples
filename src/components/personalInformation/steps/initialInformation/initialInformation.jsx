@@ -11,14 +11,108 @@ import dayjs from "dayjs";
 
 import { useData } from "../../../../dataContext/dataContext";
 
-function InitialInformation({ onStatusChange, validateStep }) {
+function InitialInformation({ validateStep, isValidInitialInformation }) {
+  const [isBirthDateValid, setIsBirthDateValid] = useState(true);
+
   const { data, updateData } = useData();
 
-  const handleChangeSelect = (event) => {
+  const handleMaritalStatusChangeSelect = (event) => {
     const { value } = event.target;
 
-    updateData({ ...data, marital_status: value });
-    onStatusChange(event.target.value);
+    if (value == "M" || value == "P") {
+      updateData({
+        ...data,
+        spouse: {
+          name: {
+            surname: "",
+            given_name: "",
+            full_name: null,
+          },
+          birth: {
+            date: "",
+            city: "",
+            state: null,
+            country: "",
+          },
+          nationality: "",
+          address_type: "H",
+          address: {
+            street: "",
+            complement: "",
+            city: "",
+            state: "",
+            state_acronym: null,
+            zip_code: "",
+            country: "",
+          },
+        },
+        former_spouses: null,
+        deceased_spouse: null,
+        marital_status: value,
+      });
+    }
+
+    if (value == "D" || value == "L") {
+      updateData({
+        ...data,
+        former_spouses: [
+          {
+            name: {
+              surname: "",
+              given_name: "",
+              full_name: null,
+            },
+            birth: {
+              date: "",
+              city: "",
+              state: null,
+              country: "",
+            },
+            nationality_country: "",
+            marriage_start_date: "",
+            marriage_end_date: "",
+            end_marriage_reason: "Consesual",
+            end_marriage_country: "",
+          },
+        ],
+        deceased_spouse: null,
+        spouse: null,
+        marital_status: value,
+      });
+    }
+
+    if (value == "W") {
+      updateData({
+        ...data,
+        deceased_spouse: {
+          name: {
+            surname: "",
+            given_name: "",
+            full_name: null,
+          },
+          birth: {
+            date: "",
+            city: "",
+            state: null,
+            country: "",
+          },
+          nationality: "",
+        },
+        former_spouses: null,
+        spouse: null,
+        marital_status: value,
+      });
+    }
+
+    if (value == "S") {
+      updateData({
+        ...data,
+        deceased_spouse: null,
+        former_spouses: null,
+        spouse: null,
+        marital_status: value,
+      });
+    }
   };
 
   const handleChangeGender = (event) => {
@@ -28,25 +122,40 @@ function InitialInformation({ onStatusChange, validateStep }) {
 
   const handleNameChange = (event) => {
     const { value, name } = event.target;
-    updateData({ ...data, name: { ...data.name, [name]: value } });
+
+    if (/^[A-Za-z\s]+$/.test(value) || value === "") {
+      updateData({ ...data, name: { ...data.name, [name]: value } });
+    }
   };
 
   const handleBirthDateChange = (selectedDate) => {
     if (selectedDate && dayjs(selectedDate).isValid()) {
-      const formattedDate = dayjs(selectedDate).format("YYYY-MM-DD");
-      updateData({ ...data, birth: { ...data.birth, date: formattedDate } });
+      const currentDate = dayjs();
+      const selectedDateTime = dayjs(selectedDate);
+
+      if (selectedDateTime.isAfter(currentDate)) {
+        setIsBirthDateValid(false);
+        updateData({ ...data, birth: { ...data.birth, date: "" } });
+      } else {
+        const formattedDate = selectedDateTime.format("YYYY-MM-DD");
+        updateData({ ...data, birth: { ...data.birth, date: formattedDate } });
+        setIsBirthDateValid(true);
+      }
     } else {
       updateData({ ...data, birth: { ...data.birth, date: "" } });
+      setIsBirthDateValid(false);
     }
   };
 
   const handlePhoneNumberChange = (event) => {
     const { value, name } = event.target;
+   
     updateData({ ...data, [name]: value });
   };
 
   const handleEmailChange = (event) => {
     const { value } = event.target;
+
     updateData({ ...data, email_address: value });
   };
 
@@ -58,6 +167,14 @@ function InitialInformation({ onStatusChange, validateStep }) {
     });
   };
 
+  const handleCPFChange = (event) => {
+    const { value } = event.target;
+    updateData({
+      ...data,
+      national_identification_number: value,
+    });
+  };
+
   useEffect(() => {
     validateStep();
   }, [data]);
@@ -65,7 +182,9 @@ function InitialInformation({ onStatusChange, validateStep }) {
   return (
     <div className="div-margin">
       <div className="padding-bottom">
-        <div style={{ display: "flex", justifyContent: "space-between" }}>
+        <div style={{ display: "flex", justifyContent: "space-between" }}
+          className={"header-informations"}
+        >
           <div>
             <span className="title-header">Informações Pessoais</span>
           </div>
@@ -124,11 +243,12 @@ function InitialInformation({ onStatusChange, validateStep }) {
                 Estado Civil <span style={{ color: "red" }}>*</span>
               </span>
             </div>
-            <div className="padding-bottom-1">
+            <div className="padding-bottom-1"
+            >
               <Select
                 className="style-select-initial input-style-initial"
                 value={data.marital_status}
-                onChange={handleChangeSelect}
+                onChange={handleMaritalStatusChangeSelect}
               >
                 {MaritalStatus.map((status) => (
                   <MenuItem key={status.key} value={status.key}>
@@ -178,11 +298,16 @@ function InitialInformation({ onStatusChange, validateStep }) {
             <div className="padding-bottom-1">
               <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <DatePicker
-                  value={dayjs(data.birth.date)}
-                  onChange={handleBirthDateChange}
                   format="DD/MM/YYYY"
-                  className="custom-date-picker-initial"
+                  className="custom-date-picker-initialInformation"
+                  value={data.birth.date !== "" ? dayjs(data.birth.date) : null}
+                  onChange={handleBirthDateChange}
                 />
+                {!isBirthDateValid && (
+                  <div style={{ color: "red" }}>
+                    A data não pode ser superior à data atual.
+                  </div>
+                )}
               </LocalizationProvider>
             </div>
           </div>
@@ -193,7 +318,12 @@ function InitialInformation({ onStatusChange, validateStep }) {
               </span>
             </div>
             <div className="padding-bottom-1">
-              <InputMask mask="999.999.999-99" maskChar="">
+              <InputMask
+                mask="999.999.999-99"
+                maskChar=""
+                value={data.national_identification_number}
+                onChange={handleCPFChange}
+              >
                 {() => (
                   <TextField
                     id="outlined-basic"
@@ -204,6 +334,10 @@ function InitialInformation({ onStatusChange, validateStep }) {
                   />
                 )}
               </InputMask>
+            </div>
+
+            <div className="errorMessage">
+              {!isValidInitialInformation.cpf && <> CPF inválido </>}
             </div>
           </div>
         </div>
@@ -216,7 +350,7 @@ function InitialInformation({ onStatusChange, validateStep }) {
             </div>
             <div className="padding-bottom-1">
               <InputMask
-                mask="99+ (99) 99999-9999"
+                mask="+99 (99) 99999-9999"
                 maskChar=""
                 value={data.primary_phone_number}
                 onChange={handlePhoneNumberChange}
@@ -226,7 +360,7 @@ function InitialInformation({ onStatusChange, validateStep }) {
                     id="outlined-basic"
                     className="input-style-initial"
                     type="text"
-                    placeholder="55+ (00) 00000-0000"
+                    placeholder="+55 (00) 00000-0000"
                     variant="outlined"
                     name="primary_phone_number"
                   />
@@ -240,7 +374,7 @@ function InitialInformation({ onStatusChange, validateStep }) {
             </div>
             <div className="padding-bottom-1">
               <InputMask
-                mask="99+ (99) 99999-9999"
+                mask="+99 (99) 99999-9999"
                 maskChar=""
                 value={data.secondary_phone_number}
                 onChange={handlePhoneNumberChange}
@@ -250,7 +384,7 @@ function InitialInformation({ onStatusChange, validateStep }) {
                     id="outlined-basic"
                     className="input-style-initial"
                     type="text"
-                    placeholder="55+ (00) 00000-0000"
+                    placeholder="+55 (00) 00000-0000"
                     variant="outlined"
                     name="secondary_phone_number"
                   />
@@ -277,6 +411,12 @@ function InitialInformation({ onStatusChange, validateStep }) {
                 onChange={handleEmailChange}
               />
             </div>
+
+            <div className="errorMessage">
+              {!isValidInitialInformation.email && (
+                <> Formato de Email inválido</>
+              )}
+            </div>
           </div>
           <div>
             <div style={{ paddingBottom: "0.4rem" }}>
@@ -292,6 +432,11 @@ function InitialInformation({ onStatusChange, validateStep }) {
                 value={data.other_email_adresses[0]}
                 onChange={handleOthersEmailChange}
               />
+            </div>
+            <div className="errorMessage">
+              {!isValidInitialInformation.secondary_email && (
+                <> Formato de Email inválido</>
+              )}
             </div>
           </div>
         </div>

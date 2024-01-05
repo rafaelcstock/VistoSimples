@@ -19,11 +19,7 @@ export function DataProvider({ children }) {
       given_name: "",
       full_name: null,
     },
-    other_name: {
-      surname: null,
-      given_name: null,
-      full_name: null,
-    },
+    other_name: null,
     telecode_name: {
       surname: "",
       given_name: "",
@@ -31,64 +27,9 @@ export function DataProvider({ children }) {
     },
     gender: "M",
     marital_status: "S",
-    spouse: {
-      name: {
-        surname: "",
-        given_name: "",
-        full_name: "",
-      },
-      birth: {
-        date: "",
-        city: "",
-        state: "",
-        country: "",
-      },
-      nationality: "",
-      address_type: "",
-      address: {
-        street: "",
-        complement: "",
-        city: "",
-        state: "",
-        state_acronym: "",
-        zip_code: "",
-        country: "",
-      },
-    },
-    former_spouses: [
-      {
-        name: {
-          surname: "",
-          given_name: "",
-          full_name: "",
-        },
-        birth: {
-          date: "",
-          city: "",
-          state: "",
-          country: "AFGH",
-        },
-        nationality_country: "AFGH",
-        marriage_start_date: "",
-        marriage_end_date: "",
-        end_marriage_reason: "",
-        end_marriage_country: "AFGH",
-      },
-    ],
-    deceased_spouse: {
-      name: {
-        surname: "",
-        given_name: "",
-        full_name: "",
-      },
-      birth: {
-        date: "",
-        city: "",
-        state: "",
-        country: "",
-      },
-      nationality: "",
-    },
+    spouse: null,
+    former_spouses: null,
+    deceased_spouse: null,
     birth: {
       date: "",
       city: "",
@@ -114,20 +55,12 @@ export function DataProvider({ children }) {
         state: "",
         state_acronym: null,
         zip_code: "",
-        country: "",
+        country: null,
       },
     },
     entity_paying: {
       entity_type: "S",
-      address: {
-        street: "",
-        complement: null,
-        city: "",
-        state: "",
-        state_acronym: null,
-        zip_code: "",
-        country: "",
-      },
+      address: null,
       phone_number: "",
       relationship: "C",
       same_address: false,
@@ -142,22 +75,6 @@ export function DataProvider({ children }) {
     escorts: null,
     group: null,
     us_visits: [
-      {
-        date: "",
-        length_of_stay: 0,
-      },
-      {
-        date: "",
-        length_of_stay: 0,
-      },
-      {
-        date: "",
-        length_of_stay: 0,
-      },
-      {
-        date: "",
-        length_of_stay: 0,
-      },
       {
         date: "",
         length_of_stay: 0,
@@ -235,7 +152,7 @@ export function DataProvider({ children }) {
         full_name: null,
       },
       birth_date: "",
-      locating_in_us: true,
+      locating_in_us: false,
       us_status: "S",
     },
     mother: {
@@ -262,7 +179,7 @@ export function DataProvider({ children }) {
     ],
     any_other_relative_in_us: true,
     primary_occupation: {
-      occupation_type: "",
+      occupation_type: "S",
       specify_occupation: null,
       entity_name: "",
       address: {
@@ -280,7 +197,7 @@ export function DataProvider({ children }) {
       monthly_income: null,
       description: null,
       occupation_title: "",
-      supervisor_name: null,
+      supervisor_name: null
     },
     past_jobs: [
       {
@@ -303,6 +220,7 @@ export function DataProvider({ children }) {
         description: null,
         occupation_title: "",
         supervisor_name: null,
+        email: "",
       },
     ],
     education: [
@@ -332,7 +250,7 @@ export function DataProvider({ children }) {
     languages: [],
     visited_countries: [],
     charitable_organizations: [],
-    specialized_skills: "string",
+    specialized_skills: null,
     military_info: [
       {
         country: "",
@@ -345,7 +263,7 @@ export function DataProvider({ children }) {
     ],
     special_organization: "string",
     security_responses: ["string", null],
-    hasAnotherName: true,
+    hasAnotherName: false,
     hasAnotherNationality: true,
     hasInformationAboutFather: true,
     hasInformationAboutMother: true,
@@ -353,12 +271,12 @@ export function DataProvider({ children }) {
     hasClan: true,
     hasUsDriversLicense: true,
     companionSelected: 1,
+    spouseHasSameAddress: true,
+    occupation_type_selected: "S"
   });
 
-  // console.log(data);
-  console.log(data.old_visa);
-  // console.log("------------------------- abaixo é lost");
-  // console.log(data.lost_or_stolen_passports);
+
+  console.log(data.languages)
 
   const updateData = (newData) => {
     setData({ ...data, ...newData });

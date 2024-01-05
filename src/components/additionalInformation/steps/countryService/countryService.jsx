@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect, useState } from "react";
 import "./countryService.css";
 import { MenuItem, Select, TextField } from "@mui/material";
 import { FormControlLabel, Radio, RadioGroup } from "@mui/material";
@@ -10,6 +10,9 @@ import dayjs from "dayjs";
 
 function CountryService({ validateStep }) {
   const { data, updateData } = useData();
+
+  const [isStartDateValid, setIsStartDateValid] = useState(true);
+  const [isEndDateValid, setIsEndDateValid] = useState(true);  
 
   const handleUpdateData = (event) => {
     const { value, name } = event.target;
@@ -44,20 +47,30 @@ function CountryService({ validateStep }) {
   };
 
   const handleDateUpdateData = (name, newDate) => {
-    if (newDate && dayjs(newDate).isValid()) {
+    let isValid = true;
+  
+    if (newDate && dayjs(newDate).isValid() && dayjs(newDate).isBefore(dayjs())) {
       const formattedDate = dayjs(newDate).format("YYYY-MM-DD");
-
+  
       updateData({
         ...data,
         military_info: [{ ...data.military_info[0], [name]: formattedDate }],
       });
     } else {
+      isValid = false;
+  
       updateData({
         ...data,
-        military_info: [{ ...data.military_info[0], [name]: "" }],
+        military_info: [{ ...data.military_info[0], [name]: null }],
       });
     }
-  };
+  
+    if (name === "start_date") {
+      setIsStartDateValid(isValid);
+    } else if (name === "end_date") {
+      setIsEndDateValid(isValid);
+    }
+  };    
 
   useEffect(() => {
     validateStep();
@@ -66,7 +79,7 @@ function CountryService({ validateStep }) {
   return (
     <div className="div-margin">
       <div className="padding-bottom">
-        <div style={{ display: "flex", justifyContent: "space-between" }}>
+        <div className="padding-bottomCountryService" style={{ display: "flex", justifyContent: "space-between" }}>
           <div>
             <span className="title-header">Informações adicionais</span>
           </div>
@@ -79,7 +92,7 @@ function CountryService({ validateStep }) {
       <div className="div-country-padding">
         <div className="padding-bottom-title-input-country">
           <span className="title-header-2">
-            Já serviu?<span style={{ color: "red" }}>*</span>
+            Já serviu no exército?<span style={{ color: "red" }}>*</span>
           </span>
         </div>
         <div className="padding-radio-marital">
@@ -198,15 +211,18 @@ function CountryService({ validateStep }) {
                 </div>
                 <div className="padding-bottom-1">
                   <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <DatePicker
-                      format="DD/MM/YYYY"
-                      className="custom-date-picker-initial"
-                      value={dayjs(data.military_info[0].start_date)}
-                      onChange={(date) =>
-                        handleDateUpdateData("start_date", date)
-                      }
-                    />
+                  <DatePicker
+                    format="DD/MM/YYYY"
+                    className={`custom-date-picker-initialService ${!isStartDateValid ? "invalid-date" : ""}`}
+                    value={data.military_info[0].start_date ? dayjs(data.military_info[0].start_date) : null}
+                    onChange={(date) => handleDateUpdateData("start_date", date)}
+                  />
                   </LocalizationProvider>
+                  {!isStartDateValid && (
+                    <div style={{ color: "red" }}>
+                      A data não pode ser superior à data atual.
+                    </div>
+                  )}
                 </div>
               </div>
               <div>
@@ -218,15 +234,18 @@ function CountryService({ validateStep }) {
                 </div>
                 <div className="padding-bottom-1">
                   <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <DatePicker
-                      format="DD/MM/YYYY"
-                      className="custom-date-picker-initial"
-                      value={dayjs(data.military_info[0].end_date)}
-                      onChange={(date) =>
-                        handleDateUpdateData("end_date", date)
-                      }
-                    />
+                  <DatePicker
+                    format="DD/MM/YYYY"
+                    className={`custom-date-picker-initialService ${!isEndDateValid ? "invalid-date" : ""}`}
+                    value={data.military_info[0].end_date ? dayjs(data.military_info[0].end_date) : null}
+                    onChange={(date) => handleDateUpdateData("end_date", date)}
+                  />
                   </LocalizationProvider>
+                  {!isEndDateValid && (
+                    <div style={{ color: "red" }}>
+                      A data não pode ser superior à data atual.
+                    </div>
+                  )}
                 </div>
               </div>
             </div>

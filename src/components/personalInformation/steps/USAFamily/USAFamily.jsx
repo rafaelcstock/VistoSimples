@@ -10,27 +10,35 @@ import FamilyFormComponent from "./FamilyFormComponent/FamilyFormComponent";
 
 function USAFamily({ validateStep }) {
   const { data, updateData } = useData();
+  const [numFamilyMembers, setNumFamilyMembers] = useState(1);
 
   const handleChangeSelect = (event) => {
     const { value } = event.target;
     const boolValue = value === "Sim" ? true : false;
 
     if (boolValue) {
-      updateData({ ...data, hasParentInUs: boolValue });
-    } else {
       updateData({
         ...data,
         hasParentInUs: boolValue,
         immediate_relatives: [
+          ...data.immediate_relatives,
           {
-            ...data.immediate_relatives[0],
             name: {
               surname: "",
               given_name: "",
-              full_name: null,
+              full_name: "",
             },
+            locating_in_us: true,
+            relationship: "",
+            us_status: "",
           },
         ],
+      });
+    } else {
+      updateData({
+        ...data,
+        hasParentInUs: boolValue,
+        immediate_relatives: [],
       });
     }
   };
@@ -74,11 +82,12 @@ function USAFamily({ validateStep }) {
     });
   };
 
-  const handleAddFamilyMember = (event) => {
-    const { value } = event.target;
-    const boolValue = value === "Sim" ? true : false;
+  const handleAddFamilyMember = () => {
+    const boolValue = data.hasParentInUs;
 
     if (boolValue) {
+      setNumFamilyMembers((prevNum) => prevNum + 1);
+
       updateData({
         ...data,
         immediate_relatives: [
@@ -95,35 +104,37 @@ function USAFamily({ validateStep }) {
           },
         ],
       });
-    } else {
-      const lastIndex = data.immediate_relatives.length - 1;
-      if (lastIndex > 0) {
-        const updatedRelatives = data.immediate_relatives.filter(
-          (_, index) => index !== lastIndex
-        );
-        updateData({
-          ...data,
-          immediate_relatives: updatedRelatives,
-        });
-      }
     }
   };
 
-  const handleNameChange = (event, index) => {
-    const { value, name } = event.target;
+  const handleRemoveFamilyMember = (index) => {
+    const updatedRelatives = data.immediate_relatives.filter(
+      (_, i) => i !== index
+    );
 
-    const updatedRelatives = data.immediate_relatives.map((relative, i) => {
-      if (i === index) {
-        return { ...relative, name: { ...relative.name, [name]: value } };
-      }
-
-      return relative;
-    });
+    setNumFamilyMembers((prevNum) => prevNum - 1);  // Atualiza o número de membros
 
     updateData({
       ...data,
       immediate_relatives: updatedRelatives,
     });
+  };
+
+  const handleNameChange = (event, index) => {
+    const { value, name } = event.target;
+    if (/^[a-zA-Z\s]+$/.test(value) || value === "") {
+      const updatedRelatives = data.immediate_relatives.map((relative, i) => {
+        if (i === index) {
+          return { ...relative, name: { ...relative.name, [name]: value } };
+        }
+        return relative;
+      });
+
+      updateData({
+        ...data,
+        immediate_relatives: updatedRelatives,
+      });
+    }
   };
 
   useEffect(() => {
@@ -136,6 +147,7 @@ function USAFamily({ validateStep }) {
       }
     }
   }, []);
+
 
   return (
     <div className="div-margin">
@@ -150,8 +162,7 @@ function USAFamily({ validateStep }) {
       <div className="div-usa-padding">
         <div className="padding-usa">
           <span className="title-header-2">
-            Você tem algum familiar direto nos Estados
-            Unidos?(Esposo(a);noivo(a);filho(a);irmão(a);)
+            Você tem algum familiar direto nos Estados Unidos? (Esposo(a);noivo(a);filho(a);irmão(a);)
             <span style={{ color: "red" }}>*</span>
           </span>
         </div>
@@ -171,18 +182,30 @@ function USAFamily({ validateStep }) {
         </div>
       </div>
       {data.hasParentInUs &&
-        data.immediate_relatives.map((relative, index) => (
+        Array.from({ length: numFamilyMembers }).map((_, index) => (
           <FamilyFormComponent
             key={index}
             index={index}
-            data={relative}
-            length={data.immediate_relatives.length -1}
-            handleNameChange={handleNameChange}
-            handleRelationshipChange={handleRelationshipChange}
-            handleStatusChange={handleStatusChange}
-            handleAddFamilyMember={handleAddFamilyMember}
+            data={data.immediate_relatives[index] || {}}
+            length={data.immediate_relatives.length - 1}
+            handleNameChange={(event) => handleNameChange(event, index)}
+            handleRelationshipChange={(event) =>
+              handleRelationshipChange(event, index)
+            }
+            handleStatusChange={(event) => handleStatusChange(event, index)}
+            handleRemoveFamilyMember={handleRemoveFamilyMember}
           />
         ))}
+      {data.hasParentInUs && (
+        <div className="div-btn">
+          <button
+            className="font-button-img button-style-imgFamily"
+            onClick={handleAddFamilyMember}
+          >
+            + Adicionar Familiar
+          </button>
+        </div>
+      )}
     </div>
   );
 }

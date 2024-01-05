@@ -119,10 +119,11 @@
 .div-grid-initial-inputs{
     display: grid;   
     grid-template-columns: 50% 50%;
-    padding-left: 3rem;
+    padding-left: 2rem;
+    padding-right: 2rem;
 }
 
-.custom-date-picker-initial {
+.custom-date-picker-initialInformation {
     width: 98%;
     background-color: #ffff;
 }

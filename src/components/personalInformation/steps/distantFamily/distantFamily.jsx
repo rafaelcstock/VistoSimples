@@ -1,32 +1,17 @@
 import React, { useEffect, useState } from "react";
 import "./distantFamily.css";
-import { MenuItem, Select, TextField } from "@mui/material";
-import { FormControlLabel, Radio, RadioGroup } from "@mui/material";
+import { Box, MenuItem, Select, TextField } from "@mui/material";
+import { FormControlLabel, Radio, RadioGroup, InputAdornment } from "@mui/material";
 import PrimaryOccupation from "../../../../datas/primary_occupation";
 import { useData } from "../../../../dataContext/dataContext";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import dayjs from "dayjs";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import Countries from "../../../../datas/countries";
 import InputMask from "react-input-mask";
 
 function DistantFamily({ validateStep }) {
   const { data, updateData } = useData();
-
-  const [radioOcupation, setRadioOcupation] = useState("Empregado");
-  const [city, setCity] = useState("");
-  const [state, setState] = useState("");
-  const [cities, setCities] = useState([]);
-  const [states, setStates] = useState([]);
-
-  const handleChangeSelectState = (event) => {
-    setState(event.target.value);
-    getCities("US", event.target.value);
-  };
-
-  const handleChangeSelectCity = (event) => {
-    setCity(event.target.value);
-  };
+  const [isStartDateValid, setIsStartDateValid] = useState(true);
 
   const handleAnotherParentChange = (event) => {
     const { value } = event.target;
@@ -38,15 +23,18 @@ function DistantFamily({ validateStep }) {
   const handleChangeRadioOcupation = (event) => {
     const { value } = event.target;
 
-    setRadioOcupation(value);
+    setIsStartDateValid(true);
 
-    if (value !== "Empregado") {
-      updateData({ ...data, primary_occupation: null });
-    } else {
+    if (value === "NotOccupation") {
+      updateData({ ...data, primary_occupation: null, occupation_type_selected: value });
+      return
+    }
+    if (value === "S") {
       updateData({
         ...data,
+        occupation_type_selected: value,
         primary_occupation: {
-          occupation_type: "",
+          occupation_type: "S",
           specify_occupation: null,
           entity_name: "",
           address: {
@@ -54,20 +42,74 @@ function DistantFamily({ validateStep }) {
             complement: null,
             city: "",
             state: "",
-            state_acronym: "",
+            state_acronym: null,
             zip_code: "",
-            country: "",
+            country: null,
           },
-          phone_number: "",
+          phone_number: null,
           start_date: "",
           end_date: null,
           monthly_income: null,
           description: null,
-          occupation_title: "",
+          occupation_title: null,
           supervisor_name: null,
         },
       });
+      return
     }
+    if (value === "RT") {
+      updateData({
+        ...data,
+        occupation_type_selected: value,
+        primary_occupation: {
+          occupation_type: "RT",
+          specify_occupation: null,
+          entity_name: "",
+          address: {
+            street: "",
+            complement: null,
+            city: "",
+            state: "",
+            state_acronym: null,
+            zip_code: "",
+            country: null,
+          },
+          phone_number: null,
+          start_date: "2023-11-08",
+          end_date: null,
+          monthly_income: 0,
+          description: null,
+          occupation_title: null,
+          supervisor_name: null,
+        },
+      });
+      return
+    }
+    updateData({
+      ...data,
+      occupation_type_selected: "Empregado",
+      primary_occupation: {
+        occupation_type: "A",
+        specify_occupation: null,
+        entity_name: "",
+        address: {
+          street: "",
+          complement: null,
+          city: "",
+          state: "",
+          state_acronym: null,
+          zip_code: "",
+          country: null,
+        },
+        phone_number: "",
+        start_date: "",
+        end_date: null,
+        monthly_income: 0,
+        description: null,
+        occupation_title: null,
+        supervisor_name: null,
+      },
+    });
   };
 
   const handleEntityNameChange = (event) => {
@@ -78,27 +120,31 @@ function DistantFamily({ validateStep }) {
     });
   };
 
-  const handleStateEntityChange = (event) => {
-    const { value } = event.target;
-    updateData({
-      ...data,
-      primary_occupation: {
-        ...data.primary_occupation,
-        occupation_title: value,
-      },
-    });
-  };
-
   const handleStartDateChange = (selectedDate) => {
     if (selectedDate && dayjs(selectedDate).isValid()) {
-      const formattedDate = dayjs(selectedDate).format("YYYY-MM-DD");
-      updateData({
-        ...data,
-        primary_occupation: {
-          ...data.primary_occupation,
-          start_date: formattedDate,
-        },
-      });
+      const currentDate = dayjs();
+      const selectedDateTime = dayjs(selectedDate);
+
+      if (selectedDateTime.isAfter(currentDate)) {
+        setIsStartDateValid(false);
+        updateData({
+          ...data,
+          primary_occupation: {
+            ...data.primary_occupation,
+            start_date: null,
+          },
+        });
+      } else {
+        const formattedDate = selectedDateTime.format("YYYY-MM-DD");
+        updateData({
+          ...data,
+          primary_occupation: {
+            ...data.primary_occupation,
+            start_date: formattedDate,
+          },
+        });
+        setIsStartDateValid(true);
+      }
     } else {
       updateData({
         ...data,
@@ -107,27 +153,7 @@ function DistantFamily({ validateStep }) {
           start_date: null,
         },
       });
-    }
-  };
-
-  const handleEndDateChange = (selectedDate) => {
-    if (selectedDate && dayjs(selectedDate).isValid()) {
-      const formattedDate = dayjs(selectedDate).format("YYYY-MM-DD");
-      updateData({
-        ...data,
-        primary_occupation: {
-          ...data.primary_occupation,
-          end_date: formattedDate,
-        },
-      });
-    } else {
-      updateData({
-        ...data,
-        primary_occupation: {
-          ...data.primary_occupation,
-          end_date: null,
-        },
-      });
+      setIsStartDateValid(false);
     }
   };
 
@@ -155,7 +181,45 @@ function DistantFamily({ validateStep }) {
     });
   };
 
-  const handleCelphoneEntityChange = (event) => {
+  const handleRetireeSalary = (event) => {
+    const { value } = event.target;
+
+    updateData({
+      ...data,
+      primary_occupation: {
+        ...data.primary_occupation,
+        monthly_income: value,
+      },
+    });
+  };
+
+  const handleMonthlyIncomeChange = (event) => {
+    const { value } = event.target;
+
+    updateData({
+      ...data,
+      primary_occupation: {
+        ...data.primary_occupation,
+        monthly_income: value,
+      },
+    });
+  };
+
+  const sortedPrimaryOccupation = PrimaryOccupation.slice().sort((a, b) => a.value.localeCompare(b.value));
+
+  const handleSchoolAddressChange = (event) => {
+    const { value, name } = event.target;
+
+    updateData({
+      ...data,
+      primary_occupation: {
+        ...data.primary_occupation,
+        address: { ...data.primary_occupation.address, [name]: value },
+      },
+    });
+  };
+
+  const handlePhoneNumberChange = (event) => {
     const { value } = event.target;
 
     updateData({
@@ -163,6 +227,18 @@ function DistantFamily({ validateStep }) {
       primary_occupation: {
         ...data.primary_occupation,
         phone_number: value,
+      },
+    });
+  };
+
+  const handleCurrentYearChange = (event) => {
+    const { value } = event.target;
+
+    updateData({
+      ...data,
+      primary_occupation: {
+        ...data.primary_occupation,
+        description: value,
       },
     });
   };
@@ -212,17 +288,17 @@ function DistantFamily({ validateStep }) {
             </span>
           </div>
           <div className="padding-bottom-distant">
-            <RadioGroup
+            <RadioGroup sx={{ width: "100%" }}
               aria-labelledby="demo-radio-buttons-group-label"
               defaultValue="Empregado"
               name="radio-buttons-group"
               className="subTitle-div-2"
               row
-              value={radioOcupation}
+              value={data.occupation_type_selected}
               onChange={handleChangeRadioOcupation}
             >
               <FormControlLabel
-                value="Estudante"
+                value="S"
                 control={<Radio />}
                 label="Estudante"
               />
@@ -232,43 +308,186 @@ function DistantFamily({ validateStep }) {
                 label="Empregado"
               />
               <FormControlLabel
-                value="Aposentado"
+                value="RT"
                 control={<Radio />}
                 label="Aposentado"
+              />
+              <FormControlLabel
+                value="NotOccupation"
+                control={<Radio />}
+                label="Não tenho ocupação/Criança com menos de 14 anos"
               />
             </RadioGroup>
           </div>
         </div>
-        {radioOcupation === "Empregado" ? (
-          <>
-            <div className="div-marital-padding">
-              <div style={{ width: "55%" }}>
-                <div
-                  style={{ paddingBottom: "0.4rem" }}
-                  className="padding-bottom-distant"
-                >
-                  <span className="span-state">
-                    Área de ocupação <span style={{ color: "red" }}>*</span>
-                  </span>
-                </div>
-                <div className="padding-bottom-distant">
-                  <Select
-                    className="input-style-distant"
-                    labelId="select-state"
-                    id="select-state"
-                    value={data.primary_occupation.occupation_type}
-                    onChange={handleOccupationAreaChangeSelect}
-                  >
-                    {PrimaryOccupation.map((state) => (
-                      <MenuItem key={state.key} value={state.key}>
-                        {state.value}
-                      </MenuItem>
-                    ))}
-                  </Select>
+        {data.occupation_type_selected === "S" ? (
+          <div>
+            <div className="div-distant-padding">
+              <div className="div-marital-padding">
+                <h2 className="padding-bottom-distant" style={{ color: "#091F5F" }} >Informações da Escola</h2>
+                <div className="div-1-inputs-marital">
+                  <div>
+                    <div style={{ paddingBottom: "0.4rem" }}>
+                      <span className="span-state">
+                        Endereço da instituição{" "}
+                        <span style={{ color: "red" }}>*</span>
+                      </span>
+                    </div>
+                    <div className="padding-bottom-1">
+                      <TextField
+                        id="outlined-basic"
+                        className="style-select-work"
+                        placeholder="Escreva o endereço"
+                        variant="outlined"
+                        name="street"
+                        value={data.primary_occupation.address.street}
+                        onChange={handleAddressEntityChange}
+                      />
+                    </div>
+                  </div>
+                  <div>
+                    <div style={{ paddingBottom: "0.4rem" }}>
+                      <span className="span-state">
+                        Cidade da instituição <span style={{ color: "red" }}>*</span>
+                      </span>
+                    </div>
+                    <div className="padding-bottom-1">
+                      <TextField
+                        id="outlined-basic"
+                        className="style-select-work"
+                        placeholder="Escreva a cidade"
+                        variant="outlined"
+                        name="city"
+                        value={data.primary_occupation.address.city}
+                        onChange={handleAddressEntityChange}
+                      />
+                    </div>
+                  </div>
+                  <div>
+                    <div style={{ paddingBottom: "0.4rem" }}>
+                      <span className="span-state">
+                        Estado da instituição<span style={{ color: "red" }}>*</span>
+                      </span>
+                    </div>
+                    <div className="padding-bottom-1">
+                      <TextField
+                        id="outlined-basic"
+                        className="style-select-work"
+                        placeholder="Escreva o estado"
+                        variant="outlined"
+                        name="state"
+                        value={data.primary_occupation.address.state}
+                        onChange={handleAddressEntityChange}
+                      />
+                    </div>
+                  </div>
+                  <div>
+                    <div style={{ paddingBottom: "0.4rem" }}>
+                      <span className="span-state">
+                        Telefone da instituição <span style={{ color: "red" }}>*</span>
+                      </span>
+                    </div>
+                    <div className="padding-bottom-1">
+                      <InputMask
+                        mask="(99) 99999-9999"
+                        maskChar={null}
+                        value={data.primary_occupation ? data.primary_occupation.phone_number : ''}
+                        onChange={handlePhoneNumberChange}
+                      >
+                        {(inputProps) => <TextField {...inputProps} variant="outlined" className="style-select-work" placeholder="(00) 00000-0000" />}
+                      </InputMask>
+                    </div>
+                  </div>
+                  <div>
+                    <div style={{ paddingBottom: "0.4rem" }}>
+                      <span className="span-state">
+                        Data de início <span style={{ color: "red" }}>*</span>
+                      </span>
+                    </div>
+                    <div className="padding-bottom-1">
+                      <LocalizationProvider dateAdapter={AdapterDayjs}>
+                        <DatePicker
+                          format="DD/MM/YYYY"
+                          className={`custom-date-picker-initialOccupation  ${isStartDateValid ? "" : "invalid-date"
+                            }`}
+                          value={
+                            data.primary_occupation.start_date
+                              ? dayjs(data.primary_occupation.start_date)
+                              : null
+                          }
+                          onChange={handleStartDateChange}
+                        />
+                      </LocalizationProvider>
+                      {!isStartDateValid && (
+                        <span className="error-message" style={{ color: "red" }}>
+                          <br /> A data de início não pode ser superior à data atual.
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                  <div>
+                    <div style={{ paddingBottom: "0.4rem" }}>
+                      <span className="span-state">
+                        Qual período / série está cursando <span style={{ color: "red" }}>*</span>
+                      </span>
+                    </div>
+                    <div className="padding-bottom-1">
+                      <TextField
+                        id="outlined-basic"
+                        className="style-select-work"
+                        placeholder="Escreva o ano"
+                        variant="outlined"
+                        name="current_year"
+                        value={data.primary_occupation ? data.primary_occupation.description : ""}
+                        onChange={handleCurrentYearChange}
+                      />
+                    </div>
+                  </div>
                 </div>
               </div>
-              <div className="div-2-inputs-work">
-                <div>
+            </div>
+          </div>
+        ) : null}
+
+        {data.occupation_type_selected === "Empregado" ? (
+          <>
+            <div className="div-marital-padding">
+              <h2 className="padding-bottom-distant" style={{ color: "#091F5F" }}  >Informações da ocupação</h2>
+              <div className="div-occupationAndOffice">
+                <Box sx={{ width: "50%" }}>
+                  <div
+                    style={{ paddingBottom: "0.4rem" }}
+                    className="padding-bottom-distant"
+                  >
+                    <span className="span-state">
+                      Área de ocupação <span style={{ color: "red" }}>*</span>
+                    </span>
+                  </div>
+                  <div className="padding-bottom-distant">
+                    <Select
+                      className="input-style-distant"
+                      labelId="select-state"
+                      id="select-state"
+                      value={data.primary_occupation.occupation_type}
+                      onChange={handleOccupationAreaChangeSelect}
+                    >
+                      {sortedPrimaryOccupation.map((state) => (
+                        <MenuItem key={state.key} value={state.key}>
+                          {state.value}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </div>
+
+                </Box>
+                <Box sx={{
+                  width: "50%",
+                  "@media (max-width: 768px)": {
+                    width: "unset"
+                  },
+                }}
+                  className={"div-2-inputs-work-distantFamily"}
+                >
                   <div style={{ paddingBottom: "0.4rem" }}>
                     <span className="span-state">
                       Nome da instituição/empresa{" "}
@@ -285,125 +504,73 @@ function DistantFamily({ validateStep }) {
                       onChange={handleEntityNameChange}
                     />
                   </div>
-                </div>
-                <div>
-                  <div style={{ paddingBottom: "0.4rem" }}>
-                    <span className="span-state">
-                      Cargo<span style={{ color: "red" }}>*</span>
-                    </span>
-                  </div>
-                  <div className="padding-bottom-1">
-                    <TextField
-                      id="outlined-basic"
-                      className="style-select-work"
-                      placeholder="Escreva o cargo"
-                      variant="outlined"
-                      value={data.primary_occupation.occupation_title}
-                      onChange={handleStateEntityChange}
-                    />
-                  </div>
-                </div>
+                </Box>
               </div>
-              <div className="div-2-inputs-work">
-                <div>
-                  <div style={{ paddingBottom: "0.4rem" }}>
-                    <span className="span-state">
-                      Data de inicio <span style={{ color: "red" }}>*</span>
-                    </span>
+              <div className="div-2-inputs-work-distantFamily">
+                <div style={{ display: "flex", gap: ".3em" }}>
+                  <div>
+                    <div style={{ paddingBottom: "0.4rem", width: "100%" }}>
+                      <span className="span-state">
+                        Data de inicio <span style={{ color: "red" }}>*</span>
+                      </span>
+                    </div>
+                    <div className="padding-bottom-1">
+                      <LocalizationProvider dateAdapter={AdapterDayjs}>
+                        <DatePicker sx={{width: "286px"}}
+                          format="DD/MM/YYYY"
+                          className={`custom-date-picker-initialOccupation  ${isStartDateValid ? "" : "invalid-date"
+                            }`}
+                          value={
+                            data.primary_occupation.start_date
+                              ? dayjs(data.primary_occupation.start_date)
+                              : null
+                          }
+                          onChange={handleStartDateChange}
+                        />
+                      </LocalizationProvider>
+                      {!isStartDateValid && (
+                        <span className="error-message" style={{ color: "red" }}>
+                          <br /> A data de início não pode ser superior à data atual.
+                        </span>
+                      )}
+                    </div>
                   </div>
-                  <div className="padding-bottom-1">
-                    <LocalizationProvider dateAdapter={AdapterDayjs}>
-                      <DatePicker
-                        format="DD/MM/YYYY"
-                        className="custom-date-picker-initial"
-                        value={dayjs(data.primary_occupation.start_date)}
-                        onChange={handleStartDateChange}
+                  <div>
+                    <div style={{ paddingBottom: "0.4rem" }}>
+                      <span className="span-state">
+                        Média salarial{" "}
+                        <span style={{ color: "red" }}>*</span>
+                      </span>
+                    </div>
+                    <div className="padding-bottom-1">
+                      <TextField
+                        sx={{ width: "286px" }}
+                        id="outlined-basic"
+                        className="style-select-work"
+                        placeholder="Escreva o salário"
+                        variant="outlined"
+                        type="number"
+                        name="monthly_income"
+                        value={data.primary_occupation ? data.primary_occupation.monthly_income : ""}
+                        onChange={handleMonthlyIncomeChange}
+                        InputProps={{
+                          startAdornment: (
+                            <InputAdornment position="start">
+                              R$
+                            </InputAdornment>
+                          ),
+                        }}
                       />
-                    </LocalizationProvider>
+                    </div>
                   </div>
-                </div>
-                <div>
-                  <div style={{ paddingBottom: "0.4rem" }}>
-                    <span className="span-state">Data de termino</span>
-                  </div>
-                  <div className="padding-bottom-1">
-                    <LocalizationProvider dateAdapter={AdapterDayjs}>
-                      <DatePicker
-                        format="DD/MM/YYYY"
-                        className="custom-date-picker-initial"
-                        value={dayjs(data.primary_occupation.end_date)}
-                        onChange={handleEndDateChange}
-                      />
-                    </LocalizationProvider>
-                  </div>
+
                 </div>
               </div>
               <div className="div-1-inputs-marital">
                 <div>
                   <div style={{ paddingBottom: "0.4rem" }}>
                     <span className="span-state">
-                      Pais da empresa <span style={{ color: "red" }}>*</span>
-                    </span>
-                  </div>
-                  <div className="padding-bottom-1">
-                    <Select
-                      className="input-style-work"
-                      labelId="select-state"
-                      id="select-state"
-                      name="country"
-                      value={data.primary_occupation.address.country}
-                      onChange={handleAddressEntityChange}
-                    >
-                      {Countries.map((countrie, index) => (
-                        <MenuItem key={index} value={countrie.key}>
-                          {countrie.value}
-                        </MenuItem>
-                      ))}
-                    </Select>
-                  </div>
-                </div>
-                <div>
-                  <div style={{ paddingBottom: "0.4rem" }}>
-                    <span className="span-state">
-                      Estado da Empresa<span style={{ color: "red" }}>*</span>
-                    </span>
-                  </div>
-                  <div className="padding-bottom-1">
-                    <TextField
-                      id="outlined-basic"
-                      className="style-select-work"
-                      placeholder="Escreva o cargo"
-                      variant="outlined"
-                      name="state"
-                      value={data.primary_occupation.address.state}
-                      onChange={handleAddressEntityChange}
-                    />
-                  </div>
-                </div>
-                <div>
-                  <div style={{ paddingBottom: "0.4rem" }}>
-                    <span className="span-state">
-                      Cidade da Empresa<span style={{ color: "red" }}>*</span>
-                    </span>
-                  </div>
-                  <div className="padding-bottom-1">
-                    <TextField
-                      id="outlined-basic"
-                      className="style-select-work"
-                      placeholder="Escreva o cargo"
-                      variant="outlined"
-                      name="city"
-                      value={data.primary_occupation.address.city}
-                      onChange={handleAddressEntityChange}
-                    />
-                  </div>
-                </div>
-              </div>
-              <div className="div-2-inputs-work">
-                <div>
-                  <div style={{ paddingBottom: "0.4rem" }}>
-                    <span className="span-state">
-                      Endereço da empresa{" "}
+                      Endereço da instituição / empresa{" "}
                       <span style={{ color: "red" }}>*</span>
                     </span>
                   </div>
@@ -422,71 +589,73 @@ function DistantFamily({ validateStep }) {
                 <div>
                   <div style={{ paddingBottom: "0.4rem" }}>
                     <span className="span-state">
-                      CEP <span style={{ color: "red" }}>*</span>
+                      Cidade da instituição / empresa <span style={{ color: "red" }}>*</span>
                     </span>
-                  </div>
-                  <div className="padding-bottom-1">
-                    <InputMask
-                      mask="99999-999"
-                      maskChar=""
-                      value={data.primary_occupation.address.zip_code}
-                      onChange={handleAddressEntityChange}
-                    >
-                      {() => (
-                        <TextField
-                          id="outlined-basic"
-                          className="style-select-work"
-                          placeholder="00000-000"
-                          variant="outlined"
-                          name="zip_code"
-                        />
-                      )}
-                    </InputMask>
-                  </div>
-                </div>
-              </div>
-              <div className="div-2-inputs-work">
-                <div>
-                  <div style={{ paddingBottom: "0.4rem" }}>
-                    <span className="span-state">
-                      Telefone da empresa{" "}
-                      <span style={{ color: "red" }}>*</span>
-                    </span>
-                  </div>
-                  <div className="padding-bottom-1">
-                    <InputMask
-                      mask="99+ (99) 99999-9999"
-                      maskChar=""
-                      value={data.primary_occupation.phone_number}
-                      onChange={handleCelphoneEntityChange}
-                    >
-                      {() => (
-                        <TextField
-                          id="outlined-basic"
-                          className="style-select-work"
-                          placeholder="99+ (00) 00000-0000"
-                          variant="outlined"
-                        />
-                      )}
-                    </InputMask>
-                  </div>
-                </div>
-                <div>
-                  <div style={{ paddingBottom: "0.4rem" }}>
-                    <span className="span-state">Email da empresa</span>
                   </div>
                   <div className="padding-bottom-1">
                     <TextField
                       id="outlined-basic"
                       className="style-select-work"
-                      placeholder="email@exemplo.com"
+                      placeholder="Escreva a Cidade"
                       variant="outlined"
+                      name="city"
+                      value={data.primary_occupation.address.city}
+                      onChange={handleAddressEntityChange}
+                    />
+                  </div>
+                </div>
+                <div>
+                  <div style={{ paddingBottom: "0.4rem" }}>
+                    <span className="span-state">
+                      Estado da instituição / empresa<span style={{ color: "red" }}>*</span>
+                    </span>
+                  </div>
+                  <div className="padding-bottom-1">
+                    <TextField
+                      id="outlined-basic"
+                      className="style-select-work"
+                      placeholder="Escreva o estado"
+                      variant="outlined"
+                      name="state"
+                      value={data.primary_occupation.address.state}
+                      onChange={handleAddressEntityChange}
                     />
                   </div>
                 </div>
               </div>
+
             </div>
           </>
+        ) : null}
+        {data.occupation_type_selected === "RT" ? (
+          <div>
+            <div className="div-distant-padding">
+              <div className="padding-bottom-distant">
+                <div style={{ paddingBottom: "0.4rem" }}>
+                  <span className="title-header-2">
+                    Quanto é o salário da aposentadoria? <span style={{ color: "red" }}>*</span>
+                  </span>
+                </div>
+                <div className="padding-bottom-1">
+                  <TextField
+                    id="outlined-basic"
+                    className="style-select-work"
+                    placeholder="Escreva o salário"
+                    variant="outlined"
+                    type="number"
+                    name="state"
+                    value={data.primary_occupation ? data.primary_occupation.monthly_income : ""}
+                    onChange={handleRetireeSalary}
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">R$</InputAdornment>
+                      ),
+                    }}
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
         ) : null}
       </div>
     </div>

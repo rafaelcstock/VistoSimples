@@ -73,9 +73,7 @@ function TravelInformation(props) {
       stay.address.state &&
       stay.address.state !== "" &&
       stay.address.zip_code &&
-      stay.address.zip_code !== "" &&
-      stay.address.country &&
-      stay.address.country !== "";
+      stay.address.zip_code !== "";
 
     return isValid;
   };
@@ -99,8 +97,6 @@ function TravelInformation(props) {
     isValid =
       us_contact.phone_number &&
       us_contact.phone_number !== "" &&
-      us_contact.email &&
-      us_contact.email !== "" &&
       us_contact.address.street &&
       us_contact.address.street !== "" &&
       us_contact.address.city &&
@@ -215,12 +211,14 @@ function TravelInformation(props) {
       newSkipped.delete(activeStep);
     }
 
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    
 
     setSkipped(newSkipped);
     if (activeStep === 5) {
       props.onTravelInformationChange();
     }
+
+    setActiveStep((prevActiveStep) => prevActiveStep + 1);
 
     setIsDisabled(true);
   };
@@ -259,6 +257,7 @@ function TravelInformation(props) {
             marginRight: "-2rem",
             paddingBottom: "2rem",
           }}
+          className={"all-buttons-form-container"}
         >
           <div style={{ paddingRight: "1rem" }}>
             <button
