@@ -1,9 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import "./additionalInformation.css";
-import MenuItem from "@mui/material/MenuItem";
-import Select from "@mui/material/Select";
-import { FormControlLabel, Radio, RadioGroup } from "@mui/material";
-import statesBrazilianService from "../../services/statesBrazilianService";
+
 import Charity from "./steps/charity/charity";
 import Work from "./steps/work/work";
 import Formation from "./steps/formation/formation";
@@ -11,7 +8,7 @@ import CountryService from "./steps/countryService/countryService";
 import { useData } from "../../dataContext/dataContext";
 
 function AdditionalInformation(props) {
-  const { data, updateData } = useData();
+  const { data } = useData();
 
   const [activeStep, setActiveStep] = useState(0);
   const [skipped, setSkipped] = useState(new Set());
@@ -64,35 +61,24 @@ function AdditionalInformation(props) {
   };
 
   const validateStep1 = () => {
-    let isValid = false;
-
     const { education } = data;
 
-    if (education.length == 0) {
-      isValid = true;
-      return isValid;
-    }
+    const isAnyFormationEmpty = education.some((educationItem) => {
+      return (
+        !educationItem.entity_name ||
+        !educationItem.start_date ||
+        !educationItem.end_date ||
+        !educationItem.occupation_title ||
+        !educationItem.address.street ||
+        !educationItem.address.city ||
+        !educationItem.address.state ||
+        !educationItem.address.country
+      );
+    });
 
-    isValid =
-      education[0].entity_name &&
-      education[0].entity_name !== "" &&
-      education[0].start_date &&
-      education[0].start_date !== "" &&
-      education[0].end_date &&
-      education[0].end_date !== "" &&
-      education[0].occupation_title &&
-      education[0].occupation_title !== "" &&
-      education[0].address.street &&
-      education[0].address.street !== "" &&
-      education[0].address.city &&
-      education[0].address.city !== "" &&
-      education[0].address.state &&
-      education[0].address.state !== "" &&
-      education[0].address.country &&
-      education[0].address.country !== "";
-
-    return isValid;
+    return !isAnyFormationEmpty;
   };
+
 
   const validateStep2 = () => {
     let isValid = false;
