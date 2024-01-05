@@ -107,6 +107,7 @@ function Formation({ validateStep }) {
       setShowAddFormationButton(true);
     } else {
       updateData({ ...data, education: [] });
+      
       setShowAddFormationButton(false);
     }
   };
