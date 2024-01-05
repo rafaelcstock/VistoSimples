@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./formation.css";
-import { MenuItem, Select, TextField } from "@mui/material";
-import { FormControlLabel, Radio, RadioGroup } from "@mui/material";
+import { MenuItem, Select, Stack, TextField } from "@mui/material";
+import { FormControlLabel, Radio, RadioGroup, Button } from "@mui/material";
 import InputMask from "react-input-mask";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
@@ -14,36 +14,42 @@ function Formation({ validateStep }) {
   const [isStartDateValid, setIsStartDateValid] = useState(true);
   const [isEndDateValid, setIsEndDateValid] = useState(true);
 
-  const handleAddressSelectCountry = (event) => {
+  const [showAddFormationButton, setShowAddFormationButton] = useState(true);
+
+  const handleAddressSelectCountry = (event, index) => {
     const { value, name } = event.target;
+
+    const updatedEducation = [...data.education];
+    updatedEducation[index].address[name] = value;
 
     updateData({
       ...data,
-      education: [
-        {
-          ...data.education[0],
-          address: { ...data.education[0].address, [name]: value },
-        },
-      ],
+      education: updatedEducation,
     });
   };
 
-  const handleDateUpdateData = (name, newDate) => {
+  const handleDateUpdateData = (index, name, newDate) => {
     let isValid = true;
 
     if (newDate && dayjs(newDate).isValid() && dayjs(newDate).isBefore(dayjs())) {
       const formattedDate = dayjs(newDate).format("YYYY-MM-DD");
 
+      const updatedEducation = [...data.education];
+      updatedEducation[index][name] = formattedDate;
+
       updateData({
         ...data,
-        education: [{ ...data.education[0], [name]: formattedDate }],
+        education: updatedEducation,
       });
     } else {
       isValid = false;
 
+      const updatedEducation = [...data.education];
+      updatedEducation[index][name] = "";
+
       updateData({
         ...data,
-        education: [{ ...data.education[0], [name]: "" }],
+        education: updatedEducation,
       });
     }
 
@@ -54,12 +60,15 @@ function Formation({ validateStep }) {
     }
   };
 
-  const handleUpdateData = (event) => {
+  const handleUpdateData = (index, event) => {
     const { value, name } = event.target;
+
+    const updatedEducation = [...data.education];
+    updatedEducation[index][name] = value;
 
     updateData({
       ...data,
-      education: [{ ...data.education[0], [name]: value }],
+      education: updatedEducation,
     });
   };
 
@@ -71,6 +80,7 @@ function Formation({ validateStep }) {
       updateData({
         ...data,
         education: [
+          ...data.education,
           {
             occupation_type: null,
             specify_occupation: null,
@@ -94,9 +104,51 @@ function Formation({ validateStep }) {
           },
         ],
       });
+      setShowAddFormationButton(true);
     } else {
       updateData({ ...data, education: [] });
+      setShowAddFormationButton(false);
     }
+  };
+
+  const handleAddAnotherFormation = () => {
+    const newEducationItem = {
+      occupation_type: null,
+      specify_occupation: null,
+      entity_name: "",
+      address: {
+        street: "",
+        complement: null,
+        city: "",
+        state: "",
+        state_acronym: null,
+        zip_code: "",
+        country: "",
+      },
+      phone_number: "",
+      start_date: "",
+      end_date: "",
+      monthly_income: null,
+      description: null,
+      occupation_title: "",
+      supervisor_name: null,
+    };
+
+    updateData({
+      ...data,
+      education: [...data.education, newEducationItem],
+    });
+  };
+  console.log(data.education)
+
+  const handleDeleteFormation = (index) => {
+    const updatedEducation = [...data.education];
+    updatedEducation.splice(index, 1);
+
+    updateData({
+      ...data,
+      education: updatedEducation,
+    });
   };
 
   useEffect(() => {
@@ -138,11 +190,29 @@ function Formation({ validateStep }) {
           </RadioGroup>
         </div>
       </div>
-      {data.education.length > 0 ? (
-        <div className="div-marital-padding">
-          <div className="padding-bottom-title-input">
+      {data.education.map((educationItem, index) => (
+        <div key={index} className="div-marital-padding">
+          <Stack sx={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }} className="padding-bottom-title-input">
             <span className="title-header-2">Formação</span>
-          </div>
+            <Button
+              sx={{
+                color: "#fff",
+                padding: "0.5em",
+                marginRight: ".8em",
+                fontWeight: "bold",
+                borderRadius: "8px",
+                textTransform: "none",
+                fontFamily: "'Outfit', sans-serif",
+                backgroundColor: "#FF3D00",
+                "&:hover": {
+                  backgroundColor: "#D32F2F",
+                },
+              }}
+              onClick={() => handleDeleteFormation(index)}
+            >
+              Excluir formação
+            </Button>
+          </Stack>
           <div className="div-2-inputs-work">
             <div>
               <div style={{ paddingBottom: "0.4rem" }}>
@@ -158,8 +228,8 @@ function Formation({ validateStep }) {
                   placeholder="Escreva o nome da instituição"
                   variant="outlined"
                   name="entity_name"
-                  value={data.education[0].entity_name}
-                  onChange={handleUpdateData}
+                  value={educationItem.entity_name}
+                  onChange={(event) => handleUpdateData(index, event)}
                 />
               </div>
             </div>
@@ -176,8 +246,8 @@ function Formation({ validateStep }) {
                   placeholder="Escreva o curso de formação"
                   variant="outlined"
                   name="occupation_title"
-                  value={data.education[0].occupation_title}
-                  onChange={handleUpdateData}
+                  value={educationItem.occupation_title}
+                  onChange={(event) => handleUpdateData(index, event)}
                 />
               </div>
             </div>
@@ -194,20 +264,17 @@ function Formation({ validateStep }) {
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                   <DatePicker
                     format="DD/MM/YYYY"
-                    className={`custom-date-picker-initialFormation ${
-                      isStartDateValid ? "" : "invalid-date"
-                    }`}
-                    value={data.education[0].start_date ? dayjs(data.education[0].start_date) : null}
-                    onChange={(date) =>
-                      handleDateUpdateData("start_date", date)
-                    }
+                    className={`custom-date-picker-initialFormation ${isStartDateValid ? "" : "invalid-date"
+                      }`}
+                    value={educationItem.start_date ? dayjs(educationItem.start_date) : null}
+                    onChange={(date) => handleDateUpdateData(index, "start_date", date)}
                   />
                 </LocalizationProvider>
                 {!isStartDateValid && (
-                <span className="error-message" style={{ color: "red" }}>
-                  A data de início não pode ser superior à data atual.
-                </span>
-              )}
+                  <span className="error-message" style={{ color: "red" }}>
+                    A data de início não pode ser superior à data atual.
+                  </span>
+                )}
               </div>
             </div>
             <div>
@@ -221,18 +288,17 @@ function Formation({ validateStep }) {
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                   <DatePicker
                     format="DD/MM/YYYY"
-                    className={`custom-date-picker-initialFormation ${
-                      isEndDateValid ? "" : "invalid-date"
-                    }`}
-                    value={ data.education[0].end_date ? dayjs(data.education[0].end_date) : null}
-                    onChange={(date) => handleDateUpdateData("end_date", date)}
+                    className={`custom-date-picker-initialFormation ${isEndDateValid ? "" : "invalid-date"
+                      }`}
+                    value={educationItem.end_date ? dayjs(educationItem.end_date) : null}
+                    onChange={(date) => handleDateUpdateData(index, "end_date", date)}
                   />
                 </LocalizationProvider>
                 {!isEndDateValid && (
-                <span className="error-message" style={{ color: "red" }}>
-                  A data de término não pode ser superior à data atual.
-                </span>
-              )}
+                  <span className="error-message" style={{ color: "red" }}>
+                    A data de término não pode ser superior à data atual.
+                  </span>
+                )}
               </div>
             </div>
           </div>
@@ -250,11 +316,11 @@ function Formation({ validateStep }) {
                   labelId="select-state"
                   id="select-state"
                   name="country"
-                  value={data.education[0].address.country}
-                  onChange={handleAddressSelectCountry}
+                  value={educationItem.address.country}
+                  onChange={(event) => handleAddressSelectCountry(event, index)}
                 >
-                  {Countries.map((countrie, index) => (
-                    <MenuItem key={index} value={countrie.key}>
+                  {Countries.map((countrie, countryIndex) => (
+                    <MenuItem key={countryIndex} value={countrie.key}>
                       {countrie.value}
                     </MenuItem>
                   ))}
@@ -275,8 +341,8 @@ function Formation({ validateStep }) {
                   placeholder="Escreva o curso de formação"
                   variant="outlined"
                   name="state"
-                  value={data.education[0].address.state}
-                  onChange={handleAddressSelectCountry}
+                  value={educationItem.address.state}
+                  onChange={(event) => handleAddressSelectCountry(event, index)}
                 />
               </div>
             </div>
@@ -294,8 +360,8 @@ function Formation({ validateStep }) {
                   placeholder="Escreva o curso de formação"
                   variant="outlined"
                   name="city"
-                  value={data.education[0].address.city}
-                  onChange={handleAddressSelectCountry}
+                  value={educationItem.address.city}
+                  onChange={(event) => handleAddressSelectCountry(event, index)}
                 />
               </div>
             </div>
@@ -315,8 +381,8 @@ function Formation({ validateStep }) {
                   placeholder="Escreva o endereço"
                   variant="outlined"
                   name="street"
-                  value={data.education[0].address.street}
-                  onChange={handleAddressSelectCountry}
+                  value={educationItem.address.street}
+                  onChange={(event) => handleAddressSelectCountry(event, index)}
                 />
               </div>
             </div>
@@ -330,8 +396,8 @@ function Formation({ validateStep }) {
                 <InputMask
                   mask="99999-999"
                   maskChar=""
-                  value={data.education[0].address.zip_code}
-                  onChange={handleAddressSelectCountry}
+                  value={educationItem.address.zip_code}
+                  onChange={(event) => handleAddressSelectCountry(event, index)}
                 >
                   {() => (
                     <TextField
@@ -347,7 +413,25 @@ function Formation({ validateStep }) {
             </div>
           </div>
         </div>
-      ) : null}
+      ))}
+      <Button
+        sx={{
+          color: "#fff",
+          padding: "1em",
+          fontWeight: "bold",
+          borderRadius: "8px",
+          textTransform: "none",
+          backgroundColor: "#2F5FE3",
+          fontFamily: "'Outfit', sans-serif",
+          display: showAddFormationButton ? "block" : "none",
+          "&:hover": {
+            color: "#2F5FE3",
+          },
+        }}
+        onClick={handleAddAnotherFormation}
+      >
+        Adicionar outra formação  +
+      </Button>
     </div>
   );
 }
