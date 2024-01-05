@@ -139,7 +139,6 @@ function Formation({ validateStep }) {
       education: [...data.education, newEducationItem],
     });
   };
-  console.log(data.education)
 
   const handleDeleteFormation = (index) => {
     const updatedEducation = [...data.education];
